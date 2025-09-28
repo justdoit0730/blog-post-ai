@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+
+<head>
+    <title>AUTO CAFE</title>
+    <link rel="icon" type="image/x-icon" href="/resources/profile/favicon.ico" />
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="imagetoolbar" content="no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no" />
+    <link rel="stylesheet" href="/resources/css/setting.css" />
+    <link rel="stylesheet" href="/resources/css/plugin.css" />
+    <link rel="stylesheet" href="/resources/css/templatehouse.css" />
+    <link rel="stylesheet" href="/resources/css/style.css" />
+    <link rel="stylesheet" href="/resources/profile/spinner.css" />
+    <link rel="stylesheet" href="/resources/profile/tooltip.css" />
+    <link rel="stylesheet" href="/resources/profile/bootstrap.progress.css" />
+</head>
+
+<body>
+<header class="th-layout-header">
+    <div class="butti-N1" id="MmMf138fDR">
+        <div class="header-container container-full">
+            <div class="header-left">
+                <h1 class="header-title">
+                    <a href="/">
+                        <img src="/resources/profile/logo_white-removebg-preview.png" alt="autocafe" />
+                    </a>
+                </h1>
+            </div>
+            <div class="header-center">
+                <div class="header-gnb">
+                    <ul class="header-gnblist">
+                        <li class="header-gnbitem on">
+                            <a class="p2 header-gnblink" href="javascript:void(0)">
+                                <span>About Us</span>
+                            </a>
+                            <ul class="header-sublist">
+                                <li class="header-subitem on">
+                                    <a class="p3 header-sublink" href="javascript:void(0)">
+                                        <span>브랜드 스토리</span>
+                                    </a>
+                                </li>
+                                <li class="header-subitem">
+                                    <a class="p3 header-sublink" href="javascript:void(0)">
+                                        <span>오시는길</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="header-gnbitem on">
+                            <a class="p2 header-gnblink" href="javascript:void(0)">
+                                <span>AI Features</span>
+                            </a>
+                            <ul class="header-sublist">
+                                <li class="header-subitem on">
+                                    <a class="p3 header-sublink" href="/feature/write">
+                                        <span>글쓰기</span>
+                                    </a>
+                                </li>
+                                <li class="header-subitem on">
+                                    <a class="p3 header-sublink" href="/cafe/post">
+                                        <span>Naver Cafe 포스팅</span>
+                                    </a>
+                                </li>
+                                <li class="header-subitem">
+                                    <a class="p3 header-sublink" href="javascript:void(0)">
+                                        <span>자동 AI 글 게시</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="header-gnbitem on">
+                            <a class="header-gnblink" href="javascript:void(0)">
+                                <span>Support</span>
+                            </a>
+                            <ul class="header-sublist">
+                                <li class="header-subitem on">
+                                    <a class="header-sublink p3" href="javascript:void(0)">
+                                        <span>QnA</span>
+                                    </a>
+                                </li>
+                                <li class="header-subitem on">
+                                    <a class="header-sublink p3" href="javascript:void(0)">
+                                        <span>메뉴얼</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="header-gnbitem on">
+                            <a class="header-gnblink" href="javascript:void(0)">
+                                <span>Community</span>
+                            </a>
+                            <ul class="header-sublist">
+                                <li class="header-subitem on">
+                                    <a class="header-sublink p3" href="javascript:void(0)">
+                                        <span>공지사항</span>
+                                    </a>
+                                </li>
+                                <li class="header-subitem on">
+                                    <a class="header-sublink p3" href="javascript:void(0)">
+                                        <span>이용문의</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="header-gnbitem on">
+                            <a class="header-gnblink" href="javascript:void(0)">
+                                <span>Profile</span>
+                            </a>
+                            <ul class="header-sublist">
+                                <li class="header-subitem on">
+                                    <a class="header-sublink p3" href="/myPage/profile">
+                                        <span>회원 정보</span>
+                                    </a>
+                                </li>
+                                <li class="header-subitem on">
+                                    <a class="header-sublink p3" href="/myPage/ai/setting">
+                                        <span>AI 설정</span>
+                                    </a>
+                                </li>
+                                <li class="header-subitem on">
+                                    <a class="header-sublink p3" href="/myPage/postingSetting">
+                                        <span>Naver Cafe 설정</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="header-utils">
+                    <ul>
+                        {{#isGuest}}
+                            <li class="member" style="margin-left: 0rem; margin-right: 2rem;">
+                                <a href="/user/login">
+                                    <img src="/resources/profile/login.svg" alt="login" />
+                                </a>
+                            </li>
+                        {{/isGuest}}
+                        {{#isUser}}
+                            <li class="member" style="margin-left: 0rem; margin-right: 2rem;">
+                                <form id="logoutForm" action="/user/logout" method="post">
+                                    <input type="hidden" name="_csrf" value="{{_csrf_token}}">
+                                    <a href="javascript:void(0)" onclick="confirmLogout()">
+                                        <img src="/resources/profile/logout.svg" alt="logout" />
+                                    </a>
+                                </form>
+                            </li>
+                        {{/isUser}}
+                            <li class="allmenu">
+                                <button class="btn-allmenu">
+                                    <i class="ico-hamburger"></i>
+                                    <i class="ico-hamburger"></i>
+                                    <i class="ico-hamburger"></i>
+                                </button>
+                            </li>
+                    </ul>
+                </div>
+                <button class="btn-momenu">
+                    <i class="ico-hamburger"></i>
+                    <i class="ico-hamburger"></i>
+                    <i class="ico-hamburger"></i>
+                </button>
+            </div>
+            <div class="header-fullmenu fullmenu-top">
+                <div class="fullmenu-wrapper">
+                    <div class="fullmenu-head">
+                        <h4 class="fullmenu-title">
+                            <a href="/">
+                                <img src="/resources/profile/logo_white-removebg-preview.png" alt="TheBoutique" />
+                            </a>
+                        </h4>
+                    </div>
+                    <ul class="fullmenu-gnblist">
+                        <li class="fullmenu-gnbitem">
+                            <a class="h6 fullmenu-gnblink" href="javascript:void(0)">
+                                <span>About Us</span>
+                            </a>
+                            <ul class="fullmenu-sublist">
+                                <li class="fullmenu-subitem">
+                                    <a class="p2 fullmenu-sublink" href="javascript:void(0)">
+                                        <span>브랜드 스토리</span>
+                                    </a>
+                                </li>
+                                <li class="fullmenu-subitem">
+                                    <a class="p2 fullmenu-sublink" href="javascript:void(0)">
+                                        <span>오시는길</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="fullmenu-gnbitem">
+                            <a class="h6 fullmenu-gnblink" href="javascript:void(0)">
+                                <span>AI Features</span>
+                            </a>
+                            <ul class="fullmenu-sublist">
+                                <li class="fullmenu-subitem">
+                                    <a class="p2 fullmenu-sublink" href="/feature/write">
+                                        <span>글쓰기</span>
+                                    </a>
+                                </li>
+                                <li class="fullmenu-subitem">
+                                    <a class="p2 fullmenu-sublink" href="/cafe/post">
+                                        <span>Naver Cafe 포스팅</span>
+                                    </a>
+                                </li>
+                                <li class="fullmenu-subitem">
+                                    <a class="p2 fullmenu-sublink" href="javascript:void(0)">
+                                        <span>자동 AI 글 게시</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="fullmenu-gnbitem">
+                            <a class="h6 fullmenu-gnblink" href="javascript:void(0)">
+                                <span>Support</span>
+                            </a>
+                            <ul class="fullmenu-sublist">
+                                <li class="fullmenu-subitem">
+                                    <a class="p2 fullmenu-sublink" href="javascript:void(0)">
+                                        <span>QnA</span>
+                                    </a>
+                                </li>
+                                <li class="fullmenu-subitem">
+                                    <a class="p2 fullmenu-sublink" href="javascript:void(0)">
+                                        <span>메뉴얼</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="fullmenu-gnbitem">
+                            <a class="h6 fullmenu-gnblink" href="javascript:void(0)">
+                                <span>Community</span>
+                            </a>
+                            <ul class="fullmenu-sublist">
+                                <li class="fullmenu-subitem">
+                                    <a class="p2 fullmenu-sublink" href="javascript:void(0)">
+                                        <span>공지사항</span>
+                                    </a>
+                                </li>
+                                <li class="fullmenu-subitem">
+                                    <a class="p2 fullmenu-sublink" href="/user/contact">
+                                        <span>문의하기</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="fullmenu-gnbitem">
+                            <a class="h6 fullmenu-gnblink" href="javascript:void(0)">
+                                <span>Profile</span>
+                            </a>
+                            <ul class="fullmenu-sublist">
+                                <li class="fullmenu-subitem">
+                                    <a class="p2 fullmenu-sublink" href="/myPage/profile">
+                                        <span>회원 정보</span>
+                                    </a>
+                                </li>
+                                <li class="fullmenu-subitem">
+                                    <a class="p2 fullmenu-sublink" href="/myPage/ai/setting">
+                                        <span>AI 설정</span>
+                                    </a>
+                                </li>
+                                <li class="fullmenu-subitem">
+                                    <a class="p2 fullmenu-sublink" href="/myPage/postingSetting">
+                                        <span>Naver Cafe 설정</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <button class="fullmenu-close">
+                    <img src="/resources/icons/ico_close_white.svg" alt="닫기" />
+                </button>
+            </div>
+        </div>
+    </div>
+</header>
+<script>
+  function confirmLogout() {
+    if (confirm("정말 로그아웃하시겠습니까?")) {
+      document.getElementById('logoutForm').submit();
+    }
+  }
+</script>

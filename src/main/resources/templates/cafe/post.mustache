@@ -1,0 +1,181 @@
+{{>layout/header}}
+{{>layout/featuresSidebar}}
+<meta name="_csrf" content="{{_csrf_token}}"/>
+<meta name="_csrf_header" content="{{_csrf_header}}"/>
+<link rel="stylesheet" href="/resources/profile/toast/toastui-editor.min.css" />
+
+<div class="contents-right">
+    <div class="row row-cols-3 row-md-cols-2 gutter-5 contents-list" style="margin-top: 0rem; margin-bottom: 0em; --th-gutter: 0;">
+        <div class="contents-container container-md">
+            <div class="contents-inner">
+                <div class="form-group">
+                    <form>
+                        <div class="textset">
+                            <h2 class="h2 textset-tit">Cafe 포스팅</h2>
+                        </div>
+                        <div class="form-box" style="margin-bottom: 4rem">
+                            <div class="inputset inputset-line">
+                                <label for="basic-N37-inputset-a-1" class="form-tit h6" style="margin-bottom: 2rem;">Cafe ID
+                                </label>
+                                <div id="tableIdDiv" data-template='' style="display:none;"></div>
+                                <div class="selectset">
+                                    <div class="selectset-area">
+                                        <button id="selectedTagBtn" class="selectset-toggle btn" type="button">
+                                            <span id="templateName">템플릿</span>
+                                        </button>
+                                        <ul class="selectset-list" id="tagList">
+                                            <li class="selectset-item">
+
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-box" style="margin-bottom: 4rem">
+                            <div class="inputset inputset-line">
+                                <label for="basic-N37-inputset-a-1" class="form-tit h6" style="margin-bottom: 2rem;">Cafe 포스팅 Template
+                                </label>
+                                <div id="tableDiv" data-template='' style="display:none;"></div>
+                                <div class="selectset">
+                                    <div class="selectset-area">
+                                        <button id="selectedTagBtn" class="selectset-toggle btn" type="button">
+                                            <span id="templateName">템플릿</span>
+                                        </button>
+                                        <ul class="selectset-list" id="tagList">
+                                            <li class="selectset-item">
+
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-box" style="margin-bottom: 4rem">
+                            <div class="inputset inputset-line">
+                                <label for="subject" class="form-tit h6">제목 <span>*</span>
+                                </label>
+                                <input id="subject" type="text" class="inputset-input form-control" placeholder="주제를 입력해주세요." required="" />
+                            </div>
+                        </div>
+                        <div class="form-box" style="margin-bottom: 4rem">
+                            <div class="inputset inputset-line">
+                                <label for="prompt" class="form-tit h6" style="margin-bottom: 2rem;">내용
+                                </label>
+<!--                                <textarea id="prompt" name="prompt" class="inputset-textarea form-control" placeholder="요청 사항을 입력해주세요." style="height: 8rem;" value=""></textarea>-->
+                                <div id="editor"></div>
+                                <span class="inputset-count" style="display: none">0</span>
+                            </div>
+                        </div>
+
+                        <div class="form-btn" style="margin-bottom: 3rem;">
+                            <button class="btnset btnset-primary btnset-block" type="button" id="writeBtn">글 생성</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="form-box" style="padding-top: 3rem;">
+            <div class="inputset" id="spinner" style=" visibility: hidden; text-align: center;">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+        </div>
+
+        <section class="campland-N13" id="wVMf1395as" style="padding-top: 2rem;">
+            <div class="contents-container container-md">
+                <div class="contents-inner">
+                    <div class="textset">
+                        <h2 class="textset-tit h6" id="title" value="{{title}}">{{title}}</h2>
+                    </div>
+                    <div class="contents-body">
+                        <p class="contents-text p2" id="content">{{content}}</p>
+                        <p id="imgUrls" data-value="{{imgUrls}}" style="display:none"></p>
+                    </div>
+
+                    <div class="contents-link" id="writeSaveDiv" style="display: none">
+                        <button type="button" id="writeSave" class="btnset btnset-line-dark" >저장하기</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+</div>
+</div>
+</div>
+<div class="contents-dim"></div>
+</div>
+
+</div>
+</main>
+<script src="/resources/profile/toast/toastui-editor-all.min.js"></script>
+<script>
+  const editor = new toastui.Editor({
+    el: document.querySelector('#editor'),
+    height: '500px',
+    initialEditType: 'wysiwyg',   // 'markdown' 도 가능
+    previewStyle: 'vertical',
+    hooks: {
+      addImageBlobHook: async (blob, callback) => {
+        // blob = 사용자가 올린 이미지 파일
+
+        // 1) 서버에 업로드 하는 경우
+        // let formData = new FormData();
+        // formData.append("file", blob);
+        // const response = await fetch("/upload", { method: "POST", body: formData });
+        // const data = await response.json();
+        // callback(data.url, "업로드 이미지");
+
+        // 2) 테스트용 (브라우저에만 URL 생성)
+        const url = URL.createObjectURL(blob);
+        callback(url, "첨부 이미지");
+      }
+    }
+  });
+
+  // 저장할 때 (DB에 넣을 내용)
+  function getEditorContent() {
+    const html = editor.getHTML();   // HTML
+    const markdown = editor.getMarkdown(); // Markdown
+    console.log("HTML:", html);
+    console.log("MD:", markdown);
+  }
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const titleEl = document.getElementById("title");
+    const writeSaveDiv = document.getElementById("writeSaveDiv");
+    if (titleEl.textContent.trim() !== "") {
+        writeSaveDiv.style.display = "block";
+    }
+
+    const contentElement = document.getElementById("content");
+    let contentHtml = contentElement.textContent;
+
+    const imgUrls = [
+        {{#imgUrls}}
+            '{{.}}',
+        {{/imgUrls}}
+    ];
+
+    imgUrls.forEach((imgUrl, index) => {
+        const photoTag = `[사진${index + 1}]`;
+        const imgHtml = `<br><img src="${imgUrl}" style="max-width:100%;"><br>`;
+        contentHtml = contentHtml.replace(photoTag, imgHtml);
+    });
+
+    contentHtml = contentHtml.replace(/\r\n/g, "\n").replace(/\n/g, "<br>");
+
+    contentElement.innerHTML = contentHtml;
+});
+</script>
+<!--<script src="/js/feature/write.js"></script>-->
+<!--<script src="/js/feature/writeRendering.js"></script>-->
+<!--<script src="/js/feature/writeTemplateUpdate.js"></script>-->
+<!--<script src="/js/feature/writeSave.js"></script>-->
+
+
+{{>layout/footer}}

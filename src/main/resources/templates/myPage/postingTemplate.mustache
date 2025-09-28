@@ -1,0 +1,344 @@
+{{>layout/header}}
+{{>layout/mypageSidebar}}
+<meta name="_csrf" content="{{_csrf_token}}"/>
+<meta name="_csrf_header" content="{{_csrf_header}}"/>
+<style>
+#tableIdDiv {
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  overflow-x: auto;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+#tableDiv {
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  overflow-x: auto;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.tableset-table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+
+.tableset-table th,
+.tableset-table td {
+  border: 1px solid #ccc;
+  overflow: hidden;
+  white-space: nowrap;
+  text-align: center;
+  padding: 6px;
+}
+
+.tableset-table thead tr {
+  border-bottom: 3px solid #666;
+}
+
+.tableset-table thead th {
+  background-color: #f7f7fb;
+  border-bottom: 3px solid #666;
+  text-align: center;
+  padding: 6px;
+  overflow: hidden;
+  white-space: nowrap;
+
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.tableset-table td:first-child,
+.tableset-table th:first-child {
+  border-left: none;
+}
+
+.tableset-table td:last-child,
+.tableset-table th:last-child {
+  border-right: none;
+}
+</style>
+                        <div class="contents-right">
+                            <div class="row row-cols-3 row-md-cols-2 gutter-5 contents-list" style="margin-top: 0rem; margin-bottom: 0em; --th-gutter: 0;">
+                                <div class="contents-container container-md">
+                                    <div class="contents-inner">
+                                        <div class="form-group">
+
+                                            <form>
+                                                <div class="textset" style="margin-bottom: 0rem;">
+                                                    <h2 class="h2 textset-tit">Cafe ID Template</h2>
+                                                </div>
+                                                <div class="form-box" style="margin-bottom: 4rem;">
+                                                    <div class="inputset">
+                                                        <div class="form-btn" style="margin-bottom: 2rem; text-align: right;">
+                                                            <button class="btnset btnset-primary btnset-block" type="button" id="addIdRowBtn" style="width: 10%;">추가</button>
+                                                        </div>
+                                                        <div id="tableIdDiv" style="display: flex; gap: 8px; align-items: center;" data-template='{{{cafeIdTemplate}}}'>
+                                                            <table class="tableset-table table" id="dynamicIdTable">
+
+                                                                <colgroup>
+                                                                    <col style="width: 5%;" />   <!-- 사용 여부 -->
+                                                                    <col style="width: 5%;" />   <!-- No -->
+                                                                    <col style="width: 60%;" />  <!-- 카페 이름 -->
+                                                                    <col style="width: 25%;" />  <!-- 카페 ID -->
+                                                                    <col style="width: 5%;" />   <!-- 삭제 -->
+                                                                </colgroup>
+                                                                <thead class="thead-light thead-border-top">
+                                                                <tr>
+                                                                    <th scope="col" class="p2" style="background-color: black; color: white;">사용</th>
+                                                                    <th scope="col" class="p2" style="background-color: black; color: white;">No</th>
+                                                                    <th scope="col" class="p2" style="background-color: black; color: white;">카페 이름</th>
+                                                                    <th scope="col" class="p2" style="background-color: black; color: white;">카페 ID</th>
+                                                                    <th scope="col" class="p2" style="background-color: black; color: white;">삭제</th>
+                                                                </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-btn" style="text-align: right; margin-bottom: 3rem;">
+                                                    <button class="btnset btnset-primary  btnset-block" type="button" id="cafeIdTemplateSave" style="width: 15%">저장하기</button>
+                                                </div>
+                                            </form>
+                                            <form>
+                                                <div class="textset" style="margin-bottom: 0rem;">
+                                                    <h2 class="h2 textset-tit">Cafe Posting Template</h2>
+                                                </div>
+                                                <div class="form-box" style="margin-bottom: 4rem;">
+                                                    <div class="inputset">
+                                                        <div class="form-btn" style="margin-bottom: 2rem; text-align: right;">
+                                                            <button class="btnset btnset-primary btnset-block" type="button" id="addRowBtn" style="width: 10%;">추가</button>
+                                                        </div>
+                                                        <div id="tableDiv" style="display: flex; gap: 8px; align-items: center;" data-template='{{{cafePostingTemplate}}}'>
+
+                                                            <table class="tableset-table table" id="dynamicPostingTable">
+
+                                                                <colgroup>
+                                                                    <col style="width: 5%;" />   <!-- 사용 여부 -->
+                                                                    <col style="width: 5%;" />   <!-- No -->
+                                                                    <col style="width: 15%;" />  <!-- 카페 게시판 ID -->
+                                                                    <col style="width: 15%;" />  <!-- 게시판 이름 -->
+                                                                    <col style="width: 20%;" />  <!-- 주제 -->
+                                                                    <col style="width: 35%;" />  <!-- 세부 설정 -->
+                                                                    <col style="width: 5%;" />   <!-- 삭제 -->
+                                                                </colgroup>
+                                                                <thead class="thead-light thead-border-top">
+                                                                <tr>
+                                                                    <th scope="col" class="p2" style="background-color: black; color: white;">사용</th>
+                                                                    <th scope="col" class="p2" style="background-color: black; color: white;">No</th>
+                                                                    <th scope="col" class="p2" style="background-color: black; color: white;">태그</th>
+                                                                    <th scope="col" class="p2" style="background-color: black; color: white;">카페 게시판 ID</th>
+                                                                    <th scope="col" class="p2" style="background-color: black; color: white;">주제</th>
+                                                                    <th scope="col" class="p2" style="background-color: black; color: white;">요청 사항</th>
+                                                                    <th scope="col" class="p2" style="background-color: black; color: white;">삭제</th>
+                                                                </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                </tbody>
+                                                            </table>
+
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-btn" style="margin-bottom: 3rem; text-align: right">
+                                                    <button class="btnset btnset-primary  btnset-block" type="button" id="cafePostingTemplateSave" style="width: 15%">포스팅 템플릿 저장</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="contents-dim"></div>
+        </div>
+`
+    </div>
+</main>
+<script>
+    const tableIdBody = document.querySelector("#dynamicIdTable tbody");
+    const addIdRowBtn = document.getElementById("addIdRowBtn");
+
+    function updateIdRowNumbers() {
+        [...tableIdBody.rows].forEach((row, index) => {
+            row.cells[1].textContent = index + 1;
+            });
+        }
+
+        function createIdEditableCell(row, placeholder = "") {
+        const cell = row.insertCell();
+        cell.contentEditable = "true";
+        cell.textContent = placeholder;
+
+        cell.title = placeholder;
+        cell.addEventListener("input", () => {
+            cell.title = cell.textContent;
+        });
+
+        return cell;
+    }
+
+    addIdRowBtn.addEventListener("click", () => {
+        const row = tableIdBody.insertRow();
+        const useIdCell = row.insertCell(0);
+        const radio = document.createElement("input");
+        radio.type = "radio";
+        radio.name = "useIdRow";
+        if (tableIdBody.rows.length === 1) {
+            radio.checked = true;
+            row.classList.add("active");
+        }
+
+        useIdCell.addEventListener("click", () => {
+            radio.checked = true;
+            [...tableIdBody.rows].forEach(r => r.classList.remove("active"));
+            row.classList.add("active");
+        });
+
+        useIdCell.appendChild(radio);
+
+        // No
+        const noCell = row.insertCell(1);
+        noCell.textContent = tableIdBody.rows.length;
+
+        // 카페 이름
+        createIdEditableCell(row, "");
+
+        // 카페 ID
+        createIdEditableCell(row, "");
+
+        // 삭제
+        const deleteCell = row.insertCell();
+        const deleteBtn = document.createElement("button");
+        deleteBtn.className = "delete-btn";
+        deleteBtn.type = "button";
+        deleteBtn.style.background = "white";
+
+        const img = document.createElement("img");
+        img.src = "/resources/profile/delete.svg";
+        img.alt = "삭제";
+        img.style.width = "2rem";
+        img.style.objectFit = "contain";
+
+        deleteBtn.appendChild(img);
+
+        deleteBtn.addEventListener("click", () => {
+            row.remove();
+            updateIdRowNumbers();
+
+            if (tableIdBody.rows.length > 0) {
+                const firstRowRadio = tableIdBody.rows[0].cells[0].querySelector("input[type='radio']");
+                firstRowRadio.checked = true;
+                tableIdBody.rows[0].classList.add("active");
+            }
+        });
+
+        deleteCell.appendChild(deleteBtn);
+    });
+</script>
+<script>
+    const tableBody = document.querySelector("#dynamicPostingTable tbody");
+    const addRowBtn = document.getElementById("addRowBtn");
+
+    function updateRowNumbers() {
+        [...tableBody.rows].forEach((row, index) => {
+            row.cells[1].textContent = index + 1;
+            });
+        }
+
+        function createEditableCell(row, placeholder = "") {
+        const cell = row.insertCell();
+        cell.contentEditable = "true";
+        cell.textContent = placeholder;
+
+        cell.title = placeholder;
+        cell.addEventListener("input", () => {
+            cell.title = cell.textContent;
+        });
+
+        return cell;
+    }
+
+    addRowBtn.addEventListener("click", () => {
+        const row = tableBody.insertRow();
+        const useCell = row.insertCell(0);
+        const radio = document.createElement("input");
+        radio.type = "radio";
+        radio.name = "useRow";
+        if (tableBody.rows.length === 1) {
+            radio.checked = true;
+            row.classList.add("active");
+        }
+
+        useCell.addEventListener("click", () => {
+            radio.checked = true;
+            [...tableBody.rows].forEach(r => r.classList.remove("active"));
+            row.classList.add("active");
+        });
+
+        useCell.appendChild(radio);
+
+        // No
+        const noCell = row.insertCell(1);
+        noCell.textContent = tableBody.rows.length;
+
+        // 태그
+        createEditableCell(row, "");
+
+        // 카페 게시판 ID
+        createEditableCell(row, "");
+
+        // 주제
+        createEditableCell(row, "");
+
+        // 요청 사항
+        createEditableCell(row, "");
+
+        // 삭제
+        const deleteCell = row.insertCell();
+        const deleteBtn = document.createElement("button");
+        deleteBtn.className = "delete-btn";
+        deleteBtn.type = "button";
+        deleteBtn.style.background = "white";
+
+        const img = document.createElement("img");
+        img.src = "/resources/profile/delete.svg";
+        img.alt = "삭제";
+        img.style.width = "2rem";
+        img.style.objectFit = "contain";
+
+        deleteBtn.appendChild(img);
+
+        deleteBtn.addEventListener("click", () => {
+            row.remove();
+            updateRowNumbers();
+
+            if (tableBody.rows.length > 0) {
+                const firstRowRadio = tableBody.rows[0].cells[0].querySelector("input[type='radio']");
+                firstRowRadio.checked = true;
+                tableBody.rows[0].classList.add("active");
+            }
+        });
+
+        deleteCell.appendChild(deleteBtn);
+    });
+</script>
+<script src="/js/myPage/cafeTemplateSave.js"></script>
+<script src="/js/myPage/cafeIdTemplateRendering.js"></script>
+<script src="/js/myPage/cafePostingTemplateRendering.js"></script>
+{{>layout/footer}}

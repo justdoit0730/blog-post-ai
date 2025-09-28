@@ -1,0 +1,166 @@
+{{>layout/header}}
+    {{>layout/profileSidebar}}
+    <meta name="_csrf" content="{{_csrf_token}}"/>
+    <meta name="_csrf_header" content="{{_csrf_header}}"/>
+<style>
+#temperatureRange {
+  accent-color: #000000;
+  background: #dcdddd;
+  height: 10px;
+  border-radius: 5px;
+}
+</style>
+                        <div class="contents-right">
+                            <div class="row row-cols-3 row-md-cols-2 gutter-5 contents-list" style="margin-top: 0rem; margin-bottom: 0em; --th-gutter: 0;">
+                                <div class="contents-container container-md" style="margin-bottom: 4rem;">
+                                    <div class="contents-inner">
+
+                                        <div class="form-group">
+                                            <form>
+                                                <div class="textset">
+                                                    <h2 class="h2 textset-tit">AI Token 정보</h2>
+                                                </div>
+
+                                                <div class="form-box" style="margin-bottom: 4rem;">
+                                                    <div class="inputset">
+                                                        <label class="form-tit h6" style="margin-bottom: 1rem; display: flex; gap: 8px;">사용 가능한 Token 양
+                                                            <label class="form-tit h6" style="margin-bottom: 1rem; display: flex; gap: 8px;">
+                                                                <div>
+                                                                    <img src="/resources/profile/black-circle-question-regular-full.svg" alt="N" style="height: 2.5rem; cursor: pointer;" data-bs-toggle="tooltip" data-bs-placement="right"
+                                                                         title="모든 Token이 사용된 경우 글 생성이 불가능 합니다. Token을 추가 구매하거나 00:00 이후 다시 시도하시길 바랍니다." />
+                                                                </div>
+                                                            </label>
+                                                        </label>
+
+                                                        <div style="">
+                                                            <div class="progress" role="progressbar" aria-label="Example with label" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                                                                <div class="progress-bar" style="width: {{availableTokenRate}}%">{{availableTokenRate}}%</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-box" style="margin-bottom: 4rem;">
+                                                    <div class="inputset">
+                                                        <label class="form-tit h6" style="margin-bottom: 1rem; display: flex; gap: 8px;">Max Token 설정
+                                                            <label class="form-tit h6" style="margin-bottom: 1rem; display: flex; gap: 8px;">
+                                                                <div>
+                                                                    <img src="/resources/profile/black-circle-question-regular-full.svg" alt="N" style="height: 2.5rem; cursor: pointer;" data-bs-toggle="tooltip" data-bs-placement="right"
+                                                                         title="생성에 사용 되는 최대 토큰 수를 설정합니다. 최대 토큰 수가 높을 수록 더 빠르게 사용 가능한 Token이 소모 됩니다. 너무 낮을 경우 글 생성 중간에 종료될 수 있습니다." />
+                                                                </div>
+                                                            </label>
+                                                        </label>
+
+                                                        <div style="display: flex; gap: 8px; align-items: center;">
+                                                            <input id="maxToken" class="inputset-input form-control" type="number" style="width:100%" value="{{maxToken}}" placeholder="기본값 : 1000"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                            <form>
+                                                <div class="textset">
+                                                    <h2 class="h2 textset-tit">AI 설정</h2>
+                                                </div>
+
+                                                <div class="form-box" style="margin-bottom: 4rem;">
+                                                    <div class="inputset">
+                                                        <label class="form-tit h6" style="margin-bottom: 1rem; display: flex; gap: 8px;">글 형식
+                                                            <label class="form-tit h6" style="margin-bottom: 1rem; display: flex; gap: 8px;">
+                                                                <div>
+                                                                    <img src="/resources/profile/black-circle-question-regular-full.svg" alt="N" style="height: 2.5rem; cursor: pointer;" data-bs-toggle="tooltip" data-bs-placement="right"
+                                                                         title="0 에 가까울수록 안정적이고 반복적인 글, 100 에 가까울수록 창의적이고 다양한 글을 생성합니다." />
+                                                                </div>
+                                                            </label>
+                                                        </label>
+                                                        <div style="display: flex; gap: 8px; align-items: center;">
+                                                            <input type="range" class="form-range" min="0" max="100" value="{{temperature}}" step="10" id="temperatureRange" style="width:70%">
+                                                            <input id="temperature" class="inputset-input form-control" style="width:30%" value="{{temperature}}"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-box" style="margin-bottom: 4rem;">
+                                                    <div class="inputset">
+                                                        <label class="form-tit h6" style="margin-bottom: 1rem; display: flex; gap: 8px;">글의 양
+                                                            <label class="form-tit h6" style="margin-bottom: 1rem; display: flex; gap: 8px;">
+                                                                <div>
+                                                                    <img src="/resources/profile/black-circle-question-regular-full.svg" alt="N" style="height: 2.5rem; cursor: pointer;" data-bs-toggle="tooltip" data-bs-placement="right"
+                                                                         title="글의 양을 줄이면 생성에 소모되는 Token 양을 줄일 수 있습니다. " />
+                                                                </div>
+                                                            </label>
+                                                        </label>
+
+                                                        <div style="display: flex; gap: 8px; align-items: center;">
+                                                            <div class="selectset">
+                                                                <div class="selectset-area">
+                                                                    <button class="selectset-toggle btn" type="button">
+                                                                        <span id="selectTextVolume">{{textVolume}}</span>
+                                                                    </button>
+                                                                    <ul class="selectset-list">
+                                                                        <li class="selectset-item">
+                                                                            <button id="shortBtn" class="selectset-link btn" type="button" data-value="1">
+                                                                                <span>짧은 글(약 350~500자)</span>
+                                                                            </button>
+                                                                        </li>
+                                                                        <li class="selectset-item">
+                                                                            <button id="mediumBtn" class="selectset-link btn" type="button" data-value="2">
+                                                                                <span>중간 글(약 500 ~ 800자)</span>
+                                                                            </button>
+                                                                        </li>
+                                                                        <li class="selectset-item">
+                                                                            <button id="longBtn" class="selectset-link btn" type="button" data-value="3">
+                                                                                <span>긴 글(약 800자 이상)</span>
+                                                                            </button>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-btn" style="margin-bottom: 3rem; display: flex;">
+                                                    <button class="btnset btnset-primary btnset-block" type="button" id="aiWriteInfoSave">AI 설정 저장</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="contents-dim"></div>
+        </div>
+
+    </div>
+</main>
+
+<script src="/js/myPage/aiWriteSettingSave.js"></script>
+<script>
+const range = document.getElementById("temperatureRange");
+const temperature = document.getElementById("temperature");
+
+temperature.value = range.value;
+
+range.addEventListener("input", function () {
+    temperature.value = range.value;
+});
+
+temperature.addEventListener("input", function () {
+    let val = Math.round(temperature.value / 10) * 10;
+    if (val < 0) val = 0;
+    if (val > 100) val = 100;
+    temperature.value = val;
+    range.value = val;
+});
+
+
+range.addEventListener('input', () => {
+    const percent = (range.value / range.max) * 100;
+    range.style.background = `linear-gradient(to right, #000000 0%, #000000 ${percent}%, #dcdddd ${percent}%, #dcdddd 100%)`;
+});
+</script>
+{{>layout/footer}}

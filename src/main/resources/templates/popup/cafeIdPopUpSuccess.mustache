@@ -1,0 +1,36 @@
+{{>layout/popupHeader}}
+                    <label for="basic-N24-inputset-a-1" class="form-tit h6">인증에 성공하였습니다.</label>
+                  </div>
+                  <div class="inputset">
+                    <label for="checkset-basic-N24-b-1" class="checkset-label">Client 정보를 저장하세요.</label>
+                  </div>
+                </div>
+                <div class="form-btn" style="margin-top: 5rem;">
+                  <button type="button" class="btnset btnset-primary btnset-block" onclick="window.close();">닫기</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+<script>
+// 부모 창이 존재할 경우
+if (window.opener) {
+    const parentDoc = window.opener.document;
+
+    // 입력창 비활성화
+    const clientIdInput = parentDoc.getElementById('signUpClientId');
+    const clientSecretInput = parentDoc.getElementById('signUpClientSecret');
+    if (clientIdInput) clientIdInput.disabled = true;
+    if (clientSecretInput) clientSecretInput.disabled = true;
+
+    const clientSaveBtn = parentDoc.getElementById('clientInfoSave');
+    clientSaveBtn.style.background = "";
+    clientSaveBtn.style.pointerEvents = "";
+    clientSaveBtn.style.cursor = "";
+}
+</script>
+{{>layout/popupFooter}}

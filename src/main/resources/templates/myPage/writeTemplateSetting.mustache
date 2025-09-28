@@ -1,0 +1,124 @@
+{{>layout/header}}
+{{>layout/mypageSidebar}}
+<meta name="_csrf" content="{{_csrf_token}}"/>
+<meta name="_csrf_header" content="{{_csrf_header}}"/>
+<style>
+#tableDiv {
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  overflow-x: auto;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.tableset-table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+
+.tableset-table th,
+.tableset-table td {
+  border: 1px solid #ccc;
+  overflow: hidden;
+  white-space: nowrap;
+  text-align: center;
+  padding: 6px;
+}
+
+.tableset-table thead tr {
+  border-bottom: 3px solid #666;
+}
+
+.tableset-table thead th {
+  background-color: #f7f7fb;
+  border-bottom: 3px solid #666;
+  text-align: center;
+  padding: 6px;
+  overflow: hidden;
+  white-space: nowrap;
+
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.tableset-table td:first-child,
+.tableset-table th:first-child {
+  border-left: none;
+}
+
+.tableset-table td:last-child,
+.tableset-table th:last-child {
+  border-right: none;
+}
+</style>
+                        <div class="contents-right">
+                            <div class="row row-cols-3 row-md-cols-2 gutter-5 contents-list" style="margin-top: 0rem; margin-bottom: 0em; --th-gutter: 0;">
+                                <div class="contents-container container-md">
+                                    <div class="contents-inner">
+                                        <div class="form-group">
+
+                                            <form>
+                                                <div class="textset" style="margin-bottom: 0rem;">
+                                                    <h2 class="h2 textset-tit">AI 글쓰기 Template</h2>
+                                                </div>
+                                                <div class="form-box" style="margin-bottom: 4rem;">
+                                                    <div class="inputset">
+                                                        <div class="form-btn" style="margin-bottom: 2rem; text-align: right;">
+                                                            <button class="btnset btnset-primary btnset-block" type="button" id="addRowBtn" style="width: 10%;">추가</button>
+                                                        </div>
+                                                        <div id="tableDiv" style="display: flex; gap: 8px; align-items: center;" data-template='{{{aiTemplate}}}'>
+
+                                                            <table class="tableset-table table" id="dynamicTable">
+
+                                                                <colgroup>
+                                                                    <col style="width: 5%;" />   <!-- 사용 여부 -->
+                                                                    <col style="width: 5%;" />   <!-- No -->
+                                                                    <col style="width: 15%;" />  <!-- 태그 -->
+                                                                    <col style="width: 20%;" />  <!-- 주제 -->
+                                                                    <col style="width: 35%;" />  <!-- 세부 설정 -->
+                                                                    <col style="width: 5%;" />   <!-- 삭제 -->
+                                                                </colgroup>
+                                                                <thead class="thead-light thead-border-top">
+                                                                <tr>
+                                                                    <th scope="col" class="p2" style="background-color: black; color: white;">사용</th>
+                                                                    <th scope="col" class="p2" style="background-color: black; color: white;">No</th>
+                                                                    <th scope="col" class="p2" style="background-color: black; color: white;">태그</th>
+                                                                    <th scope="col" class="p2" style="background-color: black; color: white;">주제</th>
+                                                                    <th scope="col" class="p2" style="background-color: black; color: white;">요청 사항</th>
+                                                                    <th scope="col" class="p2" style="background-color: black; color: white;">삭제</th>
+                                                                </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                </tbody>
+                                                            </table>
+
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-btn" style="margin-bottom: 3rem;">
+                                                    <button class="btnset btnset-primary  btnset-block" type="button" id="writeTemplateSave">템플릿 저장</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="contents-dim"></div>
+        </div>
+
+    </div>
+</main>
+
+<script src="/js/myPage/aiWriteTemplateSave.js"></script>
+<script src="/js/myPage/aiWriteTemplateRendering.js"></script>
+{{>layout/footer}}

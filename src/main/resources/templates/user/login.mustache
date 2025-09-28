@@ -1,0 +1,245 @@
+{{>layout/header}}
+<meta name="_csrf" content="{{_csrf_token}}"/>
+<meta name="_csrf_header" content="{{_csrf_header}}"/>
+
+<main class="th-layout-main">
+    <div class="th-layout-content">
+        <section class="butti-N10" id="Rymf138FGh" style="height: 8.2rem;">
+        </section>
+        <div class="butti-N11" id="nmmf138fix">
+            <div class="contents-container container-md">
+                <div class="tabset tabset-fluid border-bottom">
+                    <ul class="tabset-list tabset-lg">
+                        <li class="tabset-item">
+                            <a class="tabset-link active" href="#SignInForm">
+                                <span>로그인</span>
+                            </a>
+                        </li>
+                        <li class="tabset-item">
+                            <a class="tabset-link" href="#SignUpForm">
+                                <span>회원가입</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="basic-N24" id="SignInForm" >
+            <div class="contents-container container-md">
+            <div class="contents-inner" style="width: auto !important; padding: 0 !important; border-radius: 0 !important; background: none !important;">
+                <div class="form-group">
+                    <form action="/user/doLogin" method="POST">
+                        <input type="hidden" name="_csrf" value="{{_csrf_token}}" />
+                        <div class="textset">
+                            <h2 class="h2 textset-tit">로그인</h2>
+                        </div>
+                        <div class="form-box">
+                            <div class="inputset">
+                                <label for="username" class="form-tit h6">이메일</label>
+                                <input id="username" name="email" type="text" class="inputset-input form-control" placeholder="이메일을 입력해 주세요." value="a07308@naver.com" />
+                            </div>
+                        </div>
+                        <div class="form-box">
+                            <div class="inputset">
+                                <label for="password" class="form-tit h6">비밀번호</label>
+                                <input id="password" name="password" type="password" class="inputset-input form-control" placeholder="비밀번호를 입력해 주세요." value="Gkswnsgml1!"/>
+                            </div>
+                        </div>
+
+                        <div class="form-btn" style="margin-top: 6rem;">
+                            <button class="btnset btnset-primary btnset-block" type="submit">로그인</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        </div>
+
+        <div class="basic-N24" id="SignUpForm" style="display: none;">
+            <div class="contents-container container-md">
+                <div class="contents-inner" style="width: auto !important; padding: 0 !important; border-radius: 0 !important; background: none !important;">
+                    <div class="form-group">
+                        <form>
+                            <div class="textset">
+                                <h2 class="h2 textset-tit">회원가입</h2>
+                            </div>
+                            <div class="form-box">
+                                <div class="inputset">
+                                    <label for="signUpLogin" class="form-tit h6" style="margin-bottom: 2rem;">이메일</label>
+                                    <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 4rem;">
+                                        <input id="signUpLogin" type="text" class="inputset-input form-control" placeholder="이메일을 입력해 주세요." />
+                                        <button class="btnset btnset-primary btnset-block" type="button" id="checkEmailDupBtn" style="width: 30%;">중복 검사</button>
+                                        <button class="btnset btnset-primary btnset-block" type="button" id="rewriteEmailBtn" style="width: 30%; margin-top: 0; margin-left: 0; background: darkgray; pointer-events: none; cursor: default;">이메일 재작성</button>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-box">
+                                <div class="inputset">
+                                    <label for="signUpAuthCode" class="form-tit h6" style="margin-bottom: 2rem;">이메일 인증</label>  <span id="countdown"></span>
+                                    <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 4rem;">
+                                        <input id="signUpAuthCode" type="password" class="inputset-input form-control" placeholder="이메일에 전송된 인증문자를 입력해 주세요." disabled />
+                                        <button class="btnset btnset-primary btnset-block" type="button" id="sendAuthBtn" style="width: 30%; margin-top: 0; margin-left: 0; background: darkgray; pointer-events: none; cursor: default;">인증문자 전송</button>
+                                        <button class="btnset btnset-primary btnset-block" type="button" id="verifyAuthBtn" style="width: 30%; margin-top: 0; margin-left: 0; background: darkgray; pointer-events: none; cursor: default;">인증문자 확인</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-box" style="margin-top:6rem">
+                                <div class="inputset">
+                                    <label for="signUpAuthCode" class="form-tit h6" style="margin-bottom: 2rem;">비밀번호</label>
+                                    <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 4rem;">
+                                        <input id="signUpAuthPassword" type="password" class="inputset-input form-control" placeholder="비밀번호를 입력해 주세요." />
+                                        <input id="signUpAuthPasswordCheck" type="password" class="inputset-input form-control" placeholder="비밀번호를 한번 더 입력해 주세요." />
+                                    </div>
+                                </div>
+                                <div>
+                                    <div id="pwFeedback" style="margin-top: 2rem; margin-bottom: 1.5rem;"></div>
+                                    <div id="pwStrength" style="height:10px; width:100%; background:#eee; margin-top:5px;">
+                                        <div id="pwStrengthBar" style="height:100%; width:0%; background:red;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-box" style="display: none;">
+                                <div class="inputset" style="margin-top: 3rem;">
+                                    <label for="" class="form-tit h6" style="margin-bottom: 2rem;">Client 정보</label>
+                                    <div style="display: flex;gap: 8px;align-items: center;">
+                                        <div style="width: 40%">
+                                            <label for="signUpClientId" class="checkset-label" style="margin-bottom: 1rem;">Client ID</label>
+                                            <input type="text" id="signUpClientId" class="inputset-input form-control" value="dmvYuC3cmUwzG_KtXtgh" placeholder="Client ID 를 입력해주세요"/>
+                                        </div>
+                                        <div style="width: 40%">
+                                            <label for="signUpClientSecret" class="checkset-label" style="margin-bottom: 1rem;">Client Secret</label>
+                                            <input type="password" id="signUpClientSecret" class="inputset-input form-control" value="lGVLRAUMrb" placeholder="Client Secret 입력해주세요"/>
+                                        </div>
+                                        <div style="width: 20%;">
+                                            <label for="" class="checkset-label" style="margin-bottom: 1rem;"></label>
+                                            <button type="button" id="naverLoginBtn" class="btnset btnset-primary btnset-block">Client 확인</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="contents-agree" style="margin-top: 6rem">
+                                <div class="checkset checkset-fill">
+                                    <input id="isPrivacyAgreed" name="개인정보 수집동의" class="checkset-input" type="checkbox" value="개인정보 수집동의" />
+                                    <label for="isPrivacyAgreed" class="checkset-label">개인정보 수집동의</label>
+                                </div>
+                                <a href="javascript:void(0);" class="btnset btnset-link modalset-open-btn modal-privacy-btn" data-modal-target="modalset-agree">보기</a>
+                            </div>
+                            <div class="form-btn">
+                                <button class="btnset btnset-primary btnset-block" type="button" id="userRegister">회원 가입</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="modalset modalset-md" data-modal-id="modalset-agree">
+            <div class="modalset-content">
+                <div class="modalset-header">
+                    <h2 class="h5 modalset-title">개인정보 수집동의 및 AI 글 생성 주의사항</h2>
+                    <button class="modalset-close" data-modal-close="modalset"></button>
+                </div>
+
+                <div class="modalset-body">
+                    <div class="modalset-textarea">
+                        <!-- 개인정보 수집 안내 -->
+                        <div class="info-area">
+                            <div class="info-group">
+                                <strong class="h6">1. 수집하는 개인정보 항목</strong>
+                                <div class="info-desc">
+                                    <p>본 웹사이트는 회원가입 및 서비스 이용을 위해 아래와 같이 개인정보를 수집합니다.</p>
+                                    <ul class="info-list">
+                                        <li class="p1">
+                                            <em>01. 개인정보의 수집·이용 목적</em>
+                                            <p>- 회원관리, AI 글 생성 서비스 이용, 고객 문의 대응</p>
+                                        </li>
+                                        <li class="p1">
+                                            <em>02. 수집 항목</em>
+                                            <p>- 이메일 </p>
+                                            <p>- API용 Client ID, Client Secret (암호화하여 안전하게 관리)</p>
+                                        </li>
+                                        <li class="p1">
+                                            <em>03. 개인정보 공유 및 제공</em>
+                                            <p>- 법령에 의거한 요청 외에는 외부 제공하지 않습니다.</p>
+                                        </li>
+                                        <li class="p1">
+                                            <em>04. 개인정보 파기</em>
+                                            <p>- 수집 목적 달성 후 지체 없이 안전하게 파기합니다.</p>
+                                        </li>
+                                        <li class="p1">
+                                            <em>05. 개인정보관리책임자 및 연락처</em>
+                                            <p>전화: <a href="tel:02-000-0000">02-000-0000</a>, 이메일: <a href="mailto:test@temha.io">test@temha.io</a></p>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- AI 글 생성 주의사항 -->
+                        <div class="info-area" style="margin-top: 2rem;">
+                            <div class="info-group">
+                                <strong class="h6">2. AI 글 생성 이용 주의사항</strong>
+                                <div class="info-desc">
+                                    <p>본 서비스의 AI 글 생성 기능은 사용자가 입력한 주제에 따라 자동으로 글을 생성합니다. 아래 항목에 해당하는 내용은 생성하지 않도록 주의해 주시기 바랍니다.</p>
+                                    <ul class="info-list">
+                                        <li class="p1">- 불법 행위 관련 내용 (마약, 폭행, 범죄 등)</li>
+                                        <li class="p1">- 차별, 혐오, 폭력, 음란물 관련 내용</li>
+                                        <li class="p1">- 타인의 권리 침해 (저작권, 개인정보 등)</li>
+                                    </ul>
+                                    <p>상기 금지 항목에 해당하는 내용을 생성하거나 시도할 경우, 별도의 통보 없이 서비스 이용이 제한되며 계정 이용이 중단될 수 있습니다.</p>
+                                    <p>사용자는 AI 글 생성 기능을 사용할 때 관련 법규 및 사회적 책임을 준수해야 합니다. 서비스를 안전하게 이용하기 위해 주제와 내용에 주의해 주시기 바랍니다.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 동의 체크박스 -->
+                        <div class="contents-agree" style="margin-top: 1.5rem;">
+                            <div class="checkset checkset-fill">
+                                <input id="isClientPrivacyAgreed" name="개인정보 수집 및 이용 동의" class="checkset-input" type="checkbox" value="동의" />
+                                <label for="isClientPrivacyAgreed" class="checkset-label">위 내용을 확인하였으며, 개인정보 수집 및 이용에 동의합니다.</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modalset-footer">
+                    <button class="btnset btnset-primary" data-modal-close="modalset">확인</button>
+                    <button class="btnset btnset-line-light" data-modal-close="modalset">취소</button>
+                </div>
+            </div>
+        </div>
+        </div>
+
+    </div>
+</main>
+
+<script>
+  const links = document.querySelectorAll('.tabset-link');
+  const signInForm = document.getElementById('SignInForm');
+  const signUpForm = document.getElementById('SignUpForm');
+
+  links.forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+
+      links.forEach(l => l.classList.remove('active'));
+      link.classList.add('active');
+
+      if (link.getAttribute('href') === '#SignInForm') {
+        signInForm.style.display = 'block';
+        signUpForm.style.display = 'none';
+      } else {
+        signInForm.style.display = 'none';
+        signUpForm.style.display = 'block';
+      }
+    });
+  });
+</script>
+<script src="/js/user/emailCheck.js"></script>
+<script src="/js/user/signUp.js"></script>
+<script type="text/javascript">
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('error')) {
+        alert('등록되지 않은 아이디이거나 아이디 또는 비밀번호를 잘못 입력했습니다.');
+    }
+</script>
+{{>layout/footer}}

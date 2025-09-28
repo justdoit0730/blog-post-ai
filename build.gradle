@@ -23,13 +23,15 @@ repositories {
 
 dependencies {
     implementation "org.springframework.boot:spring-boot-starter-web:${springBootVersion}"
-    implementation "org.springframework.boot:spring-boot-starter-webflux:${springBootVersion}"
-    implementation "org.springframework.boot:spring-boot-starter-websocket:${springBootVersion}"
-    implementation "org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}"
     implementation "org.springframework.boot:spring-boot-starter-security:${springBootVersion}"
-    implementation "org.springframework.boot:spring-boot-starter-oauth2-client:${springBootVersion}"
+    implementation "org.springframework.boot:spring-boot-starter-webflux:${springBootVersion}"
+    implementation "org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}"
     implementation "org.springframework.boot:spring-boot-starter-mustache:${springBootVersion}"
     testImplementation "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+    implementation "org.springframework.boot:spring-boot-starter-websocket:${springBootVersion}"
+
+//    implementation "org.springframework.boot:spring-boot-starter-oauth2-client:${springBootVersion}"
 
     // DB
     implementation "com.h2database:h2"
@@ -42,8 +44,75 @@ dependencies {
     // Lombok
     compileOnly "org.projectlombok:lombok:1.18.22"
     annotationProcessor "org.projectlombok:lombok:1.18.22"
+
+    // openAI
+    implementation 'com.theokanning.openai-gpt3-java:service:0.18.2'
+
+    // AWS
+    implementation 'software.amazon.awssdk:s3:2.20.35'
+//    implementation 'software.amazon.awssdk/core:2.20.35'
 }
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+def archiveDir = "$buildDir/Archive/${new Date().format('yyyy-MM-dd HH-mm-ss')}/${project.name}"
+println "Build Directory: $buildDir"
+def libDir = "$archiveDir/lib"
+
+bootJar {
+    archiveFileName = "${project.name}.jar"
+    destinationDirectory = file(archiveDir)
+}
+
+task copyLibs(type: Copy) {
+    from configurations.runtimeClasspath
+    into libDir
+}
+
+task createVersionFile {
+    doLast {
+        new File("$archiveDir/VERSION.txt").text = version
+    }
+}
+
+task copyApplicationYaml {
+    doLast {
+        copy {
+            from "src/main/resources/application.yml"
+            into archiveDir
+        }
+    }
+}
+
+task copyLogbackXml {
+    doLast {
+        copy {
+            from "src/main/resources/logback.xml"
+            into archiveDir
+        }
+    }
+}
+
+task buildAll {
+    doFirst {
+        file(archiveDir).mkdirs()
+    }
+
+    dependsOn bootJar, copyLibs, createVersionFile, copyApplicationYaml, copyLogbackXml
+
+    doLast {
+        println "buildAll 작업이 완료되었습니다!"
+    }
+}
+
+tasks.named('build') {
+    dependsOn buildAll
+}
+
+task("buildAllTask") {
+    group = "build"
+    description = "Run all custom build tasks including bootJar, copyLibs, etc."
+    dependsOn buildAll
 }

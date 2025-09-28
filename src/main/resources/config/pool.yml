@@ -1,0 +1,68 @@
+
+elasticsearch:
+  - id: "event-table"
+    use: true
+    uri: ["127.0.0.1:9205"]
+    workers: 8
+    io_thread: 3
+    connection_timeout: 5000
+    read_timeout: 600000
+    credential: ""
+  - id: "event-client"
+    use: true
+    uri: ["127.0.0.1:11200"]
+    workers: 0
+    io_thread: 3
+    connection_timeout: 5000
+    read_timeout: 600000
+    credential: ""
+
+#################################################
+# REDIS[PERSONA] CONFIGURATION
+#################################################
+redis:
+  - id: "event-synckey"
+    use: true
+    type: "single"
+    uri: ["127.0.0.1:3006"]
+    connection_timeout: 1000
+    command_timeout: 1000
+    topology_interval: 60000
+    auth:
+    workers: 0
+
+  - id: "event-action"
+    use: true
+    type: "single"
+    uri: ["127.0.0.1:3005"]
+    connection_timeout: 1000
+    command_timeout: 1000
+    topology_interval: 60000
+    auth:
+    half_mode: "async"
+    workers: 0
+
+  - id: "event-function"
+    use: true
+    type: "single"
+    uri: ["127.0.0.1:3003"]
+    connection_timeout: 1000
+    command_timeout: 1000
+    topology_interval: 60000
+    auth:
+    half_mode: "async"
+    workers: 0
+
+producer:
+  - id: "event-producer"
+    use: true
+    bootstrap.servers: "127.0.0.1:9092"
+    property:
+      "acks": "1"
+      "compression.type": "lz4"
+      "linger.ms": 0
+      "key.serializer": "org.apache.kafka.common.serialization.StringSerializer"
+      "value.serializer": "org.apache.kafka.common.serialization.StringSerializer"
+      "request.timeout.ms": 5000
+      "max.block.ms": 60000
+      "producer.auto.create.topics": "true"

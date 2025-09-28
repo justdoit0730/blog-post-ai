@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="10 seconds">
+
+    <!-- Console Appender -->
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%yellow([%d{yyyy-MM-dd'T'HH:mm:ss.SSS}]) %highlight(%-5level) %cyan(%logger{2}) => %m%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Sys File Appender -->
+    <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>logs/sys.log</File>
+        <encoder>
+            <pattern>[%d{yyyy-MM-dd'T'HH:mm:ss.SSS}] %-5level %logger{2} => %msg%n</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>logs/sys.log.%d{yyyy-MM-dd}</fileNamePattern>
+            <maxHistory>7</maxHistory>
+            <cleanHistoryOnStart>true</cleanHistoryOnStart>
+        </rollingPolicy>
+    </appender>
+
+    <!-- Posting File Appender -->
+    <appender name="posting" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>logs/posting.log</File>
+        <encoder>
+            <pattern>[%d{yyyy-MM-dd'T'HH:mm:ss.SSS}] %-5level %logger{2} => %msg%n</pattern>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>logs/posting.log.%d{yyyy-MM-dd}</fileNamePattern>
+            <maxHistory>7</maxHistory>
+            <cleanHistoryOnStart>true</cleanHistoryOnStart>
+        </rollingPolicy>
+    </appender>
+
+    <!-- Root Logger -->
+    <root level="INFO">
+        <appender-ref ref="file"/>
+        <appender-ref ref="console"/>
+    </root>
+
+    <logger name="postingLogger" level="INFO" additivity="false">
+        <appender-ref ref="posting"/>
+        <appender-ref ref="console"/>
+<!--        private static final Logger postingLogger = LoggerFactory.getLogger("postingLogger");-->
+    </logger>
+</configuration>
