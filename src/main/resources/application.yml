@@ -12,9 +12,9 @@ spring:
       force: true
   datasource:
     hikari:
-      jdbc-url: jdbc:mariadb://jhhandatabase.cfq6ywsaivxx.ap-northeast-2.rds.amazonaws.com:3306/jhhandatabase
-      username: jhhan
-      password: gkswnsgml1!
+      jdbc-url: 
+      username:
+      password:
       driver-class-name: org.mariadb.jdbc.Driver
       maximum-pool-size: 10
       idle-timeout: 300000
