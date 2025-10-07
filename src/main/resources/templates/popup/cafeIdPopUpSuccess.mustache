@@ -17,11 +17,9 @@
   </main>
 
 <script>
-// 부모 창이 존재할 경우
 if (window.opener) {
     const parentDoc = window.opener.document;
 
-    // 입력창 비활성화
     const clientIdInput = parentDoc.getElementById('signUpClientId');
     const clientSecretInput = parentDoc.getElementById('signUpClientSecret');
     if (clientIdInput) clientIdInput.disabled = true;

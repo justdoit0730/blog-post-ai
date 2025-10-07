@@ -121,10 +121,17 @@
                                     </a>
                                 </li>
                                 <li class="header-subitem on">
-                                    <a class="header-sublink p3" href="/myPage/postingSetting">
+                                    <a class="header-sublink p3" href="/myPage/postingTemplate">
                                         <span>Naver Cafe 설정</span>
                                     </a>
                                 </li>
+                                {{#isManager}}
+                                <li class="header-subitem on">
+                                    <a class="header-sublink p3" href="/manager/postingSetting">
+                                        <span>관리자 설정</span>
+                                    </a>
+                                </li>
+                                {{/isManager}}
                             </ul>
                         </li>
                     </ul>
@@ -264,10 +271,17 @@
                                     </a>
                                 </li>
                                 <li class="fullmenu-subitem">
-                                    <a class="p2 fullmenu-sublink" href="/myPage/postingSetting">
+                                    <a class="p2 fullmenu-sublink" href="/myPage/postingTemplate">
                                         <span>Naver Cafe 설정</span>
                                     </a>
                                 </li>
+                                {{#isManager}}
+                                <li class="fullmenu-subitem">
+                                    <a class="p2 fullmenu-sublink" href="/manager/postingSetting">
+                                        <span>관리자 설정</span>
+                                    </a>
+                                </li>
+                                {{/isManager}}
                             </ul>
                         </li>
                     </ul>

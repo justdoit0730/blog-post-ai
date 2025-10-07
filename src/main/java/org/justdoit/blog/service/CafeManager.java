@@ -9,6 +9,7 @@ import org.justdoit.blog.configuration.manager.EmailMetadata;
 import org.justdoit.blog.configuration.manager.WriteMetadata;
 import org.justdoit.blog.entity.manager.ManagerInfo;
 import org.justdoit.blog.entity.manager.ManagerInfoRepository;
+import org.justdoit.blog.service.cafe.CafeTokenService;
 import org.justdoit.blog.variable.GlobalVariables;
 import org.justdoit.blog.utils.CryptUtils;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -34,6 +35,8 @@ public class CafeManager {
 
     private final CryptUtils cryptUtils;
 
+    private final CafeTokenService cafeTokenService;
+
     @PostConstruct
     public void init() {
         loadManagerInfo();
@@ -44,7 +47,6 @@ public class CafeManager {
             globalVariables.server = appMetadata.getServer();
             ManagerInfo managerInfo = managerInfoRepository.findById("default").orElse(null);
             if (managerInfo != null) {
-            // 이메일 및 기본 설정
                 globalVariables.EMAIL_KEY = managerInfo.getEmailKey();
                 globalVariables.AES_KEY = managerInfo.getAesKey();
 
@@ -90,15 +92,22 @@ public class CafeManager {
                             .build();
                 }
 
+                // AI KEY 설정
+                globalVariables.AI_KEY = cryptUtils.decrypt256(managerInfo.getAiKey());
+
+                // Naver cafe 설정
+                globalVariables.CAFE_REFRESH_TOKEN = cryptUtils.decrypt256(managerInfo.getCafeRefreshToken());
+                globalVariables.CAFE_CLIENT_ID = cryptUtils.decrypt256(managerInfo.getCafeClientId());
+                globalVariables.CAFE_CLIENT_SECRET = cryptUtils.decrypt256(managerInfo.getCafeClientSecret());
+                cafeTokenService.refreshAccessToken(managerInfo);
+
+
                 // Write Template row 최대 생성 개수
                 globalVariables.WRITE_TEMPLATE_MAX_ROW = writeMetadata.getMaxRows();
 
-                // 일일 TOKEN 사용량
+                // 일일 TOKEN 사용량 기본값 설정
                 globalVariables.AVAILABLE_TOKEN_USER = writeMetadata.getAvailableTokenPerDay().get("user");
                 globalVariables.AVAILABLE_TOKEN_POWER_USER = writeMetadata.getAvailableTokenPerDay().get("power-user");
-
-                // AI KEY 설정
-                globalVariables.AI_KEY = managerInfo != null ? cryptUtils.decrypt256(managerInfo.getAiKey()) : null;
 
             } else {
                 globalVariables.EMAIL_KEY = null;

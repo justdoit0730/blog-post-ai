@@ -27,18 +27,21 @@ public class SessionUser implements Serializable {
     private String subEmail;
     private boolean isSubEmailUsed;
     private String receiveEmail;
-    private int cafeValidationFailCount;
+
+    private boolean isEmailPrivacyAgreed;
+    private String role;
+
+//    naver api
     private String cafeClientId;
     private String cafeClientSecret;
-    private String cafeRefreshToken;
-    private long cafeRefreshTokenExpiresAt;
-    private boolean isEmailPrivacyAgreed;
-    private boolean isClientPrivacyAgreed;
-    private String role;
 
     private String accessToken;
     private LocalDateTime accessTokenExpiresAt;
     private boolean accessTokenValidation; // 포스팅 전에 이거 확인 부터
+    private int cafeValidationFailCount;
+
+    private String cafeRefreshToken;
+    private long cafeRefreshTokenExpiresAt;
 
     private OpenAiService openAiService;
     private int maxToken;
@@ -64,10 +67,10 @@ public class SessionUser implements Serializable {
         this.email = cafeUser.getEmail();
         this.subEmail = cafeUser.getSubEmail();
         this.isSubEmailUsed = cafeUser.isSubEmailUsed();
-        this.cafeValidationFailCount = cafeUser.getCafeValidationFailCount();
-        this.cafeRefreshTokenExpiresAt = cafeUser.getCafeRefreshTokenExpiresAt();
+//        this.cafeValidationFailCount = cafeUser.getCafeValidationFailCount();
+//        this.cafeRefreshTokenExpiresAt = cafeUser.getCafeRefreshTokenExpiresAt();
         this.isEmailPrivacyAgreed = cafeUser.isEmailPrivacyAgreed();
-        this.isClientPrivacyAgreed = cafeUser.isClientPrivacyAgreed();
+//        this.isClientPrivacyAgreed = cafeUser.isClientPrivacyAgreed();
         this.role = String.valueOf(cafeUser.getRole());
 
         this.maxToken = aiWriteSetting.getMaxToken();
@@ -82,7 +85,7 @@ public class SessionUser implements Serializable {
         this.cafePostingTemplate = cafePostingTemplate.getCafePostingTemplate();
     }
 
-    public boolean getAccessTokenValidation() {
-        return accessTokenValidation;
-    }
+//    public boolean getAccessTokenValidation() {
+//        return accessTokenValidation;
+//    }
 }

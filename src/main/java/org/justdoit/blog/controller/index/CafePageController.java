@@ -33,39 +33,16 @@ public class CafePageController {
     @GetMapping("/post")
     public String postPage(HttpServletRequest request, Model model) {
         SessionUser session = getSessionUser(httpSession);
-        model.addAttribute("userEmail", session.getEmail());
-        model.addAttribute("userRole", session.getRole());
-        model.addAttribute("isUser", true);
-        model.addAttribute("isGuest", false);
-
         model.addAttribute("aiTemplate", session.getAiWriteTemplate());
-
         model.addAttribute("title", session.getWriteTitle());
         model.addAttribute("content", session.getWriteContent());
         model.addAttribute("imgUrls", session.getWriteImgUrls());
-        CsrfToken csrfToken = (CsrfToken) request.getAttribute(CsrfToken.class.getName());
-
-        if (csrfToken != null) {
-            model.addAttribute("_csrf_token", csrfToken.getToken());
-            model.addAttribute("_csrf_header", csrfToken.getHeaderName());
-        }
-
         return "cafe/post";
     }
 
     @GetMapping("/write/list")
     public String writeListPage(HttpServletRequest request, Model model, @RequestParam(value = "page", defaultValue = "1") int page) {
         SessionUser session = getSessionUser(httpSession);
-        model.addAttribute("userEmail", session.getEmail());
-        model.addAttribute("userRole", session.getRole());
-        model.addAttribute("isUser", true);
-        model.addAttribute("isGuest", false);
-
-        CsrfToken csrfToken = (CsrfToken) request.getAttribute(CsrfToken.class.getName());
-        if (csrfToken != null) {
-            model.addAttribute("_csrf_token", csrfToken.getToken());
-            model.addAttribute("_csrf_header", csrfToken.getHeaderName());
-        }
 
         String email = session.getEmail();
         int pageSize = 10;
@@ -117,17 +94,6 @@ public class CafePageController {
 
     @GetMapping("/write/list/info/{id}")
     public String writeInfoPage(@PathVariable Long id, HttpServletRequest request, Model model) {
-        SessionUser session = getSessionUser(httpSession);
-        model.addAttribute("userEmail", session.getEmail());
-        model.addAttribute("userRole", session.getRole());
-        model.addAttribute("isUser", true);
-        model.addAttribute("isGuest", false);
-
-        CsrfToken csrfToken = (CsrfToken) request.getAttribute(CsrfToken.class.getName());
-        if (csrfToken != null) {
-            model.addAttribute("_csrf_token", csrfToken.getToken());
-            model.addAttribute("_csrf_header", csrfToken.getHeaderName());
-        }
 
         AiWrite write = aiWriteRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 글이 없습니다. id=" + id));

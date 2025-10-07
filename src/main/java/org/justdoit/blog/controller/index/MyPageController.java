@@ -23,29 +23,13 @@ public class MyPageController {
 
     // 회원 정보
     @GetMapping("/profile")
-    public String profilePage(HttpServletRequest request, Model model) {
+    public String profilePage(Model model) {
         SessionUser session = getSessionUser(httpSession);
-        model.addAttribute("email", session.getEmail());
-        model.addAttribute("subEmail", session.getSubEmail());
-        model.addAttribute("role", session.getRole());
-        model.addAttribute("isUser", true);
-        model.addAttribute("isGuest", false);
-
-        model.addAttribute("clientValid", (session.getCafeClientId() == null || !session.isClientPrivacyAgreed()) ? "N" : (session.getAccessToken() == null ? "F" : "T"));
-        model.addAttribute("isClientPrivacyAgreed", session.isClientPrivacyAgreed());
 
         boolean subEmailExists = session.getSubEmail() != null && !session.getSubEmail().isEmpty();
-
         model.addAttribute("subEmailExists", subEmailExists);
         model.addAttribute("subEmail", subEmailExists ? session.getSubEmail() : "");
         model.addAttribute("isSubEmailUsed", session.isSubEmailUsed());
-
-        CsrfToken csrfToken = (CsrfToken) request.getAttribute(CsrfToken.class.getName());
-
-        if (csrfToken != null) {
-            model.addAttribute("_csrf_token", csrfToken.getToken());
-            model.addAttribute("_csrf_header", csrfToken.getHeaderName());
-        }
 
         return "myPage/profile";
     }
@@ -53,15 +37,7 @@ public class MyPageController {
     // AI 설정
     @GetMapping("/ai/setting")
     public String aiSetting(HttpServletRequest request, Model model) {
-
         SessionUser session = getSessionUser(httpSession);
-
-        model.addAttribute("email", session.getEmail());
-        model.addAttribute("role", session.getRole());
-        model.addAttribute("isUser", true);
-        model.addAttribute("isGuest", false);
-        model.addAttribute("clientValid", (session.getCafeClientId() == null || !session.isClientPrivacyAgreed()) ? "N" : (session.getAccessToken() == null ? "F" : "T"));
-        model.addAttribute("isClientPrivacyAgreed", session.isClientPrivacyAgreed());
 
         Role role = Role.fromKey(session.getRole());
         int availableToken = session.getAvailableToken();
@@ -106,13 +82,6 @@ public class MyPageController {
 
         model.addAttribute("textVolume", textVolumeText);
 
-        CsrfToken csrfToken = (CsrfToken) request.getAttribute(CsrfToken.class.getName());
-
-        if (csrfToken != null) {
-            model.addAttribute("_csrf_token", csrfToken.getToken());
-            model.addAttribute("_csrf_header", csrfToken.getHeaderName());
-        }
-
         return "myPage/aiSetting";
     }
 
@@ -120,67 +89,17 @@ public class MyPageController {
     @GetMapping("/ai/template/setting")
     public String aiTemplateSetting(HttpServletRequest request, Model model) {
         SessionUser session = getSessionUser(httpSession);
-        model.addAttribute("email", session.getEmail());
-        model.addAttribute("role", session.getRole());
-        model.addAttribute("isUser", true);
-        model.addAttribute("isGuest", false);
-
         model.addAttribute("aiTemplate", session.getAiWriteTemplate());
-
-        CsrfToken csrfToken = (CsrfToken) request.getAttribute(CsrfToken.class.getName());
-
-        if (csrfToken != null) {
-            model.addAttribute("_csrf_token", csrfToken.getToken());
-            model.addAttribute("_csrf_header", csrfToken.getHeaderName());
-        }
-
         return "myPage/writeTemplateSetting";
-    }
-
-    // Naver API setting
-    @GetMapping("/postingSetting")
-    public String naverPostingSetting(HttpServletRequest request, Model model) {
-        SessionUser session = getSessionUser(httpSession);
-        model.addAttribute("email", session.getEmail());
-        model.addAttribute("role", session.getRole());
-        model.addAttribute("isUser", true);
-        model.addAttribute("isGuest", false);
-
-        model.addAttribute("clientValid", (session.getCafeClientId() == null || !session.isClientPrivacyAgreed()) ? "N" : (session.getAccessToken() == null ? "F" : "T"));
-        model.addAttribute("isClientPrivacyAgreed", session.isClientPrivacyAgreed());
-
-        CsrfToken csrfToken = (CsrfToken) request.getAttribute(CsrfToken.class.getName());
-
-        if (csrfToken != null) {
-            model.addAttribute("_csrf_token", csrfToken.getToken());
-            model.addAttribute("_csrf_header", csrfToken.getHeaderName());
-        }
-
-        return "myPage/postingSetting";
     }
 
     // Naver cafe Template page
     @GetMapping("/postingTemplate")
     public String naverPostingTemplate(HttpServletRequest request, Model model) {
         SessionUser session = getSessionUser(httpSession);
-        if (session != null) {
-            model.addAttribute("email", session.getEmail());
-            model.addAttribute("role", session.getRole());
-            model.addAttribute("isUser", true);
-            model.addAttribute("isGuest", false);
-        } else {
-            model.addAttribute("role", "GUEST");
-            model.addAttribute("isUser", false);
-            model.addAttribute("isGuest", true);
-        }
+
         model.addAttribute("cafeIdTemplate", session.getCafeIdTemplate());
         model.addAttribute("cafePostingTemplate", session.getCafePostingTemplate());
-
-        CsrfToken csrfToken = (CsrfToken) request.getAttribute(CsrfToken.class.getName());
-        if (csrfToken != null) {
-            model.addAttribute("_csrf_token", csrfToken.getToken());
-            model.addAttribute("_csrf_header", csrfToken.getHeaderName());
-        }
 
         return "myPage/postingTemplate";
     }
@@ -188,23 +107,6 @@ public class MyPageController {
     @GetMapping("/scheduleSetting")
     public String naverScheduleSetting(HttpServletRequest request, Model model) {
         SessionUser session = getSessionUser(httpSession);
-        if (session != null) {
-            model.addAttribute("email", session.getEmail());
-            model.addAttribute("role", session.getRole());
-            model.addAttribute("isUser", true);
-            model.addAttribute("isGuest", false);
-        } else {
-            model.addAttribute("role", "GUEST");
-            model.addAttribute("isUser", false);
-            model.addAttribute("isGuest", true);
-        }
-
-        CsrfToken csrfToken = (CsrfToken) request.getAttribute(CsrfToken.class.getName());
-
-        if (csrfToken != null) {
-            model.addAttribute("_csrf_token", csrfToken.getToken());
-            model.addAttribute("_csrf_header", csrfToken.getHeaderName());
-        }
 
         return "myPage/scheduleSetting";
     }

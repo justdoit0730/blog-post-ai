@@ -37,9 +37,8 @@ public class AiJpaController {
         SessionUser sessionUser = (SessionUser) session.getAttribute("user");
         if (sessionUser.getEmail() == null) {
             return ResponseEntity.ok("D-C-F001");
-        } else if (!sessionUser.getAccessTokenValidation()) {
-            return ResponseEntity.ok("D-C-F002");
         }
+
         String result = aiWriteJpaService.save(sessionUser, aiSettingDto);
         return ResponseEntity.ok(result);
     }

@@ -12,7 +12,7 @@ import java.time.Instant;
 @Setter
 @Entity
 @Table(name = "ac_manager_info")
-// 중요한 키 설정. email 설정. 최초 기동 시 변경 없음
+// email key, AES-256 key, ai key, s3 설정, naver api 설정 최초 기동 시 변경 없음
 public class ManagerInfo {
     @Id
     private String id = "default";
@@ -31,6 +31,22 @@ public class ManagerInfo {
 
     @Column(name = "ai_key", nullable = false)
     private String aiKey;
+
+    // 네이버 Cafe 인증 실패 횟수
+    @Column(nullable = false)
+    private int cafeValidationFailCount;
+
+    @Column
+    private String cafeClientId;
+
+    @Column
+    private String cafeClientSecret;
+
+    @Column
+    private String cafeRefreshToken;
+
+    @Column
+    private long cafeRefreshTokenExpiresAt;
 
     @Column(name = "s3_key", nullable = false)
     private String s3Key;

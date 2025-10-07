@@ -26,7 +26,7 @@ public class CafeJpaController {
     private final S3Service s3Service;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    // id template 저장
+    // Cafe id template 저장
     @PostMapping("/cafeId/template/save")
     public ResponseEntity<String> cafeIdTemplate(HttpSession session, @RequestBody TemplateDto templateDto) {
         SessionUser sessionUser = (SessionUser) session.getAttribute("user");
@@ -51,7 +51,7 @@ public class CafeJpaController {
         return ResponseEntity.ok(result);
     }
 
-    // posting template 저장
+    // Cafe posting template 저장
     @PostMapping("/cafePosing/template/save")
     public ResponseEntity<String> cafePostingTemplate(HttpSession session, @RequestBody TemplateDto templateDto) {
         SessionUser sessionUser = (SessionUser) session.getAttribute("user");

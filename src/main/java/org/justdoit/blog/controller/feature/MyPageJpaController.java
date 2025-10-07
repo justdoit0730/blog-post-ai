@@ -4,42 +4,33 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.justdoit.blog.config.auth.SessionUser;
 import org.justdoit.blog.configuration.app.AppMetadata;
-import org.justdoit.blog.dto.user.ClientDto;
 
 import org.justdoit.blog.dto.user.SignUpDto;
 import org.justdoit.blog.dto.user.UpdateUserDto;
 import org.justdoit.blog.jpa.UserJpaService;
 import org.justdoit.blog.service.email.EmailSender;
 import org.justdoit.blog.utils.RandomCodeUtil;
+import org.justdoit.blog.variable.GlobalVariables;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 @Controller
 @RequiredArgsConstructor
 public class MyPageJpaController {
-    private final UserJpaService cafeUserJpaService;
+    private final UserJpaService userJpaService;
     private final EmailSender emailSender;
     private final RandomCodeUtil randomCodeUtil;
-    private final AppMetadata appMetadata;
 
     // Email 중복 확인
     @PostMapping("/user/authCode/email")
     @ResponseBody
     public boolean emailCheck(@RequestParam String email, HttpSession session) {
-        return cafeUserJpaService.checkEmailDup(email);
+        return userJpaService.checkEmailDup(email);
     }
 
     // Email 인증 번호 전송
@@ -125,7 +116,7 @@ public class MyPageJpaController {
             return ResponseEntity.ok("emailAuthError");
         }
 
-        String result = cafeUserJpaService.save(session, signUpDto);
+        String result = userJpaService.save(session, signUpDto);
         session.removeAttribute("emailAuthSuccess");
         return ResponseEntity.ok(result);
     }
@@ -143,28 +134,6 @@ public class MyPageJpaController {
         final long now = System.currentTimeMillis();
         Integer count = sessionUser.getSubEmailSendCount();
         Long resetTime = sessionUser.getSubEmailSendResetTime();
-
-//        if (resetTime != null && now < resetTime) {
-//            long remainingMs = resetTime - now;
-//            long minutes = TimeUnit.MILLISECONDS.toMinutes(remainingMs);
-//            long seconds = TimeUnit.MILLISECONDS.toSeconds(remainingMs) - minutes * 60;
-//            String human = (minutes > 0) ? (minutes + "분 " + seconds + "초") : (seconds + "초");
-//            return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS)
-//                    .body("요청 제한 중입니다. " + human + " 후 다시 시도하세요.");
-//        }
-//
-//        if (count == null || (resetTime != null && now >= resetTime)) {
-//            count = 10;
-//            sessionUser.setSubEmailSendCount(count);
-//            sessionUser.setSubEmailSendResetTime(0L);
-//        }
-//
-//        if (count <= 0) {
-//            sessionUser.setSubEmailSendResetTime(now + 30 * 60 * 1000L);
-//
-//            return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS)
-//                    .body("요청 한도 초과. 30분 후 다시 시도하세요.");
-//        }
 
         String code = randomCodeUtil.generateCode(20);
         long expireAt = System.currentTimeMillis() + (5 * 60 * 1000);
@@ -232,7 +201,7 @@ public class MyPageJpaController {
             return ResponseEntity.ok("AuthError");
         }
 
-        String result = cafeUserJpaService.subEmailUpdate(sessionUser, updateUserDto);
+        String result = userJpaService.subEmailUpdate(sessionUser, updateUserDto);
         if (result.equals("T")) {
             sessionUser.setSubEmail(updateUserDto.getSubEmail());
             sessionUser.setSubEmailUsed(updateUserDto.isSubEmailUsed());
@@ -250,113 +219,7 @@ public class MyPageJpaController {
     @PostMapping("/password/update")
     public ResponseEntity<String> passwordUpdate(HttpSession session, @RequestBody UpdateUserDto updateUserDto) {
         SessionUser sessionUser = getSessionUser(session);
-        String result = cafeUserJpaService.passwordUpdate(sessionUser, updateUserDto);
-        return ResponseEntity.ok(result);
-    }
-
-    // Client 인증 시도
-    @PostMapping("/client/naverLoginPopup")
-    @ResponseBody
-    public String naverLoginPopup(@RequestParam String clientId, @RequestParam String clientSecret, HttpSession session) {
-        String sessionKey = UUID.randomUUID().toString();
-        session.setAttribute(sessionKey, Map.of("clientId", clientId, "clientSecret", clientSecret));
-
-        String authUrl = "https://nid.naver.com/oauth2.0/authorize"
-                + "?response_type=code"
-                + "&client_id=" + clientId
-                + "&redirect_uri=" + appMetadata.getServer() + "/oauth/callback"
-                + "&state=" + sessionKey
-                + "&scope=cafe.write";
-        return authUrl;
-    }
-
-    // Client 인증 Call back 처리
-    @GetMapping("/oauth/callback")
-    public String naverCallback(@RequestParam("code") String code, @RequestParam("state") String sessionKey, HttpSession session) throws Exception {
-        SessionUser sessionUser = (SessionUser) session.getAttribute("user");
-
-        if (sessionUser.getEmail().isEmpty()) {
-            return "popup/cafeIdPopUpFail01";
-        }
-
-        Map<String, String> clientInfo = (Map<String, String>) session.getAttribute(sessionKey);
-
-        if (clientInfo == null) {
-            return "popup/cafeIdPopUpFail03";
-        }
-
-        String clientId = clientInfo.get("clientId");
-        String clientSecret = clientInfo.get("clientSecret");
-        boolean isPrivacyAgreed = Boolean.parseBoolean(clientInfo.get("isPrivacyAgreed"));
-        session.removeAttribute(sessionKey);
-
-        sessionUser.setCafeClientId(clientId);
-        sessionUser.setCafeClientSecret(clientSecret);
-        sessionUser.setClientPrivacyAgreed(isPrivacyAgreed);
-
-        // 토큰 요청
-        String tokenUrl = "https://nid.naver.com/oauth2.0/token"
-                + "?grant_type=authorization_code"
-                + "&client_id=" + clientId
-                + "&client_secret=" + clientSecret
-                + "&code=" + code
-                + "&state=" + sessionKey;
-
-        try {
-            HttpURLConnection con = (HttpURLConnection) new URL(tokenUrl).openConnection();
-            con.setRequestMethod("GET");
-
-            BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream()));
-            StringBuilder response = new StringBuilder();
-            String line;
-            while ((line = br.readLine()) != null) response.append(line);
-            br.close();
-
-            String result = response.toString();
-            String accessToken = result.split("\"access_token\":\"")[1].split("\"")[0];
-            String refreshToken = result.split("\"refresh_token\":\"")[1].split("\"")[0];
-            String expiresIn = result.split("\"expires_in\":\"")[1].split("\"")[0];
-            long expiresAt = Instant.now().getEpochSecond() + Long.parseLong(expiresIn);
-
-            sessionUser.setAccessToken(accessToken);
-            sessionUser.setAccessTokenExpiresAt(LocalDateTime.now());
-            sessionUser.setCafeRefreshToken(refreshToken);
-            sessionUser.setCafeRefreshTokenExpiresAt(expiresAt);
-            sessionUser.setAccessTokenValidation(true);
-
-            session.setAttribute("user", sessionUser);
-
-        } catch (Exception e){
-            return "popup/cafeIdPopUpFail02";
-        }
-        return "popup/cafeIdPopUpSuccess";
-    }
-
-    // Client 인증 정보 수정
-    @PostMapping("/myPage/client/update")
-    public ResponseEntity<String> clientUpdate(HttpSession session, @RequestBody ClientDto clientDto) {
-        SessionUser sessionUser = (SessionUser) session.getAttribute("user");
-        if (sessionUser.getEmail() == null) {
-            return ResponseEntity.ok("D-C-F001");
-        } else if (!sessionUser.getAccessTokenValidation()) {
-            return ResponseEntity.ok("D-C-F002");
-        } else if (!clientDto.isPrivacyAgreed()) {
-            sessionUser.setClientPrivacyAgreed(false);
-            return ResponseEntity.ok("D-C-F003");
-        }
-        sessionUser.setClientPrivacyAgreed(true);
-        String result = cafeUserJpaService.clientUpdate(sessionUser, clientDto);
-        return ResponseEntity.ok(result);
-    }
-
-    // Client 인증 정보 초기화
-    @PostMapping("/myPage/client/clear")
-    public ResponseEntity<String> clientClear(HttpSession session) {
-        SessionUser sessionUser = (SessionUser) session.getAttribute("user");
-        if (sessionUser.getEmail() == null) {
-            return ResponseEntity.ok("D-C-F001");
-        }
-        String result = cafeUserJpaService.clientClear(sessionUser);
+        String result = userJpaService.passwordUpdate(sessionUser, updateUserDto);
         return ResponseEntity.ok(result);
     }
 

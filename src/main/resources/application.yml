@@ -1,0 +1,55 @@
+server:
+  port: 7070
+  error:
+    whitelabel:
+      enabled: false
+
+spring:
+  http:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+  datasource:
+    hikari:
+      jdbc-url: jdbc:mariadb://jhhandatabase.cfq6ywsaivxx.ap-northeast-2.rds.amazonaws.com:3306/jhhandatabase
+      username: jhhan
+      password: gkswnsgml1!
+      driver-class-name: org.mariadb.jdbc.Driver
+      maximum-pool-size: 10
+      idle-timeout: 300000
+      max-lifetime: 3600000
+    platform: mysql
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+#    database-platform: org.hibernate.dialect.MySQL8Dialect
+  profiles:
+    include:
+      - oauth
+aws:
+  s3:
+    region: ap-northeast-2
+    bucket-name: jhhan-s3
+
+manager:
+  email:
+    debug: true
+    main-email: "eumjs69@gmail.com"
+    send-email: "eumjs69@gmail.com"
+  write:
+    max-rows: 10
+    available-token-per-day:
+      user: 30000
+      power-user: 100000
+  ai:
+    model: gpt-4o-mini
+
+app:
+  env: dev
+  servers:
+    dev: http://127.0.0.1:7070
+    stg: http://3.39.71.125:7070
+
+

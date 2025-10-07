@@ -25,7 +25,6 @@ import org.springframework.stereotype.Service;
 public class UserJpaService implements UserDetailsService {
     private final CafeUserRepository cafeUserRepository;
     private final GlobalVariables globalVariables;
-    private final CryptUtils cryptUtils;
     private final PasswordEncoder passwordEncoder;
 
     @Override
@@ -53,8 +52,7 @@ public class UserJpaService implements UserDetailsService {
         CafeUser cafeUser = CafeUser.builder()
                 .email(session.getAttribute("email").toString())
                 .password(passwordEncoder.encode(signUpDto.getPassword()))
-                .cafeValidationFailCount(0)
-                .platform("naver")
+//                .platform("naver")
                 .isEmailPrivacyAgreed(true)
                 .isClientPrivacyAgreed(true)
                 .role(session.getAttribute("email").toString().equals(globalVariables.MAIN_EMAIL) ? Role.MANAGER : Role.USER)
@@ -89,48 +87,5 @@ public class UserJpaService implements UserDetailsService {
         cafeUser.setPassword(passwordEncoder.encode(updateUserDto.getPassword()));
         return "T";
     }
-
-    @Transactional
-    public String clientUpdate(SessionUser sessionUser, ClientDto clientDto) {
-        String email = sessionUser.getEmail();
-        CafeUser cafeUser;
-
-        if (sessionUser.getCafeRefreshToken() == null) {
-            return "D-C-F002"; // email 인 유저가 client 정보를 업데이트하려는 데 refreshToken이 없는 사람이어서 업데이트 취소됨. -> 재인증필요
-        }
-
-        cafeUser = cafeUserRepository.findByEmail(email)
-                .orElseThrow(() -> new IllegalStateException("User not found"));
-        if (cafeUser == null) {
-            return "D-C-F001"; // email 인 유저가 client 정보를 업데이트하려는 데 회원정보(cafe_user)에 없는 사람이어서 업데이트 취소됨.
-        }
-
-        cafeUser.setCafeClientId(cryptUtils.encrypt256(clientDto.getClientId()));
-        cafeUser.setCafeClientSecret(cryptUtils.encrypt256(clientDto.getClientSecret()));
-        cafeUser.setCafeRefreshToken(cryptUtils.encrypt256(sessionUser.getCafeRefreshToken()));
-        cafeUser.setCafeRefreshTokenExpiresAt(sessionUser.getCafeRefreshTokenExpiresAt());
-        cafeUser.setClientPrivacyAgreed(true);
-
-        return "T";
-    }
-
-    @Transactional
-    public String clientClear(SessionUser sessionUser) {
-        String email = sessionUser.getEmail();
-        CafeUser cafeUser;
-        cafeUser = cafeUserRepository.findByEmail(email)
-                .orElseThrow(() -> new IllegalStateException("User not found"));
-        if (cafeUser == null) {
-            return "D-C-F001"; // email 인 유저가 client 정보를 업데이트하려는 데 회원정보(cafe_user)에 없는 사람이어서 업데이트 취소됨.
-        }
-
-        cafeUser.setCafeClientId(null);
-        cafeUser.setCafeClientSecret(null);
-        cafeUser.setCafeRefreshToken(null);
-        cafeUser.setCafeRefreshTokenExpiresAt(0);
-        cafeUser.setClientPrivacyAgreed(false);
-        return "T";
-    }
-
 }
 

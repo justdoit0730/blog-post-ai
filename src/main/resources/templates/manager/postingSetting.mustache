@@ -1,0 +1,209 @@
+{{>layout/header}}
+{{>layout/profileSidebar}}
+<meta name="_csrf" content="{{_csrf_token}}"/>
+<meta name="_csrf_header" content="{{_csrf_header}}"/>
+
+<div class="contents-right">
+    <div class="row row-cols-3 row-md-cols-2 gutter-5 contents-list" style="margin-top: 0rem; margin-bottom: 0em; --th-gutter: 0;">
+        <div class="contents-container container-md">
+            <div class="contents-inner">
+                <div class="form-group">
+                    <form>
+                        <div class="textset">
+                            <h2 class="h2 textset-tit">API Client 설정</h2>
+                        </div>
+
+                        <div class="form-box" style="margin-bottom: 3rem;">
+                            <div class="inputset">
+                                <label class="form-tit h6" style="margin-bottom: 1rem; display: flex; gap: 8px;">Naver API Client 정보
+                                    <label for="" class="form-tit h6" style="margin-bottom: 1rem; display: flex; gap: 8px;">
+
+                                        <div id="clientStatusIcon"></div>
+                                    </label>
+                                </label>
+                                <div style="display: flex;gap: 8px;align-items: center;">
+                                    <div style="width: 40%">
+                                        <label for="signUpClientId" class="checkset-label" style="margin-bottom: 1rem;">Client ID</label>
+                                        <input type="text" id="signUpClientId" class="inputset-input form-control" value="" placeholder="Client ID 를 입력해주세요"/>
+<!--                                        dmvYuC3cmUwzG_KtXtgh-->
+                                    </div>
+                                    <div style="width: 40%">
+                                        <label for="signUpClientSecret" class="checkset-label"style="margin-bottom: 1rem;" >Client Secret</label>
+                                        <input type="password" id="signUpClientSecret" class="inputset-input form-control" value="" placeholder="Client Secret 입력해주세요"/>
+<!--                                        lGVLRAUMrb-->
+                                    </div>
+                                    <div style="width: 20%;">
+                                        <label for="" class="checkset-label" style="margin-bottom: 1rem;">Client 인증</label>
+                                        <button type="button" id="clientInfoCheck" class="btnset btnset-primary btnset-block">인증</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="contents-agree" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 3rem; max-width: 96rem; line-height: 1;">
+                            <div class="checkset checkset-fill">
+                                <input id="isClientPrivacyAgreed" name="개인정보 수집동의" class="checkset-input" type="checkbox" value="개인정보 수집동의" />
+                                <label for="isClientPrivacyAgreed" class="checkset-label">개인정보 수집동의</label>
+                            </div>
+                            <a href="javascript:void(0);" class="btnset btnset-link modalset-open-btn modal-privacy-btn" data-modal-target="modalset-agree-client">보기</a>
+                        </div>
+                        <div class="form-btn" style="margin-bottom: 3rem; display: flex;">
+                            <button class="btnset btnset-primary btnset-block" type="button" id="clientInfoSave">Client 설정 정보 저장</button>
+                            <button class="btnset btnset-red btnset-block" type="button" id="clientInfoClear" style="margin-top: 0rem;">Client 정보 삭제</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="basic-N24" style="padding: 0">
+            <div class="modalset modalset-md" data-modal-id="modalset-agree-client">
+                <div class="modalset-content">
+                    <div class="modalset-header">
+                        <h2 class="h5 modalset-title">개인정보 수집동의 및 AI 글 생성 주의사항</h2>
+                        <button class="modalset-close" data-modal-close="modalset"></button>
+                    </div>
+
+                    <div class="modalset-body">
+                        <div class="modalset-textarea">
+                            <!-- 개인정보 수집 안내 -->
+                            <div class="info-area">
+                                <div class="info-group">
+                                    <strong class="h6">1. 수집하는 개인정보 항목</strong>
+                                    <div class="info-desc">
+                                        <p>본 웹사이트는 회원가입 및 서비스 이용을 위해 아래와 같이 개인정보를 수집합니다.</p>
+                                        <ul class="info-list">
+                                            <li class="p1">
+                                                <em>01. 개인정보의 수집·이용 목적</em>
+                                                <p>- 회원관리, AI 글 생성 서비스 이용, 고객 문의 대응</p>
+                                            </li>
+                                            <li class="p1">
+                                                <em>02. 수집 항목</em>
+                                                <p>- 이메일, API용 Client ID, Client Secret (모두 AES-256으로 암호화하여 DB에 안전하게 보관)</p>
+                                            </li>
+                                            <li class="p1">
+                                                <em>03. 개인정보 공유 및 제공</em>
+                                                <p>- 법령에 의거한 요청 외에는 외부 제공하지 않습니다.</p>
+                                            </li>
+                                            <li class="p1">
+                                                <em>04. 개인정보 파기</em>
+                                                <p>- 수집 목적 달성 후 지체 없이 안전하게 파기합니다.</p>
+                                            </li>
+                                            <li class="p1">
+                                                <em>05. 개인정보관리책임자 및 연락처</em>
+                                                <p>전화: <a href="tel:02-000-0000">02-000-0000</a>, 이메일: <a href="mailto:test@temha.io">test@temha.io</a></p>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- AI 글 생성 주의사항 -->
+                            <div class="info-area" style="margin-top: 2rem;">
+                                <div class="info-group">
+                                    <strong class="h6">2. AI 글 생성 이용 주의사항</strong>
+                                    <div class="info-desc">
+                                        <p>본 서비스의 AI 글 생성 기능은 사용자가 입력한 주제에 따라 자동으로 글을 생성합니다. 아래 항목에 해당하는 내용은 생성하지 않도록 주의해 주시기 바랍니다.</p>
+                                        <ul class="info-list">
+                                            <li class="p1">- 불법 행위 관련 내용 (마약, 폭행, 범죄 등)</li>
+                                            <li class="p1">- 차별, 혐오, 폭력, 음란물 관련 내용</li>
+                                            <li class="p1">- 타인의 권리 침해 (저작권, 개인정보 등)</li>
+                                        </ul>
+                                        <p>상기 금지 항목에 해당하는 내용을 생성하거나 시도할 경우, 별도의 통보 없이 서비스 이용이 제한되며 계정 이용이 중단될 수 있습니다.</p>
+                                        <p>사용자는 AI 글 생성 기능을 사용할 때 관련 법규 및 사회적 책임을 준수해야 합니다. 서비스를 안전하게 이용하기 위해 주제와 내용에 주의해 주시기 바랍니다.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 동의 체크박스 -->
+                            <div class="contents-agree" style="margin-top: 1.5rem;">
+                                <div class="checkset checkset-fill">
+                                    <input id="isClientPrivacyAgreedModal" name="개인정보 수집 및 이용 동의" class="checkset-input" type="checkbox" value="동의" {{#isClientPrivacyAgreed}}checked disabled{{/isClientPrivacyAgreed}} />
+                                    <label for="isClientPrivacyAgreedModal" class="checkset-label">위 내용을 확인하였으며, 개인정보 수집 및 이용에 동의합니다.</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="modalset-footer">
+                        <button class="btnset btnset-primary" data-modal-close="modalset">확인</button>
+                        <button class="btnset btnset-line-light" data-modal-close="modalset">취소</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+</div>
+<div class="contents-dim"></div>
+</div>
+
+</div>
+</main>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const clientValid = "{{clientValid}}"; // N, F, T
+    const clientIdInput = document.getElementById("signUpClientId");
+    const clientSecretInput = document.getElementById("signUpClientSecret");
+    const clientCheckBtn = document.getElementById("clientInfoCheck");
+    const clientSaveBtn = document.getElementById("clientInfoSave");
+    const statusIcon = document.getElementById("clientStatusIcon");
+
+    function disableButton(btn) {
+        btn.style.background = "darkgray";
+        btn.style.pointerEvents = "none";
+        btn.style.cursor = "default";
+    }
+
+    let iconHtml = "";
+
+    if(clientValid === "N") {
+        iconHtml = `<img src="/resources/profile/circle-question-solid-full.svg"
+                         alt="N"
+                         style="height: 2.5rem; cursor: pointer;"
+                         data-bs-toggle="tooltip"
+                         data-bs-placement="right"
+                         title="Client 인증 후 저장이 완료 되면 Cafe 글 쓰기가 가능합니다." />`;
+        disableButton(clientSaveBtn);
+
+    } else if(clientValid === "F") {
+        iconHtml = `<img src="/resources/profile/circle-exclamation-solid.svg"
+                         alt="F"
+                         style="height: 2.5rem; cursor: pointer;"
+                         data-bs-toggle="tooltip"
+                         data-bs-placement="right"
+                         title="Client 정보 재인증이 필요합니다. 우측 버튼을 눌러 인증을 진행하세요." />`;
+        disableButton(clientSaveBtn);
+
+    } else if(clientValid === "T") {
+        iconHtml = `<img src="/resources/profile/circle-check-solid-full.svg"
+                         alt="T"
+                         style="height: 2.5rem; cursor: pointer;"
+                         data-bs-toggle="tooltip"
+                         data-bs-placement="right"
+                         title="Client 정보를 정상적으로 사용 가능한 상태입니다." />`;
+
+        clientIdInput.disabled = true;
+        clientSecretInput.disabled = true;
+
+        disableButton(clientCheckBtn);
+        disableButton(clientSaveBtn);
+    }
+
+    statusIcon.innerHTML = iconHtml;
+
+    if (typeof bootstrap !== 'undefined') {
+        const tooltipTriggerList = [].slice.call(statusIcon.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        tooltipTriggerList.forEach(function (el) {
+            new bootstrap.Tooltip(el);
+        });
+    }
+});
+</script>
+
+<script src="/js/user/clientCheck.js"></script>
+<script src="/js/user/clientUpdate.js"></script>
+
+{{>layout/footer}}

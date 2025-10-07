@@ -2,56 +2,59 @@ package org.justdoit.blog.controller.cafe;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.justdoit.blog.config.auth.SessionUser;
 import org.justdoit.blog.dto.PostingDto;
+import org.justdoit.blog.entity.manager.ManagerInfo;
+import org.justdoit.blog.entity.manager.ManagerInfoRepository;
 import org.justdoit.blog.entity.user.CafeUser;
 import org.justdoit.blog.entity.user.CafeUserRepository;
 import org.justdoit.blog.service.cafe.CafeTokenService;
 import org.justdoit.blog.service.cafe.PostService;
+import org.justdoit.blog.variable.GlobalVariables;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 
 @RestController
 @RequiredArgsConstructor
 public class CafeController {
+    private final GlobalVariables globalVariables;
+
     private final PostService postService;
     private final CafeUserRepository userRepository;
     private final CafeTokenService cafeTokenService;
 
-    private final HttpSession httpSession;
+//    private final HttpSession httpSession;
+    private final ManagerInfoRepository managerInfoRepository;
 
     @PostMapping("/posting")
     public ResponseEntity<String> registerUser(HttpSession session, @RequestBody PostingDto postingDto) throws IOException {
         String email = session.getAttribute("email").toString();
-        CafeUser user = userRepository.findByEmail(email)
+        CafeUser cafeUser = userRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalStateException("User not found"));
-        if (user == null) {
+        if (cafeUser == null) {
             return ResponseEntity.ok("C-F000");
         }
 
+        ManagerInfo managerInfo = managerInfoRepository.findById("default")
+                .orElseThrow(() -> new IllegalStateException("ManagerInfo not found"));
+
+
         // 0. 인증 시도 실패 횟수가 5 이상이면 그냥 취소
-        int validationCount = user.getCafeValidationFailCount();
-        if (validationCount > 5) {
-            return ResponseEntity.ok("C-F001");
-        }
+//        int validationCount = user.getCafeValidationFailCount();
+//        if (validationCount > 5) {
+//            return ResponseEntity.ok("C-F001");
+//        }
 
         // 1. accessToken 있는 지 부터 확인한다.
-        SessionUser sessionUser = (SessionUser) httpSession.getAttribute("user");
-        String accessToken;
-        if (sessionUser != null &&
-                sessionUser.getAccessToken() != null &&
-                sessionUser.getAccessTokenExpiresAt() != null &&
-                sessionUser.getAccessTokenExpiresAt().isAfter(LocalDateTime.now().plusMinutes(30))) {
-            accessToken = sessionUser.getAccessToken();
-        } else {
-            accessToken = cafeTokenService.getAccessToken(user, sessionUser);
+
+        String accessToken = globalVariables.CAFE_ACCESS_TOKEN;
+        if (accessToken.isEmpty()) {
+            accessToken = cafeTokenService.refreshAccessToken(managerInfo);
         }
 
         if (accessToken == null) {
-            // 현재 로그인한 유저 email 에 대해 회원정보(cafe_user) 결과 중 refreshToken 이 유효하지 않은 경우 -> session 에 횟수 추가, Client 정보 업데이트하라고 해야한다.
+            // refreshToken 이 유효하지 않은 경우 -> session 에 횟수 추가, Client 정보 업데이트하라고 해야한다.
             // 메일 보내졌음.
             // 그대로 return
             return ResponseEntity.ok("C-F001");
@@ -66,7 +69,7 @@ public class CafeController {
                 // int validationCount = user.getValidationCount();
                 // userService.validationCountPlus(user, ++validationCount);
                 // 이거 초기화
-        String result = postService.postArticle(user, sessionUser, accessToken, postingDto, "title", "content");
+        String result = postService.postArticle(managerInfo, accessToken, postingDto, "title", "content");
 
 
         return ResponseEntity.ok(result);

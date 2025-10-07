@@ -2,7 +2,10 @@ package org.justdoit.blog.variable;
 
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.endpoints.internal.Value;
 import software.amazon.awssdk.services.s3.presigner.S3Presigner;
+
+import java.time.LocalDateTime;
 
 public class GlobalVariables {
     public String server = "";
@@ -25,4 +28,13 @@ public class GlobalVariables {
     public String AES_KEY;
 
     public String AI_KEY;
+
+    public String CAFE_ACCESS_TOKEN;
+    public String CAFE_REFRESH_TOKEN;
+    public LocalDateTime CAFE_REFRESH_TOKEN_EXPIRES_AT;
+    public int CAFE_VALIDATION_FAIL_COUNT;
+    public boolean CAFE_REFRESH_TOKEN_VALIDATION = false;
+    public String CAFE_CLIENT_ID;
+    public String CAFE_CLIENT_SECRET;
+
 }

@@ -14,6 +14,23 @@ public class EmailSender {
 //
     private final GlobalVariables globalVariables;
 
+    public void sendToManagerEmail(String managerSendEmail, String subject, String content) {
+        String email = managerSendEmail;
+        String title = "[AutoCafeWriter] : ";
+        String basicContent = "Test 입니다. ";
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(email);
+        message.setSubject(title + subject);
+        message.setText(basicContent + content);
+
+        try {
+            globalVariables.M_SENDER.send(message);
+        } catch (Exception e) {
+
+        }
+        System.out.println("이메일 전송 완료");
+    }
+
     public void sendEmail(SessionUser sessionUser, String subject, String content) {
         String email = sessionUser.getReceiveEmail().isEmpty() ? sessionUser.getEmail() : sessionUser.getReceiveEmail();
         String title = "[AutoCafeWriter] : ";
