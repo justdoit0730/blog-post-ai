@@ -36,21 +36,25 @@ public class CafeUser {
     @Column(nullable = false)
     private String password;
 
-    // 네이버 Cafe 인증 실패 횟수
-//    @Column(nullable = false)
-//    private int cafeValidationFailCount;
-//
-//    @Column
-//    private String cafeClientId;
-//
-//    @Column
-//    private String cafeClientSecret;
-//
-//    @Column
-//    private String cafeRefreshToken;
-//
-//    @Column
-//    private long cafeRefreshTokenExpiresAt;
+    // 네이버 API 인증 실패 횟수
+    @Column(nullable = false)
+    private int cafeValidationFailCount;
+
+    // 네이버 API 사용 여부
+    @Column
+    private boolean clientApiEnabled;
+
+    @Column
+    private String cafeClientId;
+
+    @Column
+    private String cafeClientSecret;
+
+    @Column
+    private String cafeRefreshToken;
+
+    @Column
+    private long cafeRefreshTokenExpiresAt;
 //
 //    @Column(nullable = false)
 //    private String platform;
@@ -73,15 +77,15 @@ public class CafeUser {
     private Instant updatedAt;
 
     @Builder
-    public CafeUser(String email, String password, boolean isEmailPrivacyAgreed, boolean isClientPrivacyAgreed, Role role) {
-//        int cafeValidationFailCount, String cafeClientId, String cafeClientSecret, String cafeRefreshToken, long cafeRefreshTokenExpiresAt, String platform,
+    public CafeUser(String email, String password, int cafeValidationFailCount, String cafeClientId, String cafeClientSecret, String cafeRefreshToken, long cafeRefreshTokenExpiresAt, boolean isEmailPrivacyAgreed, boolean isClientPrivacyAgreed, Role role) {
+//        String platform,
         this.email = email;
         this.password = password;
-//        this.cafeValidationFailCount = cafeValidationFailCount;
-//        this.cafeClientId = cafeClientId;
-//        this.cafeClientSecret = cafeClientSecret;
-//        this.cafeRefreshToken = cafeRefreshToken;
-//        this.cafeRefreshTokenExpiresAt = cafeRefreshTokenExpiresAt;
+        this.cafeValidationFailCount = cafeValidationFailCount;
+        this.cafeClientId = cafeClientId;
+        this.cafeClientSecret = cafeClientSecret;
+        this.cafeRefreshToken = cafeRefreshToken;
+        this.cafeRefreshTokenExpiresAt = cafeRefreshTokenExpiresAt;
 //        this.platform = platform;
         this.isEmailPrivacyAgreed = isEmailPrivacyAgreed;
         this.isClientPrivacyAgreed = isClientPrivacyAgreed;

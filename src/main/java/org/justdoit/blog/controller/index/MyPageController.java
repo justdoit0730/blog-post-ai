@@ -104,6 +104,18 @@ public class MyPageController {
         return "myPage/postingTemplate";
     }
 
+    // Naver API setting
+    @GetMapping("/postingSetting")
+    public String naverPostingSetting(HttpServletRequest request, Model model) {
+        SessionUser session = getSessionUser(httpSession);
+
+        // 수정 : session.getAccessToken() 이거 전역변수에서 가져온다
+        model.addAttribute("clientValid", (session.getCafeClientId() == null || !session.isClientApiEnabled()) ? "N" : (session.getAccessToken() == null ? "F" : "T"));
+        model.addAttribute("", "");
+        model.addAttribute("", "");
+        return "manager/postingSetting";
+    }
+
     @GetMapping("/scheduleSetting")
     public String naverScheduleSetting(HttpServletRequest request, Model model) {
         SessionUser session = getSessionUser(httpSession);

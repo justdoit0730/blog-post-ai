@@ -32,7 +32,7 @@ import java.time.ZoneId;
 @Component
 @RequiredArgsConstructor
 public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
-//    private final CryptUtils cryptUtils;
+    private final CryptUtils cryptUtils;
     private final GlobalVariables globalVariables;
     private final HttpSession httpSession;
     private final CafeUserRepository userRepository;
@@ -121,9 +121,12 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
                 });
 
         SessionUser sessionUser = new SessionUser(cafeUser, aiWriteSetting, aiWriteTemplate, cafeIdTemplate, cafePostingTemplate);
-//        sessionUser.setCafeClientId(cryptUtils.decrypt256(cafeUser.getCafeClientId()));
-//        sessionUser.setCafeClientSecret(cryptUtils.decrypt256(cafeUser.getCafeClientSecret()));
-//        sessionUser.setCafeRefreshToken(cryptUtils.decrypt256(cafeUser.getCafeRefreshToken()));
+
+        if (sessionUser.isClientApiEnabled()) {
+            sessionUser.setCafeClientId(cryptUtils.decrypt256(cafeUser.getCafeClientId()));
+            sessionUser.setCafeClientSecret(cryptUtils.decrypt256(cafeUser.getCafeClientSecret()));
+            sessionUser.setCafeRefreshToken(cryptUtils.decrypt256(cafeUser.getCafeRefreshToken()));
+        }
 
         if (sessionUser.getSubEmail() != null && !sessionUser.getSubEmail().isEmpty()) {
             sessionUser.setSubEmailAuthSuccess(true);

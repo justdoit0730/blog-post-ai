@@ -98,10 +98,10 @@ public class PostService {
         int responseCode = con.getResponseCode();
 
         if (responseCode != 200) {
-            String refreshAccessToken = cafeTokenService.refreshAccessToken(managerInfo);
+            String refreshAccessToken = cafeTokenService.managerRefreshAccessToken(managerInfo);
             if (refreshAccessToken == null) {
                 int validationCount = managerInfo.getCafeValidationFailCount();
-                cafeTokenService.validationCountPlus(managerInfo, ++validationCount);
+                cafeTokenService.managerValidationCountPlus(managerInfo, ++validationCount);
                 log.warn("Posting canceled after retry: access token invalid (retry count: {})", validationCount);
                 return "P-F001";
             }

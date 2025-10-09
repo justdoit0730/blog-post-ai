@@ -32,6 +32,8 @@ public class SessionUser implements Serializable {
     private String role;
 
 //    naver api
+    private boolean clientApiEnabled;
+    private boolean isClientPrivacyAgreed;
     private String cafeClientId;
     private String cafeClientSecret;
 
@@ -67,10 +69,11 @@ public class SessionUser implements Serializable {
         this.email = cafeUser.getEmail();
         this.subEmail = cafeUser.getSubEmail();
         this.isSubEmailUsed = cafeUser.isSubEmailUsed();
-//        this.cafeValidationFailCount = cafeUser.getCafeValidationFailCount();
-//        this.cafeRefreshTokenExpiresAt = cafeUser.getCafeRefreshTokenExpiresAt();
+        this.cafeValidationFailCount = cafeUser.getCafeValidationFailCount();
+        this.cafeRefreshTokenExpiresAt = cafeUser.getCafeRefreshTokenExpiresAt();
         this.isEmailPrivacyAgreed = cafeUser.isEmailPrivacyAgreed();
-//        this.isClientPrivacyAgreed = cafeUser.isClientPrivacyAgreed();
+        this.isClientPrivacyAgreed = cafeUser.isClientPrivacyAgreed();
+        this.clientApiEnabled = cafeUser.isClientApiEnabled();
         this.role = String.valueOf(cafeUser.getRole());
 
         this.maxToken = aiWriteSetting.getMaxToken();
