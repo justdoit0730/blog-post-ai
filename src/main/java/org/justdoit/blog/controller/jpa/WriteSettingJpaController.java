@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.justdoit.blog.config.auth.SessionUser;
 
+import org.justdoit.blog.dto.ai.post.AiPostTemplateDto;
 import org.justdoit.blog.dto.ai.setting.AiSettingDto;
 import org.justdoit.blog.dto.ai.setting.TemplateDto;
 import org.justdoit.blog.dto.ai.write.AiWriteTemplateDto;
@@ -64,14 +65,35 @@ public class WriteSettingJpaController {
         return ResponseEntity.ok(result);
     }
 
+
+//    @PostMapping("/write/template/update")
+//    public ResponseEntity<String> writeTemplateUpdate(HttpSession session, @RequestBody AiWriteTemplateDto dto) throws JsonProcessingException {
+//        SessionUser sessionUser = (SessionUser) session.getAttribute("user");
+//        return ResponseEntity.ok(aiWriteJpaService.writeTemplateUpdate(sessionUser, dto));
+//    }
+//
+//    @PostMapping("/cafe/ai/template/update")
+//    public ResponseEntity<String> postTemplateUpdate(HttpSession session, @RequestBody AiPostTemplateDto dto) throws JsonProcessingException {
+//        SessionUser sessionUser = (SessionUser) session.getAttribute("user");
+//        return ResponseEntity.ok(aiWriteJpaService.aiPostTemplateUpdate(sessionUser, dto));
+//    }
+
+
     // AI 글쓰기 페이지에서 템플릿 업데이트
     @PostMapping("/write/template/update")
-    public ResponseEntity<String> write(HttpSession session, @RequestBody AiWriteTemplateDto aiWriteTemplateDto) throws JsonProcessingException {
+    public ResponseEntity<String> writeTemplateUpdate(HttpSession session, @RequestBody AiWriteTemplateDto aiWriteTemplateDto) throws JsonProcessingException {
         SessionUser sessionUser = (SessionUser) session.getAttribute("user");
-        String result = aiWriteJpaService.templateUpdate(sessionUser, aiWriteTemplateDto);
+        String result = aiWriteJpaService.writeTemplateUpdate(sessionUser, aiWriteTemplateDto);
         return ResponseEntity.ok(result);
     }
 
+    // AI Cafe 포스팅 페이지에서 템플릿 업데이트
+    @PostMapping("/cafe/ai/template/update")
+    public ResponseEntity<String> postTemplateUpdate(HttpSession session, @RequestBody AiPostTemplateDto aiPostTemplateDto) throws JsonProcessingException {
+        SessionUser sessionUser = (SessionUser) session.getAttribute("user");
+        String result = aiWriteJpaService.aiPostTemplateUpdate(sessionUser, aiPostTemplateDto);
+        return ResponseEntity.ok(result);
+    }
 
 }
 

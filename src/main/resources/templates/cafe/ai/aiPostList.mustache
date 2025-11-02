@@ -32,7 +32,7 @@ th, td {
                 <div class="form-group">
                     <form>
                         <div class="textset">
-                            <h2 class="h2 textset-tit">Cafe 포스팅 목록</h2>
+                            <h2 class="h2 textset-tit">Cafe AI 포스팅 목록</h2>
                         </div>
                         <section class="butti-N25" id="uZMf138FND" style="padding-top: 0rem;">
                             <div class="contents-container container-md" style="padding: 0">
@@ -67,12 +67,12 @@ th, td {
                                                         <p id="id_{{no}}" data-value="{{id}}" style="display:none"></p>
                                                     </td>
                                                     <td>
-                                                        <a href="/cafe/post/list/info/{{id}}">
+                                                        <a href="/cafe/ai/post/list/info/{{id}}">
                                                             <span>{{title}}</span>
                                                         </a>
                                                     </td>
                                                     <td>
-                                                        <a href="/cafe/post/list/info/{{id}}">
+                                                        <a href="/cafe/ai/post/list/info/{{id}}">
                                                             <span>{{cafeName}}</span>
                                                         </a>
                                                     </td>
@@ -94,21 +94,21 @@ th, td {
                                     </div>
                                     <nav class="pagiset pagiset-circ">
                                         <div class="pagiset-ctrl">
-                                            <a class="pagiset-link pagiset-first" href="/feature/write/list?page=1"></a>
+                                            <a class="pagiset-link pagiset-first" href="/cafe/ai/post/list?page=1"></a>
                                         </div>
                                         <div class="pagiset-ctrl">
-                                            <a class="pagiset-link pagiset-prev" href="/feature/write/list?page={{prevPage}}"></a>
+                                            <a class="pagiset-link pagiset-prev" href="/cafe/ai/post/list?page={{prevPage}}"></a>
                                         </div>
                                         <div class="pagiset-list">
                                             {{#pages}}
-                                                <a class="pagiset-link {{#isCurrent}}active-fill{{/isCurrent}}" href="/feature/write/list?page={{num}}">{{num}}</a>
+                                                <a class="pagiset-link {{#isCurrent}}active-fill{{/isCurrent}}" href="/cafe/ai/post/list?page={{num}}">{{num}}</a>
                                             {{/pages}}
                                         </div>
                                         <div class="pagiset-ctrl">
-                                            <a class="pagiset-link pagiset-next" href="/feature/write/list?page={{nextPage}}"></a>
+                                            <a class="pagiset-link pagiset-next" href="/cafe/ai/post/list?page={{nextPage}}"></a>
                                         </div>
                                         <div class="pagiset-ctrl">
-                                            <a class="pagiset-link pagiset-last" href="/feature/write/list?page={{totalPages}}"></a>
+                                            <a class="pagiset-link pagiset-last" href="/cafe/ai/post/list?page={{totalPages}}"></a>
                                         </div>
                                     </nav>
                                 </div>
@@ -130,6 +130,6 @@ th, td {
 </div>
 </main>
 
-<script src="/js/cafe/postDelete.js"></script>
+<script src="/js/cafe/ai/postDelete.js"></script>
 
 {{>layout/footer}}

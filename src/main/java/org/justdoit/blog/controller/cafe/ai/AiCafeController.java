@@ -71,7 +71,7 @@ public class AiCafeController {
         }
 
         // S3 directory 변경
-        if (!postAiDto.getImgUrls().isEmpty()) s3Service.moveImagesFromWriteCacheToWrite(postAiDto);
+        if (postAiDto.getImgUrls() != null) s3Service.moveImagesFromWriteCacheToWrite(postAiDto);
         s3Service.cleanS3CacheImage(sessionUser, S3Prefix.AI_POST_GENERATION_CACHE.getPrefix());
 
         // Naver cafe 게시

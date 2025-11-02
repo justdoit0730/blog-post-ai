@@ -7,12 +7,15 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.justdoit.blog.config.auth.SessionUser;
+import org.justdoit.blog.dto.ai.post.AiPostTemplateDto;
 import org.justdoit.blog.dto.ai.setting.AiSettingDto;
 import org.justdoit.blog.dto.ai.setting.TemplateDto;
 import org.justdoit.blog.dto.ai.write.AiWriteSaveDto;
 import org.justdoit.blog.dto.ai.write.AiWriteTemplateDto;
 
 import org.justdoit.blog.entity.ai.*;
+import org.justdoit.blog.entity.cafe.CafePostingTemplate;
+import org.justdoit.blog.entity.cafe.CafePostingTemplateRepository;
 import org.justdoit.blog.entity.user.CafeUser;
 import org.justdoit.blog.entity.user.CafeUserRepository;
 import org.springframework.stereotype.Service;
@@ -28,6 +31,9 @@ public class AiWriteJpaService {
     private final AiWriteSettingRepository aiWriteSettingRepository;
     private final AiWriteTemplateRepository aiWriteTemplateRepository;
     private final AiWriteRepository aiWriteRepository;
+
+    private final CafePostingTemplateRepository cafePostingTemplateRepository;
+
 
     @Transactional
     public String save(SessionUser sessionUser, AiSettingDto aiSettingDto) {
@@ -86,9 +92,11 @@ public class AiWriteJpaService {
         return "T";
     }
 
-    // 글쓰기 페이지
+
+
+    // 글쓰기 페이지에서 템플릿 업데이트 aiPosttemplateUpdate
     @Transactional
-    public String templateUpdate(SessionUser sessionUser, AiWriteTemplateDto aiWriteTemplateDto) throws JsonProcessingException {
+    public String writeTemplateUpdate(SessionUser sessionUser, AiWriteTemplateDto aiWriteTemplateDto) throws JsonProcessingException {
         CafeUser cafeUser = cafeUserRepository.findByEmail(sessionUser.getEmail())
                 .orElseThrow(() -> new RuntimeException("존재하지 않는 이메일입니다."));
 
@@ -114,6 +122,37 @@ public class AiWriteJpaService {
         aiWriteTemplateRepository.save(aiWriteTemplate);
         return "T";
     }
+
+    // AI Cafe 포스팅 페이지에서 템플릿 업데이트
+    @Transactional
+    public String aiPostTemplateUpdate(SessionUser sessionUser, AiPostTemplateDto aiPostTemplateDto) throws JsonProcessingException {
+        CafeUser cafeUser = cafeUserRepository.findByEmail(sessionUser.getEmail())
+                .orElseThrow(() -> new RuntimeException("존재하지 않는 이메일입니다."));
+
+        CafePostingTemplate cafePostingTemplate = cafePostingTemplateRepository.findByCafeUser(cafeUser)
+                .orElseThrow(() -> new RuntimeException("존재하지 않는 이메일입니다."));
+
+        String templateJson = cafePostingTemplate.getCafePostingTemplate();
+        ObjectMapper objectMapper = new ObjectMapper();
+        List<Map<String, Object>> templates = objectMapper.readValue(
+                templateJson, new TypeReference<List<Map<String, Object>>>() {}
+        );
+
+        for (Map<String, Object> item : templates) {
+            if (aiPostTemplateDto.getTag().equals(item.get("tag"))) {
+                item.put("subject", aiPostTemplateDto.getSubject());
+                item.put("prompt", aiPostTemplateDto.getPrompt());
+            }
+        }
+
+        String updatedJson = objectMapper.writeValueAsString(templates);
+        cafePostingTemplate.setCafePostingTemplate(updatedJson);
+        sessionUser.setCafePostingTemplate(updatedJson);
+        cafePostingTemplateRepository.save(cafePostingTemplate);
+        return "T";
+    }
+
+    //
 
     @Transactional
     public String writeSave(SessionUser sessionUser, AiWriteSaveDto aiWriteSaveDto, String imgNamesStr) throws JsonProcessingException {

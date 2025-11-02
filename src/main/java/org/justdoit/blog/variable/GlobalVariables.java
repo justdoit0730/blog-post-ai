@@ -2,7 +2,6 @@ package org.justdoit.blog.variable;
 
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import software.amazon.awssdk.services.s3.S3Client;
-import software.amazon.awssdk.services.s3.endpoints.internal.Value;
 import software.amazon.awssdk.services.s3.presigner.S3Presigner;
 
 import java.time.LocalDateTime;

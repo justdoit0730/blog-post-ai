@@ -41,16 +41,6 @@ public class CafePageController {
     @GetMapping("/cafe/post/list")
     public String postListPage(HttpServletRequest request, Model model, @RequestParam(value = "page", defaultValue = "1") int page) {
         SessionUser session = getSessionUser(httpSession);
-        model.addAttribute("userEmail", session.getEmail());
-        model.addAttribute("userRole", session.getRole());
-        model.addAttribute("isUser", true);
-        model.addAttribute("isGuest", false);
-
-        CsrfToken csrfToken = (CsrfToken) request.getAttribute(CsrfToken.class.getName());
-        if (csrfToken != null) {
-            model.addAttribute("_csrf_token", csrfToken.getToken());
-            model.addAttribute("_csrf_header", csrfToken.getHeaderName());
-        }
 
         String email = session.getEmail();
         int pageSize = 10;
