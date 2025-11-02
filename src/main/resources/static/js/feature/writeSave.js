@@ -33,7 +33,7 @@ document.getElementById('writeSave').addEventListener('click', function() {
         .then(result => {
             if (result === "T") {
                 alert("글이 저장 되었습니다.");
-                location.reload();
+                window.location.href = "/feature/write";
             } else {
                 alert("글 저장 요청 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
             }

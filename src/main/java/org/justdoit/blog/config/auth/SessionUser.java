@@ -3,8 +3,8 @@ package org.justdoit.blog.config.auth;
 import com.theokanning.openai.service.OpenAiService;
 import lombok.Getter;
 import lombok.Setter;
-import org.justdoit.blog.entity.ai.write.AiWriteSetting;
-import org.justdoit.blog.entity.ai.write.AiWriteTemplate;
+import org.justdoit.blog.entity.ai.AiWriteSetting;
+import org.justdoit.blog.entity.ai.AiWriteTemplate;
 import org.justdoit.blog.entity.cafe.CafeIdTemplate;
 import org.justdoit.blog.entity.cafe.CafePostingTemplate;
 import org.justdoit.blog.entity.user.CafeUser;
@@ -34,8 +34,8 @@ public class SessionUser implements Serializable {
 //    naver api
     private boolean clientApiEnabled;
     private boolean isClientPrivacyAgreed;
-    private String cafeClientId;
-    private String cafeClientSecret;
+    private String cafeClientId = "";
+    private String cafeClientSecret = "";
 
     private String accessToken;
     private LocalDateTime accessTokenExpiresAt;
@@ -45,6 +45,11 @@ public class SessionUser implements Serializable {
     private String cafeRefreshToken;
     private long cafeRefreshTokenExpiresAt;
 
+    //
+
+
+
+    // openAI
     private OpenAiService openAiService;
     private int maxToken;
     private int availableToken;
@@ -58,6 +63,20 @@ public class SessionUser implements Serializable {
     private String writeTitle = "";
     private String writeContent = "";
     private List<String> writeImgUrls = new ArrayList<>();
+
+    private String postTitle = "";
+    private String postContentHtml = "";
+    private List<String> postBasicImgList;
+    private String cafeBoardLink;
+
+
+    private String postAiTitle = "";
+    private String postAiContentHtml = "";
+    private String cafeAiBoardLink;
+    private List<String> postAiImgList;
+
+    private List<String> postImgUrls = new ArrayList<>();
+
 
     private int subEmailSendCount;
     private Long subEmailSendResetTime;

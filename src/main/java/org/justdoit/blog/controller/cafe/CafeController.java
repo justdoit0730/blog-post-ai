@@ -2,83 +2,118 @@ package org.justdoit.blog.controller.cafe;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.justdoit.blog.dto.PostingDto;
+import org.justdoit.blog.config.auth.SessionUser;
+import org.justdoit.blog.dto.post.PostBasicDto;
+import org.justdoit.blog.entity.cafe.CafePosting;
+import org.justdoit.blog.entity.cafe.CafePostingRepository;
 import org.justdoit.blog.entity.manager.ManagerInfo;
 import org.justdoit.blog.entity.manager.ManagerInfoRepository;
 import org.justdoit.blog.entity.user.CafeUser;
 import org.justdoit.blog.entity.user.CafeUserRepository;
 import org.justdoit.blog.service.cafe.CafeTokenService;
 import org.justdoit.blog.service.cafe.PostService;
-import org.justdoit.blog.variable.GlobalVariables;
+import org.justdoit.blog.service.s3.S3Service;
+import org.justdoit.blog.template.S3Prefix;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
+// @Controller 는 html 렌더링에 사용된다.
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/cafe")
 public class CafeController {
-    private final GlobalVariables globalVariables;
-
     private final PostService postService;
     private final CafeUserRepository userRepository;
     private final CafeTokenService cafeTokenService;
 
-//    private final HttpSession httpSession;
     private final ManagerInfoRepository managerInfoRepository;
 
-    @PostMapping("/posting")
-    public ResponseEntity<String> registerUser(HttpSession session, @RequestBody PostingDto postingDto) throws IOException {
-        String email = session.getAttribute("email").toString();
+    private final CafePostingRepository cafePostingRepository;
+
+    private final S3Service s3Service;
+
+    @PostMapping("/uploadCacheImages")
+    @ResponseBody
+    public List<String> cafePostUploadCacheImages(HttpSession session, @RequestBody Map<String, List<String>> request) {
+        SessionUser sessionUser = (SessionUser) session.getAttribute("user");
+        List<String> base64Images = request.get("base64Images");
+
+        s3Service.cleanS3CacheImage(sessionUser, S3Prefix.POST_CACHE.getPrefix());
+        return s3Service.uploadImages(sessionUser, base64Images, S3Prefix.POST_CACHE.getPrefix());
+    }
+
+    @PostMapping("/uploadImages")
+    @ResponseBody
+    public List<String> uploadImages(HttpSession session, @RequestBody Map<String, List<String>> request) {
+        SessionUser sessionUser = (SessionUser) session.getAttribute("user");
+        List<String> base64Images = request.get("base64Images");
+        List<String> imgLinkList = s3Service.uploadImages(sessionUser, base64Images, S3Prefix.POST.getPrefix());
+        sessionUser.setPostBasicImgList(imgLinkList.stream()
+                .map(url -> {
+                    int lastSlash = url.lastIndexOf('/');
+                    return lastSlash != -1 ? url.substring(lastSlash + 1) : url;
+                })
+                .collect(Collectors.toList()));
+
+        s3Service.cleanS3CacheImage(sessionUser, S3Prefix.POST_CACHE.getPrefix());
+        return imgLinkList;
+    }
+
+    @PostMapping("/post")
+    public ResponseEntity<String> cafePost(HttpSession session, @RequestBody PostBasicDto postBasicDto) throws IOException {
+        SessionUser sessionUser = (SessionUser) session.getAttribute("user");
+        String email = sessionUser.getEmail();
         CafeUser cafeUser = userRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalStateException("User not found"));
         if (cafeUser == null) {
             return ResponseEntity.ok("C-F000");
         }
 
-        ManagerInfo managerInfo = managerInfoRepository.findById("default")
-                .orElseThrow(() -> new IllegalStateException("ManagerInfo not found"));
+        String accessToken;
+        boolean isPostSuccess;
+        String result = "F";
 
+        if (cafeUser.isClientApiEnabled()) {
+            int validationCount = cafeUser.getCafeValidationFailCount();
+            if (validationCount > 5) return ResponseEntity.ok("C-F001");
 
-        // 0. 인증 시도 실패 횟수가 5 이상이면 그냥 취소
-//        int validationCount = user.getCafeValidationFailCount();
-//        if (validationCount > 5) {
-//            return ResponseEntity.ok("C-F001");
-//        }
+            accessToken = cafeTokenService.refreshAccessToken(cafeUser, sessionUser);
+        } else {
+            ManagerInfo managerInfo = managerInfoRepository.findById("default")
+                    .orElseThrow(() -> new IllegalStateException("ManagerInfo not found"));
+            int validationCount = managerInfo.getCafeValidationFailCount();
+            if (validationCount > 5) return ResponseEntity.ok("C-F001");
 
-        // 1. accessToken 있는 지 부터 확인한다.
-
-        String accessToken = globalVariables.CAFE_ACCESS_TOKEN;
-        if (accessToken.isEmpty()) {
-            accessToken = cafeTokenService.refreshAccessToken(managerInfo);
+            accessToken = cafeTokenService.managerRefreshAccessToken(managerInfo);
         }
 
         if (accessToken == null) {
-            // refreshToken 이 유효하지 않은 경우 -> session 에 횟수 추가, Client 정보 업데이트하라고 해야한다.
-            // 메일 보내졌음.
-            // 그대로 return
             return ResponseEntity.ok("C-F001");
         }
-        // 2. postingDto 의 내용을 AI 서버로 HTTP 통신으로 보낸다.
-            // postingDto.subject, postingDto.template 주제, 말투도 함께 보낸다.
 
+        isPostSuccess = postService.postHtmlArticle(sessionUser, accessToken, postBasicDto);
 
-        // 3. 해당 통신으로 받은 결과를 Posting 하고 결과 리턴
-            // title, content는 2번 AI에서 받아온다.
-            // 포스팅 성공 시
-                // int validationCount = user.getValidationCount();
-                // userService.validationCountPlus(user, ++validationCount);
-                // 이거 초기화
-        String result = postService.postArticle(managerInfo, accessToken, postingDto, "title", "content");
-
+        if (isPostSuccess) {
+            CafePosting cafePosting = CafePosting.builder()
+                    .cafeUser(cafeUser)
+                    .cafeName(postBasicDto.getCafeName())
+                    .cafeId(postBasicDto.getCafeId())
+                    .cafeBoardTag(postBasicDto.getCafeBoardTag())
+                    .cafeBoardId(postBasicDto.getCafeBoardId())
+                    .title(postBasicDto.getTitle())
+                    .contentHtml(postBasicDto.getContentHtml())
+                    .imgList(sessionUser.getPostBasicImgList() != null ? String.join(",", sessionUser.getPostBasicImgList()) : "")
+                    .cafeBoardLink(sessionUser.getCafeBoardLink())
+                    .build();
+            cafePostingRepository.save(cafePosting);
+            result = "T";
+        }
 
         return ResponseEntity.ok(result);
     }
-//
-//    @PostMapping("/test")
-//    public Map<String,Object> retrieve(@RequestBody Map<String,Object> payload, @RequestBody SignUpDto signUpDto) {
-//        // AI 서버에서 받아온다. 제목과 내용을 -> 지금은 일단 테스트
-//        System.err.println("POST 요청 수신: " + payload);
-//        return Map.of("status","ok","received",payload);
-//    }
 }

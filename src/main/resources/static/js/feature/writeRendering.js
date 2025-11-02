@@ -1,46 +1,53 @@
-const tableDiv = document.getElementById("tableDiv");
-let aiTemplate = [];
+function initTemplate() {
+    const tableDiv = document.getElementById("tableDiv");
 
-try {
-    aiTemplate = JSON.parse(tableDiv.getAttribute("data-template"));
-} catch(e) {
-    console.error("템플릿 파싱 에러:", e);
-}
+    const dataTemplate = tableDiv?.getAttribute("data-template");
+    if (!dataTemplate || dataTemplate.trim() === "") {
+        return;
+    }
+    let aiTemplate = [];
 
-const selectedTagBtn = document.getElementById("selectedTagBtn");
-const tagList = document.getElementById("tagList");
-const subjectInput = document.getElementById("subject");
-const promptTextarea = document.getElementById("prompt");
+    try {
+        aiTemplate = JSON.parse(tableDiv.getAttribute("data-template"));
+    } catch(e) {
+        console.error("템플릿 파싱 에러:", e);
+    }
 
-// 1. isUsed = true 항목 찾기 (상단 버튼 표시용)
-const usedItem = aiTemplate.find(item => item.isUsed);
-if (usedItem) {
-    selectedTagBtn.querySelector("span").textContent = usedItem.tag;
-    subjectInput.value = usedItem.subject;
-    promptTextarea.value = usedItem.prompt;
-}
+    const selectedTagBtn = document.getElementById("selectedTagBtn");
+    const tagList = document.getElementById("tagList");
+    const subjectInput = document.getElementById("subject");
+    const promptTextarea = document.getElementById("prompt");
 
-// 2. 모든 항목 리스트로 생성 (각 항목마다 <li>)
-const allItems = [...aiTemplate].sort((a,b) => a.no - b.no);
+    const usedItem = aiTemplate.find(item => item.isUsed);
+    if (usedItem) {
+        selectedTagBtn.querySelector("span").textContent = usedItem.tag;
+        subjectInput.value = usedItem.subject;
+        promptTextarea.value = usedItem.prompt;
+    }
 
-tagList.innerHTML = ""; // 기존 내용 초기화
+    const allItems = [...aiTemplate].sort((a,b) => a.no - b.no);
 
-allItems.forEach(item => {
-    const li = document.createElement("li");
-    li.className = "selectset-item";
+    tagList.innerHTML = "";
 
-    const btn = document.createElement("button");
-    btn.type = "button";
-    btn.className = "selectset-link btn";
-    btn.dataset.value = item.tag;
-    btn.innerHTML = `<span>${item.tag}</span>`;
+    allItems.forEach(item => {
+        const li = document.createElement("li");
+        li.className = "selectset-item";
 
-    btn.addEventListener("click", () => {
-        selectedTagBtn.querySelector("span").textContent = item.tag;
-        subjectInput.value = item.subject;
-        promptTextarea.value = item.prompt;
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "selectset-link btn";
+        btn.dataset.value = item.tag;
+        btn.innerHTML = `<span>${item.tag}</span>`;
+
+        btn.addEventListener("click", () => {
+            selectedTagBtn.querySelector("span").textContent = item.tag;
+            subjectInput.value = item.subject;
+            promptTextarea.value = item.prompt;
+        });
+
+        li.appendChild(btn);
+        tagList.appendChild(li);
     });
+}
 
-    li.appendChild(btn);
-    tagList.appendChild(li);
-});
+initTemplate();

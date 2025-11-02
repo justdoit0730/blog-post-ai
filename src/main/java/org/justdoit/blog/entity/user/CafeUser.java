@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.justdoit.blog.template.Role;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -55,9 +56,6 @@ public class CafeUser {
 
     @Column
     private long cafeRefreshTokenExpiresAt;
-//
-//    @Column(nullable = false)
-//    private String platform;
 
     @Column
     private boolean isEmailPrivacyAgreed;
@@ -77,16 +75,15 @@ public class CafeUser {
     private Instant updatedAt;
 
     @Builder
-    public CafeUser(String email, String password, int cafeValidationFailCount, String cafeClientId, String cafeClientSecret, String cafeRefreshToken, long cafeRefreshTokenExpiresAt, boolean isEmailPrivacyAgreed, boolean isClientPrivacyAgreed, Role role) {
-//        String platform,
+    public CafeUser(String email, String password, int cafeValidationFailCount, boolean clientApiEnabled, String cafeClientId, String cafeClientSecret, String cafeRefreshToken, long cafeRefreshTokenExpiresAt, boolean isEmailPrivacyAgreed, boolean isClientPrivacyAgreed, Role role) {
         this.email = email;
         this.password = password;
         this.cafeValidationFailCount = cafeValidationFailCount;
+        this.clientApiEnabled = clientApiEnabled;
         this.cafeClientId = cafeClientId;
         this.cafeClientSecret = cafeClientSecret;
         this.cafeRefreshToken = cafeRefreshToken;
         this.cafeRefreshTokenExpiresAt = cafeRefreshTokenExpiresAt;
-//        this.platform = platform;
         this.isEmailPrivacyAgreed = isEmailPrivacyAgreed;
         this.isClientPrivacyAgreed = isClientPrivacyAgreed;
         this.role = role;

@@ -11,7 +11,8 @@ import org.justdoit.blog.dto.ai.setting.AiSettingDto;
 import org.justdoit.blog.dto.ai.setting.TemplateDto;
 import org.justdoit.blog.dto.ai.write.AiWriteSaveDto;
 import org.justdoit.blog.dto.ai.write.AiWriteTemplateDto;
-import org.justdoit.blog.entity.ai.write.*;
+
+import org.justdoit.blog.entity.ai.*;
 import org.justdoit.blog.entity.user.CafeUser;
 import org.justdoit.blog.entity.user.CafeUserRepository;
 import org.springframework.stereotype.Service;

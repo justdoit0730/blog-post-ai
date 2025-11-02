@@ -1,6 +1,5 @@
 package org.justdoit.blog.template;
 
-
 public enum TextVolumeTemplate {
     V1("1", "약 350 ~ 500자"),
     V2("2", "약 500 ~ 800자"),

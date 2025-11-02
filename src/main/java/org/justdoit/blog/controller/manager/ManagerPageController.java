@@ -4,7 +4,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.justdoit.blog.config.auth.SessionUser;
-import org.justdoit.blog.entity.user.Role;
 import org.justdoit.blog.variable.GlobalVariables;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,10 +24,9 @@ public class ManagerPageController {
     public String naverPostingSetting(HttpServletRequest request, Model model) {
         SessionUser session = getSessionUser(httpSession);
 
-        // 수정 : session.getAccessToken() 이거 전역변수에서 가져온다
         model.addAttribute("clientValid", globalVariables.CAFE_CLIENT_ID == null ? "N" : (globalVariables.CAFE_ACCESS_TOKEN == null ? "F" : "T"));
-        model.addAttribute("", "");
-        model.addAttribute("", "");
+        model.addAttribute("cafeClientId", globalVariables.CAFE_CLIENT_ID);
+        model.addAttribute("cafeClientSecret", globalVariables.CAFE_CLIENT_SECRET);
         return "manager/postingSetting";
     }
 

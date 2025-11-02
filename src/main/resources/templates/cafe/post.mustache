@@ -3,7 +3,28 @@
 <meta name="_csrf" content="{{_csrf_token}}"/>
 <meta name="_csrf_header" content="{{_csrf_header}}"/>
 <link rel="stylesheet" href="/resources/profile/toast/toastui-editor.min.css" />
+<style>
+<!--#contentsBody ul {-->
+<!--  list-style-type: disc;-->
+<!--  padding-left: 20px;-->
+<!--  margin: 0;-->
+<!--}-->
 
+<!--#contentsBody ul ul {-->
+<!--  list-style-type: circle;
+<!--  padding-left: 20px;-->
+<!--}-->
+
+<!--#contentsBody li {-->
+<!--  margin: 0;-->
+<!--  padding: 0;-->
+<!--}-->
+
+<!--#contentsBody li p {-->
+<!--  display: inline;
+<!--  margin: 0;-->
+<!--}-->
+</style>
 <div class="contents-right">
     <div class="row row-cols-3 row-md-cols-2 gutter-5 contents-list" style="margin-top: 0rem; margin-bottom: 0em; --th-gutter: 0;">
         <div class="contents-container container-md">
@@ -15,15 +36,15 @@
                         </div>
                         <div class="form-box" style="margin-bottom: 4rem">
                             <div class="inputset inputset-line">
-                                <label for="basic-N37-inputset-a-1" class="form-tit h6" style="margin-bottom: 2rem;">Cafe ID
+                                <label for="basic-N37-inputset-a-1" class="form-tit h6" style="margin-bottom: 2rem;">Cafe 이름
                                 </label>
-                                <div id="tableIdDiv" data-template='' style="display:none;"></div>
+                                <div id="cafeIdTemplate" data-template='{{{cafeIdTemplate}}}' style="display:none;"></div>
                                 <div class="selectset">
                                     <div class="selectset-area">
-                                        <button id="selectedTagBtn" class="selectset-toggle btn" type="button">
+                                        <button id="selectedCafeIdBtn" class="selectset-toggle btn" type="button">
                                             <span id="templateName">템플릿</span>
                                         </button>
-                                        <ul class="selectset-list" id="tagList">
+                                        <ul class="selectset-list" id="cafeNameList">
                                             <li class="selectset-item">
 
                                             </li>
@@ -37,7 +58,7 @@
                             <div class="inputset inputset-line">
                                 <label for="basic-N37-inputset-a-1" class="form-tit h6" style="margin-bottom: 2rem;">Cafe 포스팅 Template
                                 </label>
-                                <div id="tableDiv" data-template='' style="display:none;"></div>
+                                <div id="cafePostingTemplate" data-template='{{{cafePostingTemplate}}}' style="display:none;"></div>
                                 <div class="selectset">
                                     <div class="selectset-area">
                                         <button id="selectedTagBtn" class="selectset-toggle btn" type="button">
@@ -56,21 +77,22 @@
                             <div class="inputset inputset-line">
                                 <label for="subject" class="form-tit h6">제목 <span>*</span>
                                 </label>
-                                <input id="subject" type="text" class="inputset-input form-control" placeholder="주제를 입력해주세요." required="" />
+                                <input id="subject" type="text" class="inputset-input form-control" placeholder="게시될 제목을 입력해주세요." required="" />
                             </div>
                         </div>
                         <div class="form-box" style="margin-bottom: 4rem">
                             <div class="inputset inputset-line">
-                                <label for="prompt" class="form-tit h6" style="margin-bottom: 2rem;">내용
-                                </label>
-<!--                                <textarea id="prompt" name="prompt" class="inputset-textarea form-control" placeholder="요청 사항을 입력해주세요." style="height: 8rem;" value=""></textarea>-->
+                                <label for="prompt" class="form-tit h6" style="margin-bottom: 2rem;">내용 <span>*</span></label>
+
                                 <div id="editor"></div>
                                 <span class="inputset-count" style="display: none">0</span>
                             </div>
                         </div>
 
-                        <div class="form-btn" style="margin-bottom: 3rem;">
-                            <button class="btnset btnset-primary btnset-block" type="button" id="writeBtn">글 생성</button>
+                        <div class="form-btn" style="margin-bottom: 3rem; text-align: center">
+                            <button class="btnset btnset-secondary" type="button" id="postTestBtn">미리보기</button>
+                            <button class="btnset btnset-primary" type="button" id="postBtn">게시하기</button>
+
                         </div>
                     </form>
                 </div>
@@ -90,9 +112,11 @@
                     <div class="textset">
                         <h2 class="textset-tit h6" id="title" value="{{title}}">{{title}}</h2>
                     </div>
-                    <div class="contents-body">
+                    <div class="contents-body" id="contentsBody" style="display: block">
                         <p class="contents-text p2" id="content">{{content}}</p>
                         <p id="imgUrls" data-value="{{imgUrls}}" style="display:none"></p>
+                    </div>
+                    <div class="contents-link" id="contentsClear">
                     </div>
 
                     <div class="contents-link" id="writeSaveDiv" style="display: none">
@@ -112,38 +136,7 @@
 </div>
 </main>
 <script src="/resources/profile/toast/toastui-editor-all.min.js"></script>
-<script>
-  const editor = new toastui.Editor({
-    el: document.querySelector('#editor'),
-    height: '500px',
-    initialEditType: 'wysiwyg',   // 'markdown' 도 가능
-    previewStyle: 'vertical',
-    hooks: {
-      addImageBlobHook: async (blob, callback) => {
-        // blob = 사용자가 올린 이미지 파일
 
-        // 1) 서버에 업로드 하는 경우
-        // let formData = new FormData();
-        // formData.append("file", blob);
-        // const response = await fetch("/upload", { method: "POST", body: formData });
-        // const data = await response.json();
-        // callback(data.url, "업로드 이미지");
-
-        // 2) 테스트용 (브라우저에만 URL 생성)
-        const url = URL.createObjectURL(blob);
-        callback(url, "첨부 이미지");
-      }
-    }
-  });
-
-  // 저장할 때 (DB에 넣을 내용)
-  function getEditorContent() {
-    const html = editor.getHTML();   // HTML
-    const markdown = editor.getMarkdown(); // Markdown
-    console.log("HTML:", html);
-    console.log("MD:", markdown);
-  }
-</script>
 <script>
 document.addEventListener("DOMContentLoaded", function() {
     const titleEl = document.getElementById("title");
@@ -172,10 +165,8 @@ document.addEventListener("DOMContentLoaded", function() {
     contentElement.innerHTML = contentHtml;
 });
 </script>
-<!--<script src="/js/feature/write.js"></script>-->
-<!--<script src="/js/feature/writeRendering.js"></script>-->
-<!--<script src="/js/feature/writeTemplateUpdate.js"></script>-->
-<!--<script src="/js/feature/writeSave.js"></script>-->
-
+<script src="/js/cafe/postRendering.js"></script>
+<script src="/js/cafe/postExample.js"></script>
+<script src="/js/cafe/post.js"></script>
 
 {{>layout/footer}}

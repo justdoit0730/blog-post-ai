@@ -24,12 +24,14 @@
                                 <div style="display: flex;gap: 8px;align-items: center;">
                                     <div style="width: 40%">
                                         <label for="signUpClientId" class="checkset-label" style="margin-bottom: 1rem;">Client ID</label>
-                                        <input type="text" id="signUpClientId" class="inputset-input form-control" value="dmvYuC3cmUwzG_KtXtgh" placeholder="Client ID 를 입력해주세요"/>
+                                        <input type="text" id="signUpClientId" class="inputset-input form-control" value="{{cafeClientId}}" placeholder="Client ID 를 입력해주세요"/>
                                     </div>
+<!--                                    dmvYuC3cmUwzG_KtXtgh-->
                                     <div style="width: 40%">
                                         <label for="signUpClientSecret" class="checkset-label"style="margin-bottom: 1rem;" >Client Secret</label>
-                                        <input type="password" id="signUpClientSecret" class="inputset-input form-control" value="lGVLRAUMrb" placeholder="Client Secret 입력해주세요"/>
+                                        <input type="password" id="signUpClientSecret" class="inputset-input form-control" value="{{cafeClientSecret}}" placeholder="Client Secret 입력해주세요"/>
                                     </div>
+<!--                                    lGVLRAUMrb-->
                                     <div style="width: 20%;">
                                         <label for="" class="checkset-label" style="margin-bottom: 1rem;">Client 인증</label>
                                         <button type="button" id="clientInfoCheck" class="btnset btnset-primary btnset-block">인증</button>
@@ -163,7 +165,7 @@ document.addEventListener("DOMContentLoaded", function() {
                          style="height: 2.5rem; cursor: pointer;"
                          data-bs-toggle="tooltip"
                          data-bs-placement="right"
-                         title="Client 인증 후 저장이 완료 되면 Cafe 글 쓰기가 가능합니다." />`;
+                         title="기본 API 를 사용합니다. 개인 API Client를 사용하시려면 메뉴얼을 참고하여 정보를 저장하세요." />`;
         disableButton(clientSaveBtn);
 
     } else if(clientValid === "F") {

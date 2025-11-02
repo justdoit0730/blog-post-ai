@@ -11,12 +11,12 @@ document.getElementById('cafeIdTemplateSave').addEventListener('click', function
         const cafeId = row.cells[3].textContent.trim();
 
         if (templates.some(t => t.cafeName === cafeName)) {
-            alert(`중복된 cafeName 값이 있습니다: ${cafeName}`);
+            alert(`중복된 카페 이름 값이 있습니다: ${cafeName}`);
             return;
         }
 
         if (templates.some(t => t.cafeId === cafeId)) {
-            alert(`중복된 cafeId 값이 있습니다: ${cafeId}`);
+            alert(`중복된 카페 ID 값이 있습니다: ${cafeId}`);
             return;
         }
 
@@ -73,6 +73,11 @@ document.getElementById('cafePostingTemplateSave').addEventListener('click', fun
         const cafeMenuId = row.cells[3].textContent.trim();
         const subject = row.cells[4].textContent.trim();
         const prompt = row.cells[5].textContent.trim();
+
+        if (templates.some(t => t.tag === tag)) {
+            alert(`중복된 태그 값이 있습니다: ${tag}`);
+            return;
+        }
 
         templates.push({
             no: no,

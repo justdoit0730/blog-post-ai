@@ -11,7 +11,6 @@ import java.util.List;
 
 public class MultipartUtil {
 
-
     private String boundary;
     private String LINE_FEED = "\r\n";
     private HttpURLConnection con;

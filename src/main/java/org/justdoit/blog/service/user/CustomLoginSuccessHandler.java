@@ -6,17 +6,18 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.justdoit.blog.config.auth.SessionUser;
-import org.justdoit.blog.entity.ai.write.AiWriteSettingRepository;
-import org.justdoit.blog.entity.ai.write.AiWriteSetting;
-import org.justdoit.blog.entity.ai.write.AiWriteTemplate;
-import org.justdoit.blog.entity.ai.write.AiWriteTemplateRepository;
+import org.justdoit.blog.entity.ai.AiWriteSetting;
+import org.justdoit.blog.entity.ai.AiWriteSettingRepository;
+import org.justdoit.blog.entity.ai.AiWriteTemplate;
+import org.justdoit.blog.entity.ai.AiWriteTemplateRepository;
 import org.justdoit.blog.entity.cafe.CafeIdTemplate;
 import org.justdoit.blog.entity.cafe.CafeIdTemplateRepository;
 import org.justdoit.blog.entity.cafe.CafePostingTemplate;
 import org.justdoit.blog.entity.cafe.CafePostingTemplateRepository;
 import org.justdoit.blog.entity.user.CafeUser;
 import org.justdoit.blog.entity.user.CafeUserRepository;
-import org.justdoit.blog.service.cafe.CafeTokenService;
+import org.justdoit.blog.service.s3.S3Service;
+import org.justdoit.blog.template.S3Prefix;
 import org.justdoit.blog.utils.CryptUtils;
 import org.justdoit.blog.variable.GlobalVariables;
 import org.springframework.security.core.Authentication;
@@ -36,7 +37,8 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
     private final GlobalVariables globalVariables;
     private final HttpSession httpSession;
     private final CafeUserRepository userRepository;
-    private final CafeTokenService cafeTokenService;
+
+    private final S3Service s3Service;
 
     private final AiWriteSettingRepository aiWriteSettingRepository;
     private final AiWriteTemplateRepository aiWriteTemplateRepository;
@@ -138,8 +140,9 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
         }
         sessionUser.setOpenAiService(new OpenAiService(globalVariables.AI_KEY, Duration.ofSeconds(60)));
 
-//        cafeTokenService.refreshAccessToken(cafeUser, sessionUser);
         httpSession.setAttribute("user", sessionUser);
+        s3Service.cleanS3CacheImage(sessionUser, S3Prefix.POST_CACHE.getPrefix());
+        s3Service.cleanS3CacheImage(sessionUser, S3Prefix.WRITE_CACHE.getPrefix());
 
         response.sendRedirect("/");
     }

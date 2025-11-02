@@ -99,7 +99,7 @@ document.getElementById('userRegister').addEventListener('click', function() {
         } else if (result === "clientAuthError") {
             alert("클라이언트 인증이 완료되지 않았습니다.");
         } else if (result === "T") {
-            alert("회원가입이 완료되었습니다!");
+            alert("회원가입이 완료되었습니다.");
             window.location.href = "/login";
         } else {
             alert("회원가입 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");

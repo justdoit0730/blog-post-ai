@@ -1,0 +1,98 @@
+{{>layout/header}}
+{{>layout/featuresSidebar}}
+<meta name="_csrf" content="{{_csrf_token}}"/>
+<meta name="_csrf_header" content="{{_csrf_header}}"/>
+<style>
+.postRenderingContent,
+.postRenderingContent * {
+  font-size: large !important;
+  line-height: 2 !important;
+}
+</style>
+<div class="contents-right">
+    <div class="row row-cols-3 row-md-cols-2 gutter-5 contents-list" style="margin-top: 0rem; margin-bottom: 0em; --th-gutter: 0;">
+        <div class="contents-container container-md" style="padding: 0">
+            <div class="contents-inner">
+                <div class="form-group">
+                    <form>
+
+                        <section class="campland-N13" id="wVMf1395as" style="padding-top: 0rem;">
+                            <div class="contents-container container-md" style="padding: 0">
+                                <div class="contents-inner">
+                                    <div class="textset" style="margin-bottom: 4rem;">
+                                        <h2 class="textset-tit h6" style="font-size: 3.5rem">{{title}}</h2>
+                                        <p class="textset-desc p2"><span>{{date}}</span></p>
+                                    </div>
+
+
+
+                                    <div class="contents-body" style="display: block">
+
+                                        <ul class="contents-list" style="display: flex; padding-bottom: 3rem; border-bottom: 1px solid var(--border-color); margin: 0;">
+                                            <li class="contents-item" style="width: 45%">
+                                                <div class="h6 contents-ico" style="display: flex; align-items: center;">
+                                                    <figure class="contents-figure" style="display: flex; align-items: center; width: 2.4rem; height: 2.4rem; margin-right: 0.4rem; margin-bottom: 0;">
+                                                        <img src="/resources/profile/lightbulb.svg" alt="주소 아이콘" />
+                                                    </figure>
+                                                    Cafe 이름
+                                                </div>
+                                                <p class="p1 contents-desc" style="margin-top: 1.2rem; color: var(--text-color3);">
+                                                    {{cafeName}}
+                                                </p>
+                                            </li>
+                                            <li class="contents-item" style="width: 45%">
+                                                <div class="h6 contents-ico" style="display: flex; align-items: center;">
+                                                    <figure class="contents-figure" style="display: flex; align-items: center; width: 2.4rem; height: 2.4rem; margin-right: 0.4rem; margin-bottom: 0;">
+                                                        <img src="/resources/profile/lightbulb.svg" alt="주소 아이콘" />
+                                                    </figure>
+                                                    Cafe 게시판 이름
+                                                </div>
+                                                <p class="p1 contents-desc" style="margin-top: 1.2rem; color: var(--text-color3);">
+                                                    {{cafeBoardTag}}
+                                                </p>
+                                            </li>
+
+                                            <li class="contents-item" style="width: 10%">
+                                                <div class="h6 contents-ico" style="display: flex; align-items: center;">
+                                                    <figure class="contents-figure" style="display: flex; align-items: center; width: 2.4rem; height: 2.4rem; margin-right: 0.4rem; margin-bottom: 0;">
+                                                        <img src="/resources/profile/clipboard2.svg" alt="주소 아이콘" />
+                                                    </figure>
+                                                    Cafe 링크
+                                                </div>
+                                                <p class="p1 contents-desc" style="margin-top: 1.2rem; color: var(--text-color3); text-align: center;">
+                                                    <a href="{{cafeLink}}" target="_blank">
+                                                        <img class=""  src="/resources/profile/box-arrow-up-right.svg" style="width:2rem;object-fit:contain;">
+                                                    </a>
+                                                </p>
+                                            </li>
+
+                                        </ul>
+                                        <div class="postRenderingContent" style="padding-top: 4rem;">
+                                            {{{content}}}
+                                        </div>
+                                    </div>
+
+                                    <div class="contents-link">
+                                        <a href="./resources/etc/javascipt_void0_" class="btnset btnset-line-dark">목록으로</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+</div>
+</div>
+</div>
+<div class="contents-dim"></div>
+</div>
+
+</div>
+</main>
+<!--<script src="/js/feature/write.js"></script>-->
+<script src="/js/feature/writeRendering.js"></script>
+{{>layout/footer}}

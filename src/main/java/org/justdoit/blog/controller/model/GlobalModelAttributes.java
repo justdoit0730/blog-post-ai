@@ -4,7 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.justdoit.blog.config.auth.SessionUser;
-import org.justdoit.blog.entity.user.Role;
+import org.justdoit.blog.template.Role;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -24,8 +24,6 @@ public class GlobalModelAttributes {
             model.addAttribute("role", session.getRole());
             Role sessionRole = Role.fromKey(session.getRole());
             model.addAttribute("isManager", Role.MANAGER.equals(sessionRole));
-            System.out.println(session.getRole());
-            System.out.println(Role.MANAGER.equals(sessionRole));
             model.addAttribute("isUser", true);
             model.addAttribute("isGuest", false);
         } else {

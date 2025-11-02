@@ -24,13 +24,13 @@ document.getElementById('writeTemplateUpdate').addEventListener('click', functio
     .then(response => response.text())
     .then(result => {
         if (result === "T") {
-            alert("포스팅 템플릿이 저장 되었습니다");
+            alert("템플릿이 저장 되었습니다");
         } else {
-            alert("포스팅 템플릿 저장 요청 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
+            alert("템플릿 저장 요청 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
         }
     })
     .catch(err => {
         console.error(err);
-        alert("포스팅 템플릿이 저장 요청 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
+        alert("템플릿 저장 요청 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
     });
 });

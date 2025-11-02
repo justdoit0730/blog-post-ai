@@ -7,7 +7,7 @@ import org.justdoit.blog.config.auth.SessionUser;
 import org.justdoit.blog.entity.manager.ManagerInfo;
 import org.justdoit.blog.entity.user.CafeUser;
 import org.justdoit.blog.service.email.EmailSender;
-import org.justdoit.blog.service.email.EmailTemplate;
+import org.justdoit.blog.template.EmailTemplate;
 import org.justdoit.blog.utils.CryptUtils;
 import org.justdoit.blog.variable.GlobalVariables;
 import org.springframework.stereotype.Service;
@@ -28,19 +28,19 @@ public class CafeTokenService {
     private final CryptUtils cryptUtils;
     private final EmailSender emailSender;
 
-    public String getAccessToken(CafeUser user, SessionUser sessionUser) throws IOException {
-        if (sessionUser.getCafeRefreshToken() == null || sessionUser.getCafeRefreshToken().isEmpty()) {
-            int validationCount = sessionUser.getCafeValidationFailCount();
-            validationCountPlus(user, ++validationCount);
-            return "C-F001"; // 현재 로그인한 유저 email 에 대해 회원정보(cafe_user) 결과 중 refreshToken 이 없는 경우 -> session 에 횟수 추가
-        }
-        return refreshAccessToken(user, sessionUser);
-    }
+//    public String getAccessToken(CafeUser cafeUser, SessionUser sessionUser) throws IOException {
+//        if (sessionUser.getCafeRefreshToken() == null || sessionUser.getCafeRefreshToken().isEmpty()) {
+//            int validationCount = sessionUser.getCafeValidationFailCount();
+//            validationCountPlus(cafeUser, ++validationCount);
+//            return "C-F001"; // 현재 로그인한 유저 email 에 대해 회원정보(cafe_user) 결과 중 refreshToken 이 없는 경우 -> session 에 횟수 추가
+//        }
+//        return refreshAccessToken(cafeUser, sessionUser);
+//    }
 
-    public String refreshAccessToken(CafeUser user, SessionUser sessionUser) throws IOException {
-        String clientId = user.getCafeClientId();
-        String clientSecret = user.getCafeClientSecret();
-        String refreshToken = user.getCafeRefreshToken();
+    public String refreshAccessToken(CafeUser cafeUser, SessionUser sessionUser) throws IOException {
+        String clientId = cafeUser.getCafeClientId();
+        String clientSecret = cafeUser.getCafeClientSecret();
+        String refreshToken = cafeUser.getCafeRefreshToken();
 
         if (clientId == null || clientId.isEmpty()) {
             return null;
@@ -70,13 +70,15 @@ public class CafeTokenService {
             sessionUser.setAccessToken(accessToken);
             sessionUser.setAccessTokenExpiresAt(LocalDateTime.now());
             sessionUser.setAccessTokenValidation(true);
+            cafeUser.setClientApiEnabled(true);
             log.info("Successfully obtained Access Token. Valid: {}, expires at: {}", accessToken != null, expiresAt);
 
             return accessToken;
         } catch (Exception e) {
-            int validationCount = user.getCafeValidationFailCount();
-            validationCountPlus(user, ++validationCount);
+            int validationCount = cafeUser.getCafeValidationFailCount();
+            validationCountPlus(cafeUser, ++validationCount);
             sessionUser.setAccessTokenValidation(false);
+            cafeUser.setClientApiEnabled(false);
             log.warn("Failed to obtain Access Token using Refresh Token (retry count: {}).}", validationCount);
             EmailTemplate template = EmailTemplate.REFRESH_TOKEN_FAIL;
             emailSender.sendEmail(sessionUser, template.getSubject(), template.getContent());
@@ -84,8 +86,8 @@ public class CafeTokenService {
         }
     }
 
-    public String refreshAccessToken(CafeUser user) throws IOException {
-        return refreshAccessToken(user, null);
+    public String refreshAccessToken(CafeUser cafeUser) throws IOException {
+        return refreshAccessToken(cafeUser, null);
     }
 
     @Transactional
@@ -135,7 +137,7 @@ public class CafeTokenService {
             return accessToken;
         } catch (Exception e) {
             int validationCount = managerInfo.getCafeValidationFailCount();
-            validationCountPlus(managerInfo, ++validationCount);
+            managerValidationCountPlus(managerInfo, ++validationCount);
             globalVariables.CAFE_REFRESH_TOKEN_VALIDATION = false;
             log.warn("Failed to obtain Access Token using Refresh Token (retry count: {}).}", validationCount);
             EmailTemplate template = EmailTemplate.REFRESH_TOKEN_FAIL;
