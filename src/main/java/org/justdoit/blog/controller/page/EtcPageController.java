@@ -46,6 +46,11 @@ public class EtcPageController {
         return "support/support-token";
     }
 
+    @GetMapping("/community/inquiry")
+    public String communityInquiryPage() {
+        return "community/inquiry";
+    }
+
 
 
 }
