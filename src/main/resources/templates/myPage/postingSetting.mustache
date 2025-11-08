@@ -159,31 +159,31 @@ document.addEventListener("DOMContentLoaded", function() {
 
     let iconHtml = "";
 
-    if(clientValid === "N") {
+    if (clientValid === "N") {
         iconHtml = `<img src="/resources/profile/circle-question-solid-full.svg"
                          alt="N"
                          style="height: 2.5rem; cursor: pointer;"
                          data-bs-toggle="tooltip"
                          data-bs-placement="right"
-                         title="기본 API 를 사용합니다. 개인 API Client를 사용하시려면 메뉴얼을 참고하여 정보를 저장하세요." />`;
+                         title="API 인증 후에 Naver 카페 포스팅이 가능합니다. API Client를 설정하시려면 메뉴얼을 참고하여 정보를 저장하세요." />`;
         disableButton(clientSaveBtn);
 
-    } else if(clientValid === "F") {
+    } else if (clientValid === "F") {
         iconHtml = `<img src="/resources/profile/circle-exclamation-solid.svg"
                          alt="F"
-                         style="height: 2.5rem; cursor: pointer;"
+                         style="height: 2rem; cursor: pointer;"
                          data-bs-toggle="tooltip"
                          data-bs-placement="right"
                          title="Client 정보 재인증이 필요합니다. 우측 버튼을 눌러 인증을 진행하세요." />`;
         disableButton(clientSaveBtn);
 
-    } else if(clientValid === "T") {
+    } else if (clientValid === "T") {
         iconHtml = `<img src="/resources/profile/circle-check-solid-full.svg"
                          alt="T"
                          style="height: 2.5rem; cursor: pointer;"
                          data-bs-toggle="tooltip"
                          data-bs-placement="right"
-                         title="Client 정보를 정상적으로 사용 가능한 상태입니다." />`;
+                         title="Client API 를 정상적으로 사용 가능한 상태입니다." />`;
 
         clientIdInput.disabled = true;
         clientSecretInput.disabled = true;

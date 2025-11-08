@@ -1,0 +1,114 @@
+{{>layout/header}}
+{{>about/about-sidebar}}
+<meta name="_csrf" content="{{_csrf_token}}"/>
+<meta name="_csrf_header" content="{{_csrf_header}}"/>
+<style>
+.postRenderingContent,
+.postRenderingContent * {
+  font-size: large !important;
+  line-height: 2 !important;
+}
+</style>
+<div class="contents-right">
+    <div class="row row-cols-3 row-md-cols-2 gutter-5 contents-list" style="margin-top: 0rem; margin-bottom: 0em; --th-gutter: 0;">
+        <div class="contents-container container-md" style="padding: 0">
+            <div class="contents-inner">
+                <div class="form-group">
+                    <form>
+
+                        <section class="campland-N13" id="wVMf1395as" style="padding-top: 0rem;">
+                            <div class="contents-container container-md" style="padding: 0">
+                                <div class="contents-inner">
+                                    <div class="textset" style="margin-bottom: 4rem;">
+                                        <h2 class="textset-tit h6" style="font-size: 3.5rem">개요</h2>
+
+                                    </div>
+
+                                    <div class="contents-body" style="padding: 2rem 0;">
+                                        <div class="postRenderingContent">
+                                            <section class="project-overview" style="font-family: 'Pretendard', sans-serif; color: #222; line-height: 1.8; padding: 20px;">
+                                                <h1 style="font-size: 2.2rem; font-weight: 700; margin-bottom: 1.5rem;">🚀 AUTO CAFE Project</h1>
+                                                <p style="font-size: 1.1rem; margin-bottom: 2rem;">
+                                                    <strong>AUTO CAFE</strong>는 <b>AI 자동 글쓰기</b>와 <b>네이버 카페 포스팅</b> 기능을 통합한
+                                                    <u>콘텐츠 자동화 플랫폼</u>입니다.<br>
+                                                    사용자는 프롬프트 입력만으로 AI가 글을 생성하고, 이를 네이버 카페에 자동 게시할 수 있습니다.
+                                                </p>
+
+                                                <hr style="margin: 2rem 0; border: none; border-top: 1px solid #ddd;">
+
+                                                <h2 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem;">⚙️ 주요 기능 (Features)</h2>
+
+                                                <div style="margin-bottom: 2.5rem;">
+                                                    <h3 style="font-size: 1.2rem; font-weight: 600; color: #0056b3;">1️⃣ AI 글쓰기</h3>
+                                                    <ul style="margin: 0.5rem 0 1rem 1.5rem;">
+                                                        <li>주제와 프롬프트를 입력하면 <strong>AI가 자동으로 글을 생성</strong></li>
+                                                        <li><code>gpt-4o-mini</code> 모델 기반으로 자연스러운 문맥의 글 작성</li>
+                                                        <li>설정 가능 항목:
+                                                            <ul>
+                                                                <li>· <code>max_tokens</code> – 생성 글의 최대 길이</li>
+                                                                <li>· <code>temperature</code> – 창의성 및 랜덤성 조절</li>
+                                                            </ul>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+
+                                                <div style="margin-bottom: 2.5rem;">
+                                                    <h3 style="font-size: 1.2rem; font-weight: 600; color: #0056b3;">2️⃣ Naver Cafe 포스팅</h3>
+                                                    <ul style="margin: 0.5rem 0 1rem 1.5rem;">
+                                                        <li><strong>카페 ID, 게시판 ID, 제목, 내용</strong>을 입력하여 직접 작성한 글을 게시</li>
+                                                        <li>공식 <strong>Naver Cafe API</strong>를 이용한 안정적인 포스팅 지원</li>
+                                                        <li>인증 방식:
+                                                            <ul>
+                                                                <li>· 기본 제공 API 인증</li>
+                                                                <li>· 사용자 계정 직접 인증 방식 지원</li>
+                                                            </ul>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+
+                                                <div style="margin-bottom: 2.5rem;">
+                                                    <h3 style="font-size: 1.2rem; font-weight: 600; color: #0056b3;">3️⃣ Naver Cafe AI 포스팅</h3>
+                                                    <ul style="margin: 0.5rem 0 1rem 1.5rem;">
+                                                        <li><strong>카페 ID, 게시판 ID, 주제, 프롬프트</strong>를 입력하면 AI가 자동으로 글을 생성 및 게시</li>
+                                                        <li>· 글 생성 → 포스팅까지 <strong>원클릭 자동 처리</strong></li>
+                                                        <li>· 카페 운영, 마케팅 콘텐츠 제작 등 <strong>자동화 워크플로우</strong>에 적합</li>
+                                                    </ul>
+                                                </div>
+
+                                                <hr style="margin: 2rem 0; border: none; border-top: 1px solid #ddd;">
+
+                                                <h2 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem;">🔐 사용 규칙 (Access & Usage)</h2>
+                                                <ul style="margin: 0.5rem 0 2rem 1.5rem;">
+                                                    <li>모든 기능은 <strong>회원가입 후 사용 가능</strong> 합니다.</li>
+                                                    <li>AI 기능은 계정별 <code>token 제한</code> 및 <code>temperature 설정</code>으로 제어 가능 합니다.</li>
+                                                    <li>네이버 카페 API는 <strong>기본 제공 + 개인 인증</strong> 모두 지원 합니다.</li>
+                                                </ul>
+
+<!--                                                <blockquote style="border-left: 4px solid #0078ff; padding-left: 1rem; color: #555; background: #f9f9f9; font-style: italic;">-->
+<!--                                                    💡 AUTO CAFE는 AI와 네이버 카페 포스팅을 결합한 <b>스마트 콘텐츠 자동화 플랫폼</b>입니다.-->
+<!--                                                </blockquote>-->
+                                            </section>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </section>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+</div>
+</div>
+</div>
+<div class="contents-dim"></div>
+</div>
+
+</div>
+</main>
+
+{{>layout/footer}}

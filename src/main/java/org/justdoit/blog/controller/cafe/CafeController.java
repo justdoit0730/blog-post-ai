@@ -7,7 +7,6 @@ import org.justdoit.blog.dto.post.PostBasicDto;
 import org.justdoit.blog.entity.cafe.CafePosting;
 import org.justdoit.blog.entity.cafe.CafePostingRepository;
 import org.justdoit.blog.entity.manager.ManagerInfo;
-import org.justdoit.blog.entity.manager.ManagerInfoRepository;
 import org.justdoit.blog.entity.user.CafeUser;
 import org.justdoit.blog.entity.user.CafeUserRepository;
 import org.justdoit.blog.service.cafe.CafeTokenService;
@@ -30,9 +29,6 @@ public class CafeController {
     private final PostService postService;
     private final CafeUserRepository userRepository;
     private final CafeTokenService cafeTokenService;
-
-    private final ManagerInfoRepository managerInfoRepository;
-
     private final CafePostingRepository cafePostingRepository;
 
     private final S3Service s3Service;
@@ -78,19 +74,10 @@ public class CafeController {
         boolean isPostSuccess;
         String result = "F";
 
-        if (cafeUser.isClientApiEnabled()) {
-            int validationCount = cafeUser.getCafeValidationFailCount();
-            if (validationCount > 5) return ResponseEntity.ok("C-F001");
+        int validationCount = cafeUser.getCafeValidationFailCount();
+        if (validationCount > 5) return ResponseEntity.ok("C-F001");
 
-            accessToken = cafeTokenService.refreshAccessToken(cafeUser, sessionUser);
-        } else {
-            ManagerInfo managerInfo = managerInfoRepository.findById("default")
-                    .orElseThrow(() -> new IllegalStateException("ManagerInfo not found"));
-            int validationCount = managerInfo.getCafeValidationFailCount();
-            if (validationCount > 5) return ResponseEntity.ok("C-F001");
-
-            accessToken = cafeTokenService.managerRefreshAccessToken(managerInfo);
-        }
+        accessToken = cafeTokenService.refreshAccessToken(cafeUser, sessionUser);
 
         if (accessToken == null) {
             return ResponseEntity.ok("C-F001");

@@ -3,28 +3,7 @@
 <meta name="_csrf" content="{{_csrf_token}}"/>
 <meta name="_csrf_header" content="{{_csrf_header}}"/>
 <link rel="stylesheet" href="/resources/profile/toast/toastui-editor.min.css" />
-<style>
-<!--#contentsBody ul {-->
-<!--  list-style-type: disc;-->
-<!--  padding-left: 20px;-->
-<!--  margin: 0;-->
-<!--}-->
 
-<!--#contentsBody ul ul {-->
-<!--  list-style-type: circle;
-<!--  padding-left: 20px;-->
-<!--}-->
-
-<!--#contentsBody li {-->
-<!--  margin: 0;-->
-<!--  padding: 0;-->
-<!--}-->
-
-<!--#contentsBody li p {-->
-<!--  display: inline;
-<!--  margin: 0;-->
-<!--}-->
-</style>
 <div class="contents-right">
     <div class="row row-cols-3 row-md-cols-2 gutter-5 contents-list" style="margin-top: 0rem; margin-bottom: 0em; --th-gutter: 0;">
         <div class="contents-container container-md">
@@ -138,7 +117,21 @@
 <script src="/resources/profile/toast/toastui-editor-all.min.js"></script>
 
 <script>
+const clientValid = "{{clientValid}}";
+
 document.addEventListener("DOMContentLoaded", function() {
+    if (clientValid === "N") {
+        const goSetting = confirm("현재 API가 인증되지 않아 카페에 글을 게시할 수 없습니다.\n설정하시겠습니까?");
+        if (goSetting) {
+            window.location.href = "/myPage/postingSetting";
+        }
+    } else if (clientValid === "F") {
+        const goSetting = confirm("기존에 인증된 API가 만료되어 카페에 글을 게시하려면 재인증이 필요합니다.\n설정하시겠습니까?");
+        if (goSetting) {
+            window.location.href = "/myPage/postingSetting";
+        }
+    }
+
     const titleEl = document.getElementById("title");
     const writeSaveDiv = document.getElementById("writeSaveDiv");
     if (titleEl.textContent.trim() !== "") {

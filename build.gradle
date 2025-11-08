@@ -59,6 +59,10 @@ tasks.named('test') {
     useJUnitPlatform()
 }
 
+tasks.named('processResources') {
+    exclude 'project/**'
+}
+
 def archiveDir = "$buildDir/Archive/${new Date().format('yyyy-MM-dd HH-mm-ss')}/${project.name}"
 println "Build Directory: $buildDir"
 def libDir = "$archiveDir/lib"

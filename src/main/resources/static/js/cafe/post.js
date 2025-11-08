@@ -9,6 +9,10 @@ document.getElementById('postBtn').addEventListener('click', async function() {
     const cafeMenuId = selectedTagBtn.dataset.cafeMenuId;
 
     const title = document.getElementById("subject").value.trim();
+    if (title === "") {
+        alert("제목을 입력하세요.");
+        return;
+    }
     let contentHtml = "";
 
     try {
@@ -16,6 +20,11 @@ document.getElementById('postBtn').addEventListener('click', async function() {
         console.log("이미지 변환 및 HTML 교체 완료");
     } catch (error) {
         console.error("replaceAndRender 실행 중 오류:", error);
+    }
+
+    if (contentHtml === "" || contentHtml === "<p></p>") {
+        alert("내용을 입력하세요.");
+        return;
     }
 
     var data = {
@@ -55,6 +64,12 @@ document.getElementById('postBtn').addEventListener('click', async function() {
 
 async function replaceAndRender() {
     let html = editor.getHTML();
+
+    if (html === "" || html === "<p></p>") {
+        alert("내용을 입력하세요.");
+        return;
+    }
+
     const base64Images = [...html.matchAll(/<img[^>]+src=["'](data:image\/[^"']+)["']/g)]
                         .map(m => m[1]);
 

@@ -1,0 +1,97 @@
+{{>layout/header}}
+{{>about/about-sidebar}}
+<meta name="_csrf" content="{{_csrf_token}}"/>
+<meta name="_csrf_header" content="{{_csrf_header}}"/>
+<style>
+.postRenderingContent,
+.postRenderingContent * {
+  font-size: large !important;
+  line-height: 2 !important;
+}
+</style>
+<div class="contents-right">
+    <div class="row row-cols-3 row-md-cols-2 gutter-5 contents-list" style="margin-top: 0rem; margin-bottom: 0em; --th-gutter: 0;">
+        <div class="contents-container container-md" style="padding: 0">
+            <div class="contents-inner">
+                <div class="form-group">
+                    <form>
+
+                        <section class="campland-N13" id="project-specs" style="padding-top: 0rem;">
+                            <div class="contents-container container-md" style="padding: 0">
+                                <div class="contents-inner">
+                                    <div class="textset" style="margin-bottom: 4rem;">
+                                        <h2 class="textset-tit h6" style="font-size: 3.5rem">Specifications</h2>
+                                    </div>
+
+                                    <div class="contents-body" style="padding: 2rem 0;">
+                                        <div class="postRenderingContent">
+                                            <section class="project-specs" style="font-family: 'Pretendard', sans-serif; color: #222; line-height: 1.8; padding: 20px;">
+                                                <h1 style="font-size: 2.2rem; font-weight: 700; margin-bottom: 1.5rem;">⚙️ AUTO CAFE Project Specifications</h1>
+                                                <p style="font-size: 1.1rem; margin-bottom: 2rem;">
+                                                    본 프로젝트는 <b>Spring Boot 기반의 AI 자동 포스팅 플랫폼</b>으로,
+                                                    <u>AI 생성, 카페 게시, 클라우드 인프라</u>를 통합한 환경에서 동작합니다.
+                                                </p>
+
+                                                <hr style="margin: 2rem 0; border: none; border-top: 1px solid #ddd;">
+
+                                                <h2 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem;">🧩 개발 환경</h2>
+                                                <ul style="margin-left: 1.5rem; margin-bottom: 2rem;">
+                                                    <li><strong>Gradle</strong> : 8.5</li>
+                                                    <li><strong>Java</strong> : 17</li>
+                                                    <li><strong>Spring Boot</strong> : 3.4.5</li>
+                                                    <li><strong>Spring Security</strong> : 3.4.5</li>
+                                                    <li><strong>Spring Mustache</strong> : 3.4.5</li>
+                                                </ul>
+
+                                                <h2 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem;">📦 주요 라이브러리</h2>
+                                                <ul style="margin-left: 1.5rem; margin-bottom: 2rem;">
+                                                    <li><code>openai-gpt3-java:service:0.18.2</code> – OpenAI GPT API 연동</li>
+                                                    <li><code>software.amazon.awssdk:s3:2.20.35</code> – AWS S3 파일 관리</li>
+                                                    <li><code>mariadb-java-client:3.4.0</code> – MariaDB 연결 (JPA 사용)</li>
+                                                </ul>
+
+                                                <h2 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem;">☁️ 클라우드 인프라</h2>
+                                                <ul style="margin-left: 1.5rem; margin-bottom: 2rem;">
+                                                    <li><strong>AWS S3</strong> – 이미지 및 첨부파일 저장</li>
+                                                    <li><strong>AWS EC2</strong> – 애플리케이션 서버 호스팅</li>
+                                                    <li><strong>AWS RDS (MariaDB)</strong> – 데이터베이스 서버</li>
+                                                    <li><strong>AWS IAM</strong> – 접근 권한 및 보안 정책 관리</li>
+                                                </ul>
+
+                                                <h2 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem;">🧠 AI 모델</h2>
+                                                <ul style="margin-left: 1.5rem; margin-bottom: 2rem;">
+                                                    <li><strong>현재 모델</strong> : <code>gpt-4o-mini</code></li>
+                                                    <li><strong>업그레이드 예정</strong> : <code>gpt-5.0</code> (향후 텍스트 품질 및 처리 속도 개선 예정)</li>
+                                                </ul>
+
+                                                <h2 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem;">📁 기본 템플릿</h2>
+                                                <p style="margin-left: 1.5rem; margin-bottom: 2rem;">
+                                                    기본 프로젝트 템플릿은 <a href="https://www.temha.io/template/" target="_blank" style="color: #0078ff; text-decoration: underline;">https://www.temha.io/template/</a> 에서 확인 가능합니다.
+                                                </p>
+
+<!--                                                <blockquote style="border-left: 4px solid #0078ff; padding-left: 1rem; color: #555; background: #f9f9f9; font-style: italic;">-->
+<!--                                                    💡 Spring Boot 3.4.5 기반의 확장 가능한 AI 콘텐츠 자동화 환경-->
+<!--                                                </blockquote>-->
+                                            </section>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </section>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+</div>
+<div class="contents-dim"></div>
+</div>
+
+</div>
+</main>
+
+{{>layout/footer}}

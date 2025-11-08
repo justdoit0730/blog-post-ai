@@ -32,7 +32,7 @@ document.getElementById('clientInfoSave').addEventListener('click', function() {
              alert("개인정보 수집동의 체크 후 다시 설정 실행 해주세요.");
         } else if (result === "T") {
             alert("Client 정보가 저장되었습니다.");
-            window.location.href = "/myPage/profile";
+            window.location.href = "/myPage/postingSetting";
         } else {
             alert("저장 요청 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
         }

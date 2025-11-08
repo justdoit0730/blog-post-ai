@@ -95,12 +95,6 @@ public class CafeManager {
                 // AI KEY 설정
                 globalVariables.AI_KEY = cryptUtils.decrypt256(managerInfo.getAiKey());
 
-                // Naver cafe 설정
-                globalVariables.CAFE_REFRESH_TOKEN = cryptUtils.decrypt256(managerInfo.getCafeRefreshToken());
-                globalVariables.CAFE_CLIENT_ID = cryptUtils.decrypt256(managerInfo.getCafeClientId());
-                globalVariables.CAFE_CLIENT_SECRET = cryptUtils.decrypt256(managerInfo.getCafeClientSecret());
-                cafeTokenService.managerRefreshAccessToken(managerInfo);
-
                 // Write Template row 최대 생성 개수
                 globalVariables.WRITE_TEMPLATE_MAX_ROW = writeMetadata.getMaxRows();
 

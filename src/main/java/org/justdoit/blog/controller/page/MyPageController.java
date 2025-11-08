@@ -108,9 +108,10 @@ public class MyPageController {
     public String naverPostingSetting(HttpServletRequest request, Model model) {
         SessionUser sessionUser = getSessionUser(httpSession);
 
-        model.addAttribute("clientValid", (sessionUser.getCafeClientId() == null || !sessionUser.isClientApiEnabled()) ? "N" : (sessionUser.getAccessToken() == null ? "F" : "T"));
+        model.addAttribute("clientValid", (sessionUser.getCafeClientId() == null || !sessionUser.isClientApiEnabled()) ? "N" : (sessionUser.getCafeRefreshToken() == null ? "F" : "T"));
         model.addAttribute("cafeClientId", sessionUser.getCafeClientId());
         model.addAttribute("cafeClientSecret", sessionUser.getCafeClientSecret());
+        model.addAttribute("isClientPrivacyAgreed", sessionUser.isClientPrivacyAgreed());
         return "myPage/postingSetting";
     }
 
@@ -119,6 +120,12 @@ public class MyPageController {
         SessionUser session = getSessionUser(httpSession);
 
         return "myPage/scheduleSetting";
+    }
+
+    // List 모음
+    @GetMapping("/list")
+    public String listPage(HttpServletRequest request, Model model) {
+        return "myPage/my-list";
     }
 
     private SessionUser getSessionUser(HttpSession session) {

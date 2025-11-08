@@ -37,17 +37,10 @@ public class SessionUser implements Serializable {
     private String cafeClientId = "";
     private String cafeClientSecret = "";
 
-    private String accessToken;
-    private LocalDateTime accessTokenExpiresAt;
-    private boolean accessTokenValidation; // 포스팅 전에 이거 확인 부터
     private int cafeValidationFailCount;
 
     private String cafeRefreshToken;
     private long cafeRefreshTokenExpiresAt;
-
-    //
-
-
 
     // openAI
     private OpenAiService openAiService;
@@ -107,7 +100,4 @@ public class SessionUser implements Serializable {
         this.cafePostingTemplate = cafePostingTemplate.getCafePostingTemplate();
     }
 
-//    public boolean getAccessTokenValidation() {
-//        return accessTokenValidation;
-//    }
 }

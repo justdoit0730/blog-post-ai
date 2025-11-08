@@ -28,12 +28,12 @@ public class GlobalVariables {
 
     public String AI_KEY;
 
-    public String CAFE_ACCESS_TOKEN;
-    public String CAFE_REFRESH_TOKEN;
-    public LocalDateTime CAFE_REFRESH_TOKEN_EXPIRES_AT;
-    public int CAFE_VALIDATION_FAIL_COUNT;
-    public boolean CAFE_REFRESH_TOKEN_VALIDATION = false;
-    public String CAFE_CLIENT_ID;
-    public String CAFE_CLIENT_SECRET;
+//    public String CAFE_ACCESS_TOKEN;
+//    public String CAFE_REFRESH_TOKEN;
+//    public LocalDateTime CAFE_REFRESH_TOKEN_EXPIRES_AT;
+//    public int CAFE_VALIDATION_FAIL_COUNT;
+//    public boolean CAFE_REFRESH_TOKEN_VALIDATION = false;
+//    public String CAFE_CLIENT_ID;
+//    public String CAFE_CLIENT_SECRET;
 
 }

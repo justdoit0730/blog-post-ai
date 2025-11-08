@@ -82,57 +82,57 @@ public class PostService {
         return "T";
     }
 
-    public String managerPostArticle(ManagerInfo managerInfo, String accessToken, PostBasicDto postBasicDto, String title, String content) throws IOException {
-        String apiURL = "https://openapi.naver.com/v1/cafe/" + postBasicDto.getCafeId() + "/menu/" + postBasicDto.getCafeBoardId() + "/articles";
-
-        HttpURLConnection con = (HttpURLConnection) new URL(apiURL).openConnection();
-        con.setRequestMethod("POST");
-        con.setRequestProperty("Authorization", "Bearer " + accessToken);
-
-        String subject = URLEncoder.encode(URLEncoder.encode(title, "UTF-8"), "MS949");
-        String body = URLEncoder.encode(URLEncoder.encode(content, "UTF-8"), "MS949");
-        String postParams = "subject=" + subject + "&content=" + body;
-
-        con.setDoOutput(true);
-        try (DataOutputStream wr = new DataOutputStream(con.getOutputStream())) {
-            wr.writeBytes(postParams);
-        }
-
-        int responseCode = con.getResponseCode();
-
-        if (responseCode != 200) {
-            String refreshAccessToken = cafeTokenService.managerRefreshAccessToken(managerInfo);
-            if (refreshAccessToken == null) {
-                int validationCount = managerInfo.getCafeValidationFailCount();
-                cafeTokenService.managerValidationCountPlus(managerInfo, ++validationCount);
-                log.warn("Posting canceled after retry: access token invalid (retry count: {})", validationCount);
-                return "P-F001";
-            }
-
-            con = (HttpURLConnection) new URL(apiURL).openConnection();
-            con.setRequestMethod("POST");
-            con.setRequestProperty("Authorization", "Bearer " + refreshAccessToken);
-            con.setDoOutput(true);
-            try (DataOutputStream wr = new DataOutputStream(con.getOutputStream())) {
-                wr.writeBytes(postParams);
-            }
-            responseCode = con.getResponseCode();
-        }
-
-        BufferedReader br = (responseCode == 200)
-                ? new BufferedReader(new InputStreamReader(con.getInputStream()))
-                : new BufferedReader(new InputStreamReader(con.getErrorStream()));
-
-        StringBuilder response = new StringBuilder();
-        String line;
-        while ((line = br.readLine()) != null) response.append(line);
-        br.close();
-
-        cafeTokenService.validationCountReset(managerInfo);
-        postingLogger.info("Post successful: menuId={}, title='{}', response={}", postBasicDto.getCafeId(), title, response);
-
-        return "T";
-    }
+//    public String managerPostArticle(ManagerInfo managerInfo, String accessToken, PostBasicDto postBasicDto, String title, String content) throws IOException {
+//        String apiURL = "https://openapi.naver.com/v1/cafe/" + postBasicDto.getCafeId() + "/menu/" + postBasicDto.getCafeBoardId() + "/articles";
+//
+//        HttpURLConnection con = (HttpURLConnection) new URL(apiURL).openConnection();
+//        con.setRequestMethod("POST");
+//        con.setRequestProperty("Authorization", "Bearer " + accessToken);
+//
+//        String subject = URLEncoder.encode(URLEncoder.encode(title, "UTF-8"), "MS949");
+//        String body = URLEncoder.encode(URLEncoder.encode(content, "UTF-8"), "MS949");
+//        String postParams = "subject=" + subject + "&content=" + body;
+//
+//        con.setDoOutput(true);
+//        try (DataOutputStream wr = new DataOutputStream(con.getOutputStream())) {
+//            wr.writeBytes(postParams);
+//        }
+//
+//        int responseCode = con.getResponseCode();
+//
+//        if (responseCode != 200) {
+//            String refreshAccessToken = cafeTokenService.managerRefreshAccessToken(managerInfo);
+//            if (refreshAccessToken == null) {
+//                int validationCount = managerInfo.getCafeValidationFailCount();
+//                cafeTokenService.managerValidationCountPlus(managerInfo, ++validationCount);
+//                log.warn("Posting canceled after retry: access token invalid (retry count: {})", validationCount);
+//                return "P-F001";
+//            }
+//
+//            con = (HttpURLConnection) new URL(apiURL).openConnection();
+//            con.setRequestMethod("POST");
+//            con.setRequestProperty("Authorization", "Bearer " + refreshAccessToken);
+//            con.setDoOutput(true);
+//            try (DataOutputStream wr = new DataOutputStream(con.getOutputStream())) {
+//                wr.writeBytes(postParams);
+//            }
+//            responseCode = con.getResponseCode();
+//        }
+//
+//        BufferedReader br = (responseCode == 200)
+//                ? new BufferedReader(new InputStreamReader(con.getInputStream()))
+//                : new BufferedReader(new InputStreamReader(con.getErrorStream()));
+//
+//        StringBuilder response = new StringBuilder();
+//        String line;
+//        while ((line = br.readLine()) != null) response.append(line);
+//        br.close();
+//
+//        cafeTokenService.validationCountReset(managerInfo);
+//        postingLogger.info("Post successful: menuId={}, title='{}', response={}", postBasicDto.getCafeId(), title, response);
+//
+//        return "T";
+//    }
 
     public boolean postHtmlArticle(SessionUser sessionUser, String accessToken, PostBasicDto postBasicDto) {
         String header = "Bearer " + accessToken;

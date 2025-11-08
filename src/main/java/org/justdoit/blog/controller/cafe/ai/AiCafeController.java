@@ -4,19 +4,15 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.justdoit.blog.config.auth.SessionUser;
 import org.justdoit.blog.dto.post.PostAiDto;
-import org.justdoit.blog.dto.post.PostBasicDto;
-import org.justdoit.blog.entity.cafe.CafePosting;
 import org.justdoit.blog.entity.cafe.ai.CafeAiPosting;
 import org.justdoit.blog.entity.cafe.ai.CafeAiPostingRepository;
 import org.justdoit.blog.entity.manager.ManagerInfo;
-import org.justdoit.blog.entity.manager.ManagerInfoRepository;
 import org.justdoit.blog.entity.user.CafeUser;
 import org.justdoit.blog.entity.user.CafeUserRepository;
 import org.justdoit.blog.service.cafe.CafeTokenService;
 import org.justdoit.blog.service.cafe.PostService;
 import org.justdoit.blog.service.s3.S3Service;
 import org.justdoit.blog.template.S3Prefix;
-import org.justdoit.blog.variable.GlobalVariables;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,14 +25,10 @@ import java.util.stream.Collectors;
 @RestController
 @RequiredArgsConstructor
 public class AiCafeController {
-    private final GlobalVariables globalVariables;
-
     private final PostService postService;
     private final CafeUserRepository userRepository;
     private final CafeTokenService cafeTokenService;
     private final S3Service s3Service;
-
-    private final ManagerInfoRepository managerInfoRepository;
 
     private final CafeAiPostingRepository cafeAiPostingRepository;
 
@@ -79,19 +71,9 @@ public class AiCafeController {
         boolean isPostSuccess;
         String result = "F";
 
-        if (cafeUser.isClientApiEnabled()) {
-            int validationCount = cafeUser.getCafeValidationFailCount();
-            if (validationCount > 5) return ResponseEntity.ok("C-F001");
-
-            accessToken = cafeTokenService.refreshAccessToken(cafeUser, sessionUser);
-        } else {
-            ManagerInfo managerInfo = managerInfoRepository.findById("default")
-                    .orElseThrow(() -> new IllegalStateException("ManagerInfo not found"));
-            int validationCount = managerInfo.getCafeValidationFailCount();
-            if (validationCount > 5) return ResponseEntity.ok("C-F001");
-
-            accessToken = cafeTokenService.managerRefreshAccessToken(managerInfo);
-        }
+        int validationCount = cafeUser.getCafeValidationFailCount();
+        if (validationCount > 5) return ResponseEntity.ok("C-F001");
+        accessToken = cafeTokenService.refreshAccessToken(cafeUser, sessionUser);
 
         if (accessToken == null) {
             return ResponseEntity.ok("C-F001");
@@ -123,11 +105,5 @@ public class AiCafeController {
 
         return ResponseEntity.ok(result);
     }
-//
-//    @PostMapping("/test")
-//    public Map<String,Object> retrieve(@RequestBody Map<String,Object> payload, @RequestBody SignUpDto signUpDto) {
-//        // AI 서버에서 받아온다. 제목과 내용을 -> 지금은 일단 테스트
-//        System.err.println("POST 요청 수신: " + payload);
-//        return Map.of("status","ok","received",payload);
-//    }
+
 }

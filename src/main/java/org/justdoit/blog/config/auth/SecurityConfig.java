@@ -39,7 +39,8 @@ public class SecurityConfig {
                                 "/",
                                 "/oauth/callback/**",
                                 "/test",
-                                "/csrf"
+                                "/csrf",
+                                "/etc/**"
 
                         ).permitAll() // 로그인 없이 접근 허용
                         .requestMatchers("/api/v1/**").hasAnyRole("MANAGER", "USER")

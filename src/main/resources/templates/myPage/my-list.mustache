@@ -1,0 +1,82 @@
+{{>layout/header}}
+    {{>layout/profileSidebar}}
+        <meta name="_csrf" content="{{_csrf_token}}"/>
+        <meta name="_csrf_header" content="{{_csrf_header}}"/>
+
+                        <div class="contents-right">
+                            <div class="row row-cols-3 row-md-cols-2 gutter-5 contents-list" style="margin-top: 0rem; margin-bottom: 0em; --th-gutter: 0;">
+                                <div class="contents-container container-md">
+                                    <div class="contents-inner">
+                                        <div class="form-group">
+                                            <form>
+                                                <div class="textset">
+                                                    <h2 class="h2 textset-tit">글 목록</h2>
+                                                </div>
+
+                                                <div class="form-box" style="margin-bottom: 3rem;">
+                                                    <div class="inputset">
+                                                        <a href="/feature/write/list" style="text-decoration: none; color: inherit;">
+                                                            <label for="signUpAuthCode" class="form-tit h6" style="margin-bottom: 1rem; cursor: pointer;">
+                                                                · AI 글쓰기 목록
+                                                            </label>
+                                                        </a>
+                                                        <span id="countdown"></span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-box" style="margin-bottom: 3rem;">
+                                                    <div class="inputset">
+                                                        <a href="/cafe/post/list" style="text-decoration: none; color: inherit;">
+                                                            <label for="signUpAuthCode" class="form-tit h6" style="margin-bottom: 1rem; cursor: pointer;">
+                                                                · Cafe 포스팅 목록
+                                                            </label>
+                                                        </a>
+                                                        <span id="countdown"></span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-box" style="margin-bottom: 3rem;">
+                                                    <div class="inputset">
+                                                        <a href="/cafe/ai/post/list" style="text-decoration: none; color: inherit;">
+                                                            <label for="signUpAuthCode" class="form-tit h6" style="margin-bottom: 1rem; cursor: pointer;">
+                                                                · AI Cafe 포스팅 목록
+                                                            </label>
+                                                        </a>
+                                                        <span id="countdown"></span>
+                                                    </div>
+                                                </div>
+
+<!--                                                <div class="form-box" style="margin-bottom: 3rem;">-->
+<!--                                                    <div class="inputset">-->
+<!--                                                        <a href="/myPage/scheduleSetting" style="text-decoration: none; color: inherit;">-->
+<!--                                                            <label for="signUpAuthCode" class="form-tit h6" style="margin-bottom: 1rem; cursor: pointer;">-->
+<!--                                                                · 예약 Cafe 포스팅 목록-->
+<!--                                                            </label>-->
+<!--                                                        </a>-->
+<!--                                                        <span id="countdown"></span>-->
+<!--                                                    </div>-->
+<!--                                                </div>-->
+
+
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="contents-dim"></div>
+        </div>
+
+    </div>
+</main>
+
+<script src="/js/user/subEmail.js"></script>
+<script src="/js/user/passwordUpdate.js"></script>
+<!--<script src="/js/user/clientCheck.js"></script>-->
+<!--<script src="/js/user/clientUpdate.js"></script>-->
+
+{{>layout/footer}}

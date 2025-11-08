@@ -73,6 +73,80 @@
                                         <div class="form-group">
 
                                             <form>
+
+                                                <div class="basic-N53" id="zBmewb4164" style="padding: 0 0 4rem 0;">
+                                                    <div class="contents-container container-md" style="padding: 0;">
+                                                        <div class="contents-inner">
+                                                            <div class="accordset accordset-qna accordset-plus">
+                                                                <div class="accordset-item">
+                                                                    <div class="accordset-header">
+                                                                        <button class="accordset-button btn" type="button">
+                                                                            <span class="h5 accordset-q">Cafe 정보 확인하기</span>
+
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class="accordset-body">
+                                                                        <div class="accordset-content">
+                                                                            <div class="form-box" style="margin: 3rem 0 5rem 0;">
+                                                                                <div class="inputset" style="margin-bottom: 2rem;">
+
+                                                                                    <label for="cafeBoardLink" class="form-tit h6" style="margin-bottom: 1rem;">카페 게시판 주소</label>  <span id="countdown"></span>
+                                                                                    <div style="display: flex; gap: 8px; align-items: center;">
+                                                                                        <input id="cafeBoardLink" type="text" class="inputset-input form-control" placeholder="게시할 카페의 주소를 입력해 주세요." />
+                                                                                        <button class="btnset btnset-primary btnset-block" type="button" id="checkCafeId" style="width: 30%; margin-top: 0; margin-left: 0;"> 확인 </button>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="inputset">
+                                                                                    <div style="display: flex;gap: 8px;align-items: center;">
+                                                                                        <div style="width: 100%">
+                                                                                            <label for="cafeId" class="checkset-label" style="margin-bottom: 1rem;">Cafe ID</label>
+                                                                                            <input type="text" id="cafeId" class="inputset-input form-control" value="" disabled />
+                                                                                        </div>
+
+                                                                                        <div style="width: 100%">
+                                                                                            <label for="cafeBoardId" class="checkset-label"style="margin-bottom: 1rem;" >Cafe 게시판 ID</label>
+                                                                                            <input type="text" id="cafeBoardId" class="inputset-input form-control" value="" disabled />
+                                                                                        </div>
+
+
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <script>
+document.getElementById("checkCafeId").addEventListener("click", function () {
+    const input = document.getElementById("cafeBoardLink").value.trim();
+    const cafeIdInput = document.getElementById("cafeId");
+    const cafeBoardIdInput = document.getElementById("cafeBoardId");
+
+    // cafes/뒤의 숫자 추출
+    const cafeIdMatch = input.match(/cafes\/(\d+)/);
+
+    // menus/뒤 숫자 또는 menuid=뒤 숫자 추출
+    const boardIdMatch = input.match(/menus\/(\d+)|menuid=(\d+)/);
+
+    if (cafeIdMatch && boardIdMatch) {
+        const cafeId = cafeIdMatch[1];
+        // menus/ 또는 menuid= 중 어느 쪽이 매칭됐는지에 따라 값 선택
+        const boardId = boardIdMatch[1] || boardIdMatch[2];
+
+        cafeIdInput.value = cafeId;
+        cafeBoardIdInput.value = boardId;
+    } else {
+        alert("유효한 카페 게시판 주소 형식이 아닙니다.");
+        cafeIdInput.value = "";
+        cafeBoardIdInput.value = "";
+    }
+});
+</script>
+
                                                 <div class="textset" style="margin-bottom: 0rem;">
                                                     <h2 class="h2 textset-tit">Cafe ID Template</h2>
                                                 </div>
@@ -167,7 +241,7 @@
             </div>
             <div class="contents-dim"></div>
         </div>
-`
+
     </div>
 </main>
 <script>

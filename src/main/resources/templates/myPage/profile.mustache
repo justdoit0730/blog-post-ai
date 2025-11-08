@@ -25,7 +25,7 @@
                                                                 </label>
                                                             <div>
                                                                 <img src="/resources/profile/black-circle-question-regular-full.svg" alt="N" style="height: 2.5rem; cursor: pointer;" data-bs-toggle="tooltip" data-bs-placement="right"
-                                                                     title="로그인에 사용되는 이메일은 변경이 불가능합니다. 수신을 위한 이메일 주소는 추가 및 변경할 수 있습니다." />
+                                                                     title="로그인에 사용되는 이메일은 변경이 불가능합니다. 수신, Naver Cafe 게시글 작성을 위한 이메일 주소는 추가 및 변경할 수 있습니다." />
                                                             </div>
                                                         </label>
                                                         <div style="display: flex; gap: 8px; align-items: center;">
@@ -40,7 +40,7 @@
                                                             <div class="form-check">
                                                                 <input class="form-check-input" type="radio" name="flexRadioDefault" id="subEmailUseCheck" {{#isSubEmailUsed}}checked{{/isSubEmailUsed}}>
                                                                 <label class="form-check-label" for="subEmailUseCheck">
-                                                                    추가 수신용 이메일
+                                                                    추가 이메일
                                                                 </label>
                                                             </div>
                                                             </label>
@@ -53,7 +53,7 @@
                                                 </div>
                                                 <div class="form-box" style="margin-bottom: 5rem;">
                                                     <div class="inputset">
-                                                        <label for="signUpAuthCode" class="form-tit h6" style="margin-bottom: 1rem;">추가 수신용 이메일 인증</label>  <span id="countdown"></span>
+                                                        <label for="signUpAuthCode" class="form-tit h6" style="margin-bottom: 1rem;">추가 이메일 인증</label>  <span id="countdown"></span>
                                                         <div style="display: flex; gap: 8px; align-items: center;">
                                                             <input id="signUpAuthCode" type="password" class="inputset-input form-control" placeholder="이메일에 전송된 인증문자를 입력해 주세요." {{#subEmailExists}} disabled {{/subEmailExists}}/>
                                                             <button class="btnset btnset-primary btnset-block" type="button" id="verifyAuthBtn" style="width: 30%; margin-top: 0; margin-left: 0;" {{#subEmailExists}} disabled {{/subEmailExists}}>인증문자 확인</button>

@@ -1,4 +1,18 @@
 document.getElementById('aiPostBtn').addEventListener('click', async function() {
+    if (clientValid === "N") {
+        const goSetting = confirm("현재 API가 인증되지 않아 카페에 글을 게시할 수 없습니다.\n설정하시겠습니까?");
+        if (goSetting) {
+            window.location.href = "/myPage/postingSetting";
+        }
+        return;
+    } else if (clientValid === "F") {
+        const goSetting = confirm("기존에 인증된 API가 만료되어 카페에 글을 게시하려면 재인증이 필요합니다.\n설정하시겠습니까?");
+        if (goSetting) {
+            window.location.href = "/myPage/postingSetting";
+        }
+        return;
+    }
+
     const csrfToken = document.querySelector('meta[name="_csrf"]').content;
     const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
 
@@ -11,11 +25,13 @@ document.getElementById('aiPostBtn').addEventListener('click', async function() 
     const prompt = document.getElementById("prompt").value.trim();
     const subject = document.getElementById("subject").value.trim();
     const title = document.getElementById("title").textContent.trim();
-
+    if (title === "") {
+        alert("제목을 입력하세요.");
+        return;
+    }
     const imgUrls = document.getElementById("imgUrls").dataset.value;
     let contentHtml = editor.getHTML();
 
-    console.log(contentHtml);
     var data = {
         cafeName: cafeName,
         cafeId: cafeId,

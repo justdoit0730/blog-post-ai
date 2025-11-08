@@ -70,7 +70,7 @@
                         </div>
 
                         <div class="form-btn" style="margin-bottom: 1rem; text-align: right;">
-                            <button class="btnset btnset-primary" type="button" id="aiPostTemplateUpdate">포스팅 템플릿 저장</button>
+                            <button class="btnset btnset-primary" type="button" id="aiPostTemplateUpdate">포스팅 템플릿 수정</button>
                         </div>
 
                         <div class="form-box">
@@ -131,26 +131,40 @@
 <script src="/resources/profile/toast/toastui-editor-all.min.js"></script>
 
 <script>
-    const title = `{{title}}`.trim();
-    const contentHtml = `{{{contentHtml}}}`;
+const clientValid = "{{clientValid}}";
 
-    if (title !== "" && contentHtml !== "") {
-        window.editor = new toastui.Editor({
-            el: document.querySelector('#editor'),
-            height: '70rem',
-            initialEditType: 'wysiwyg',
-            previewStyle: 'vertical',
-            initialValue: contentHtml
-        });
-        document.getElementById("writeSaveDiv").style.display = "block";
+document.addEventListener("DOMContentLoaded", function() {
+    if (clientValid === "N") {
+        const goSetting = confirm("현재 API가 인증되지 않아 카페에 글을 게시할 수 없습니다.\n설정하시겠습니까?");
+        if (goSetting) {
+            window.location.href = "/myPage/postingSetting";
+        }
+    } else if (clientValid === "F") {
+        const goSetting = confirm("기존에 인증된 API가 만료되어 카페에 글을 게시하려면 재인증이 필요합니다.\n설정하시겠습니까?");
+        if (goSetting) {
+            window.location.href = "/myPage/postingSetting";
+        }
     }
+});
+
+
+const title = `{{title}}`.trim();
+const contentHtml = `{{{contentHtml}}}`;
+
+if (title !== "" && contentHtml !== "") {
+    window.editor = new toastui.Editor({
+        el: document.querySelector('#editor'),
+        height: '70rem',
+        initialEditType: 'wysiwyg',
+        previewStyle: 'vertical',
+        initialValue: contentHtml
+    });
+    document.getElementById("writeSaveDiv").style.display = "block";
+}
 </script>
 <script src="/js/cafe/ai/post.js"></script>
 <script src="/js/cafe/ai/postRendering.js"></script>
 <script src="/js/cafe/ai/postGenerate.js"></script>
 <script src="/js/cafe/ai/aiPostTemplateUpdate.js"></script>
-<!--<script src="/js/feature/writeTemplateUpdate.js"></script>-->
-<!--<script src="/js/feature/writeSave.js"></script>-->
-
 
 {{>layout/footer}}

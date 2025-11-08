@@ -1,105 +1,194 @@
 {{>layout/header}}
 {{>layout/mypageSidebar}}
+<meta name="_csrf" content="{{_csrf_token}}"/>
+<meta name="_csrf_header" content="{{_csrf_header}}"/>
 <style>
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 10px;
-    }
-    th, td {
-      border: 1px solid #ccc;
-      padding: 6px;
-      text-align: center;
-    }
-    th {
-      background: #f8f8f8;
-    }
-    .small-col {
-      width: 60px;
-    }
-    .inactive {
-      opacity: 0.4;
-    }
-    .delete-btn {
-      background: red;
-      color: white;
-      border: none;
-      padding: 2px 6px;
-      cursor: pointer;
-    }
-    /* 요일 드롭다운 */
-    .day-dropdown {
-      position: relative;
-      display: inline-block;
-    }
-    .dropdown-toggle {
-      padding: 4px 8px;
-      cursor: pointer;
-      border: 1px solid #aaa;
-      background: #f9f9f9;
-    }
-    .dropdown-menu {
-      display: none;
-      position: absolute;
-      background: #fff;
-      border: 1px solid #ddd;
-      padding: 8px;
-      z-index: 100;
-    }
-    .dropdown-menu label {
-      display: block;
-    }
-  </style>
-              <div class="contents-right">
-                <div class="row row-cols-3 row-md-cols-2 gutter-5 contents-list" style="margin-top: 0rem; margin-bottom: 0em; --th-gutter: 0;">
-                    <div class="contents-container container-md">
-                        <div class="contents-inner" style="width: 100%; padding: 5rem 4rem; border-radius: 2rem; background: #f7f7fb;">
-                            <div class="form-group">
-                                <form>
-                                    <div class="textset">
-                                        <h2 class="h2 textset-tit">API Client 설정</h2>
-                                    </div>
-                                    <div class="form-box" style="margin-bottom: 1rem;">
-                                        <div class="inputset">
-                                            <label for="signUpLogin" class="form-tit h6" style="margin-bottom: 1rem;">AI 글 게시 설정</label>
-                                            <button id="addRowBtn" class="add-btn" type="button">행 추가</button>
-                                            <div style="display: flex; gap: 8px; align-items: center;">
-<!--                                                여기-->
+#tableIdDiv {
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  overflow-x: auto;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+#tableDiv {
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  overflow-x: auto;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.tableset-table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+
+.tableset-table th,
+.tableset-table td {
+  border: 1px solid #ccc;
+  overflow: hidden;
+  white-space: nowrap;
+  text-align: center;
+  padding: 6px;
+}
+
+.tableset-table thead tr {
+  border-bottom: 3px solid #666;
+}
+
+.tableset-table thead th {
+  background-color: #f7f7fb;
+  border-bottom: 3px solid #666;
+  text-align: center;
+  padding: 6px;
+  overflow: hidden;
+  white-space: nowrap;
+
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.tableset-table td:first-child,
+.tableset-table th:first-child {
+  border-left: none;
+}
+
+.tableset-table td:last-child,
+.tableset-table th:last-child {
+  border-right: none;
+}
+
+.inactive {
+  opacity: 0.4;
+}
+.delete-btn {
+  background: red;
+  color: white;
+  border: none;
+  padding: 2px 6px;
+  cursor: pointer;
+}
+/* 요일 드롭다운 */
+.day-dropdown {
+  position: relative;
+  display: inline-block;
+}
+.dropdown-toggle {
+  cursor: pointer;
+  background: #fff;
+}
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  background: #fff;
+  border: 1px solid #ddd;
+  padding: 8px;
+  z-index: 100;
+}
+.dropdown-menu label {
+  display: flex;
+  align-items: center;
+  gap: 6px;              /* 체크박스 오른쪽 여백 */
+  font-size: 14px;
+  cursor: pointer;
+  padding: 2px 4px;
+}
+
+.dropdown-menu label:hover {
+  background-color: #f3f3f3;
+  border-radius: 4px;
+}
+</style>
+<div class="contents-right">
+    <div class="row row-cols-3 row-md-cols-2 gutter-5 contents-list" style="margin-top: 0rem; margin-bottom: 0em; --th-gutter: 0;">
+        <div class="contents-container container-md">
+            <div class="contents-inner">
+                <div class="form-group">
+
+                    <form>
+                        <div class="textset" style="margin-bottom: 0rem;">
+                            <h2 class="h2 textset-tit">예약 포스팅 Template</h2>
+                        </div>
+                        <div class="form-box" style="margin-bottom: 4rem;">
+                            <div class="inputset">
+                                <div class="form-btn" style="margin-bottom: 2rem; text-align: right;">
+                                    <button class="btnset btnset-primary btnset-block" type="button" id="addIdRowBtn" style="width: 10%;">추가</button>
+                                </div>
+                                <div id="tableIdDiv" style="display: block; overflow-x: auto; align-items: center;" data-template='cafeIdTemplate}}}'>
+                                    <table class="tableset-table table" id="dynamicIdTable" style="min-width: 800px;">
+
+                                        <colgroup>
+                                            <col style="width: 5%;" />   <!-- 사용 여부 -->
+                                            <col style="width: 5%;" />   <!-- No -->
+                                            <col style="width: 10%;" />  <!-- 태그 -->
+                                            <col style="width: 10%;" />  <!-- 카페 ID -->
+                                            <col style="width: 10%;" />  <!-- 카페 게시판 ID -->
+                                            <col style="width: 15%;" />   <!-- 주제 -->
+                                            <col style="width: 30%;" />   <!-- 요청 사항 -->
+                                            <col style="width: 7%;" />   <!-- 요일 -->
+                                            <col style="width: 14%;" />   <!-- 시간 -->
+                                            <col style="width: 5%;" />   <!-- 삭제 -->
+                                        </colgroup>
+                                        <thead class="thead-light thead-border-top">
+                                        <tr>
+                                            <th scope="col" class="p2" style="background-color: black; color: white;">사용</th>
+                                            <th scope="col" class="p2" style="background-color: black; color: white;">No</th>
+                                            <th scope="col" class="p2" style="background-color: black; color: white;">태그</th>
+                                            <th scope="col" class="p2" style="background-color: black; color: white;">카페 ID</th>
+                                            <th scope="col" class="p2" style="background-color: black; color: white;">게시판 ID</th>
+                                            <th scope="col" class="p2" style="background-color: black; color: white;">주제</th>
+                                            <th scope="col" class="p2" style="background-color: black; color: white;">요청 사항</th>
+                                            <th scope="col" class="p2" style="background-color: black; color: white;">요일</th>
+                                            <th scope="col" class="p2" style="background-color: black; color: white;">시간</th>
+                                            <th scope="col" class="p2" style="background-color: black; color: white;">삭제</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-btn" style="text-align: right; margin-bottom: 3rem;">
+                            <button class="btnset btnset-primary" type="button" id="cafeIdTemplateSave">저장하기</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+</div>
+<div class="contents-dim"></div>
+</div>
+
+</div>
+</main>
 
 
+<script>
+  const tableIdBody = document.querySelector("#dynamicIdTable tbody");
+  const addIdRowBtn = document.getElementById("addIdRowBtn");
 
-
-                                                <table id="dynamicTable">
-                                                    <thead>
-                                                    <tr>
-                                                        <th class="small-col">사용 여부</th>
-                                                        <th class="small-col">No</th>
-                                                        <th class="small-col">카페 게시판 id</th>
-                                                        <th>게시판 이름</th>
-                                                        <th>주제</th>
-                                                        <th>요일</th>
-                                                        <th>시간</th>
-                                                        <th class="small-col">삭제</th>
-                                                    </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                    </tbody>
-                                                </table>
-
-                                                <script>
-  const tableBody = document.querySelector("#dynamicTable tbody");
-  const addRowBtn = document.getElementById("addRowBtn");
-
-  // ✅ 번호 갱신
-  function updateRowNumbers() {
-    [...tableBody.rows].forEach((row, index) => {
+  function updateIdRowNumbers() {
+    [...tableIdBody.rows].forEach((row, index) => {
       row.cells[1].textContent = index + 1;
     });
   }
 
-  // ✅ 행 추가
-  addRowBtn.addEventListener("click", () => {
-    const row = tableBody.insertRow();
+  addIdRowBtn.addEventListener("click", () => {
+    const row = tableIdBody.insertRow();
 
     // 사용 여부
     const useCell = row.insertCell(0);
@@ -113,36 +202,36 @@
 
     // No
     const noCell = row.insertCell(1);
-    noCell.textContent = tableBody.rows.length;
+    noCell.textContent = tableIdBody.rows.length;
 
-    // 카페 게시판 id
-    const idCell = row.insertCell(2);
-    const idInput = document.createElement("input");
-    idInput.type = "text";
-    idCell.appendChild(idInput);
+    // 태그
+    createEditableCell(row, "");
 
-    // 게시판 이름
-    const nameCell = row.insertCell(3);
-    const nameInput = document.createElement("input");
-    nameInput.type = "text";
-    nameCell.appendChild(nameInput);
+    // 카페 ID
+    createEditableCell(row, "");
+
+    // 카페 게시판 ID
+    createEditableCell(row, "");
 
     // 주제
-    const subjectCell = row.insertCell(4);
-    const subjectInput = document.createElement("input");
-    subjectInput.type = "text";
-    subjectCell.appendChild(subjectInput);
+    createEditableCell(row, "");
 
-    // 요일 (드롭다운 체크박스)
-    const dayCell = row.insertCell(5);
+    // 요청 사항
+    createEditableCell(row, "");
+
+    // 요일 드롭다운
+    const dayCell = row.insertCell(7);
     const dayDropdown = document.createElement("div");
     dayDropdown.className = "day-dropdown";
+
     const toggleBtn = document.createElement("button");
     toggleBtn.type = "button";
-    toggleBtn.textContent = "요일 선택 ▼";
+    toggleBtn.textContent = "선택 ▼";
     toggleBtn.className = "dropdown-toggle";
+
     const menu = document.createElement("div");
     menu.className = "dropdown-menu";
+
     ["월", "화", "수", "목", "금", "토", "일"].forEach(day => {
       const label = document.createElement("label");
       const cb = document.createElement("input");
@@ -152,57 +241,67 @@
       label.appendChild(document.createTextNode(day));
       menu.appendChild(label);
     });
-    toggleBtn.addEventListener("click", () => {
-      menu.style.display = menu.style.display === "block" ? "none" : "block";
+
+    toggleBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+
+      document.querySelectorAll(".dropdown-menu").forEach(m => (m.style.display = "none"));
+
+      if (menu.style.display === "block") {
+        menu.style.display = "none";
+      } else {
+        const rect = toggleBtn.getBoundingClientRect();
+        document.body.appendChild(menu); // body로 옮겨 테이블 위로 표시
+        menu.style.position = "absolute";
+        menu.style.left = `${rect.left + window.scrollX}px`;
+        menu.style.top = `${rect.bottom + window.scrollY}px`;
+        menu.style.display = "block";
+      }
     });
+
+    document.addEventListener("click", (e) => {
+      // 드롭다운 내부나 토글 버튼 클릭이면 무시
+      if (e.target.closest(".dropdown-menu") || e.target.classList.contains("dropdown-toggle")) return;
+      document.querySelectorAll(".dropdown-menu").forEach(m => (m.style.display = "none"));
+    });
+
     dayDropdown.appendChild(toggleBtn);
     dayDropdown.appendChild(menu);
     dayCell.appendChild(dayDropdown);
 
-    // 시간 (초단위 입력)
-    const timeCell = row.insertCell(6);
+    // 시간 입력 (초단위 가능)
+    const timeCell = row.insertCell(8);
     const timeInput = document.createElement("input");
     timeInput.type = "time";
-    timeInput.step = "1"; // 초 단위
-    const now = new Date();
-    timeInput.min = now.toISOString().slice(11,19); // 현재 이후
+    timeInput.step = "1";
     timeCell.appendChild(timeInput);
 
-    // 삭제
-    const deleteCell = row.insertCell(7);
+    // 삭제 버튼
+    const deleteCell = row.insertCell();
     const deleteBtn = document.createElement("button");
-    deleteBtn.textContent = "X";
     deleteBtn.className = "delete-btn";
     deleteBtn.type = "button";
+    deleteBtn.style.background = "white";
+
+    const img = document.createElement("img");
+    img.src = "/resources/profile/delete.svg";
+    img.alt = "삭제";
+    img.style.width = "2rem";
+    img.style.objectFit = "contain";
+
+    deleteBtn.appendChild(img);
+
+
+
     deleteBtn.addEventListener("click", () => {
       row.remove();
-      updateRowNumbers();
+      updateIdRowNumbers();
     });
     deleteCell.appendChild(deleteBtn);
   });
 </script>
-<!--                                                여기-->
 
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-btn" style="margin-bottom: 3rem;">
-                                        <button class="btnset btnset btnset-secondary btnset-block btnset-block" type="button" id="userRegister">저장</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="contents-dim"></div>
-      </div>
-    </div>
-  </main>
-
-<script src="/js/user/emailCheck.js"></script>
+<script src="/js/myPage/cafeTemplateSave.js"></script>
+<script src="/js/myPage/cafeIdTemplateRendering.js"></script>
+<script src="/js/myPage/cafePostingTemplateRendering.js"></script>
 {{>layout/footer}}

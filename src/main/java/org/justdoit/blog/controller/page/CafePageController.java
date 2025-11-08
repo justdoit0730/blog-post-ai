@@ -10,7 +10,6 @@ import org.justdoit.blog.service.s3.S3Service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +23,6 @@ import java.util.*;
 public class CafePageController {
     private final CafePostingRepository cafePostingRepository;
     private final HttpSession httpSession;
-    private final S3Service s3Service;
     private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd").withZone(ZoneId.systemDefault());
 
     @GetMapping("/cafe/post")
@@ -35,6 +33,8 @@ public class CafePageController {
         model.addAttribute("title", session.getWriteTitle());
         model.addAttribute("content", session.getWriteContent());
         model.addAttribute("imgUrls", session.getWriteImgUrls());
+
+        model.addAttribute("clientValid", (session.getCafeClientId() == null || !session.isClientApiEnabled()) ? "N" : (session.getCafeRefreshToken() == null ? "F" : "T"));
         return "cafe/post";
     }
 
