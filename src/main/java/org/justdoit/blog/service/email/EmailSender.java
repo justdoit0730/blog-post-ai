@@ -3,6 +3,7 @@ package org.justdoit.blog.service.email;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.justdoit.blog.config.auth.SessionUser;
+import org.justdoit.blog.dto.community.InquiryDto;
 import org.justdoit.blog.variable.GlobalVariables;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
@@ -11,25 +12,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class EmailSender {
-//
     private final GlobalVariables globalVariables;
-
-    public void sendToManagerEmail(String managerSendEmail, String subject, String content) {
-        String email = managerSendEmail;
-        String title = "[AutoCafeWriter] : ";
-        String basicContent = "Test 입니다. ";
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(email);
-        message.setSubject(title + subject);
-        message.setText(basicContent + content);
-
-        try {
-            globalVariables.M_SENDER.send(message);
-        } catch (Exception e) {
-
-        }
-        System.out.println("이메일 전송 완료");
-    }
 
     public void sendEmail(SessionUser sessionUser, String subject, String content) {
         String email = sessionUser.getReceiveEmail().isEmpty() ? sessionUser.getEmail() : sessionUser.getReceiveEmail();
@@ -80,6 +63,40 @@ public class EmailSender {
         }
         return true;
     }
+
+    // 문의사항
+
+    public boolean inquiryEmail(InquiryDto inquiryDto) {
+        String title = "[AutoCafeWriter] 문의 사항 : ";
+        String basicContent = "문의 Email : " + inquiryDto.getInquiryEmail();
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(globalVariables.SEND_EMAIL);
+        message.setSubject(title + inquiryDto.getInquiryTitle());
+        message.setText(basicContent + inquiryDto.getInquiryDetails());
+
+        try {
+            globalVariables.M_SENDER.send(message);
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
+
+//    public boolean inquiryEmail(String inquiryEmail, String inquiryTitle, String inquiryDetails) {
+//        String title = "[AutoCafeWriter] 문의 사항 : ";
+//        String basicContent = "문의 Email : " + inquiryEmail;
+//        SimpleMailMessage message = new SimpleMailMessage();
+//        message.setTo(globalVariables.SEND_EMAIL);
+//        message.setSubject(title + inquiryTitle);
+//        message.setText(basicContent + inquiryDetails);
+//
+//        try {
+//            globalVariables.M_SENDER.send(message);
+//        } catch (Exception e) {
+//            return false;
+//        }
+//        return true;
+//    }
 
 }
 

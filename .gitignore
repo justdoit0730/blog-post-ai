@@ -9,3 +9,4 @@ application.yml
 # Project exclude paths
 /build/
 /build/classes/java/main/
+/src/main/resources/static/resources/
