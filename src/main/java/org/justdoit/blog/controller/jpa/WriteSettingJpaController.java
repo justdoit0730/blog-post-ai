@@ -65,20 +65,6 @@ public class WriteSettingJpaController {
         return ResponseEntity.ok(result);
     }
 
-
-//    @PostMapping("/write/template/update")
-//    public ResponseEntity<String> writeTemplateUpdate(HttpSession session, @RequestBody AiWriteTemplateDto dto) throws JsonProcessingException {
-//        SessionUser sessionUser = (SessionUser) session.getAttribute("user");
-//        return ResponseEntity.ok(aiWriteJpaService.writeTemplateUpdate(sessionUser, dto));
-//    }
-//
-//    @PostMapping("/cafe/ai/template/update")
-//    public ResponseEntity<String> postTemplateUpdate(HttpSession session, @RequestBody AiPostTemplateDto dto) throws JsonProcessingException {
-//        SessionUser sessionUser = (SessionUser) session.getAttribute("user");
-//        return ResponseEntity.ok(aiWriteJpaService.aiPostTemplateUpdate(sessionUser, dto));
-//    }
-
-
     // AI 글쓰기 페이지에서 템플릿 업데이트
     @PostMapping("/write/template/update")
     public ResponseEntity<String> writeTemplateUpdate(HttpSession session, @RequestBody AiWriteTemplateDto aiWriteTemplateDto) throws JsonProcessingException {

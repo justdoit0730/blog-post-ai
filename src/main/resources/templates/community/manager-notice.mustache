@@ -1,0 +1,183 @@
+{{>layout/header}}
+{{>community/community-sidebar}}
+<meta name="_csrf" content="{{_csrf_token}}"/>
+<meta name="_csrf_header" content="{{_csrf_header}}"/>
+<style>
+.writeRenderingContent,
+.writeRenderingContent * {
+  font-size: large !important;
+  line-height: 2 !important;
+}
+</style>
+<div class="contents-right">
+    <div class="row row-cols-3 row-md-cols-2 gutter-5 contents-list" style="margin-top: 0rem; margin-bottom: 0em; --th-gutter: 0;">
+        <div class="contents-container container-md" style="padding: 0">
+            <div class="contents-inner">
+                <div class="form-group">
+                    <form>
+                        <section class="campland-N13" id="wVMf1395as" style="padding-top: 0rem;">
+                            <div class="contents-container container-md" style="padding: 0">
+                                <div class="contents-inner">
+                                    <div class="textset" style="margin-bottom: 4rem;">
+                                        <h2 class="textset-tit h6" style="font-size: 3.5rem">공지사항 관리</h2>
+                                        <p class="textset-desc p2"><span>Manager Page</span></p>
+                                    </div>
+                                </div>
+                                <!-- 공지사항 글 쓰기 -->
+                                <div class="contents-inner">
+                                    <div class="form-group">
+                                        <form>
+                                            <div class="textset">
+                                                <h2 class="h2 textset-tit" style="font-size: xx-large;">공지사항 작성</h2>
+                                            </div>
+
+                                            <div class="form-box" style="margin-bottom: 4rem;">
+                                                <div class="inputset">
+                                                    <label class="form-tit h6" style="margin-bottom: 1rem; display: flex; gap: 8px;">주제</label>
+
+                                                    <div style="display: flex; gap: 8px; align-items: center;">
+                                                        <div class="selectset">
+                                                            <div class="selectset-area">
+                                                                <button class="selectset-toggle btn" type="button">
+                                                                    <span id="selectNoticeSubject">공지사항</span>
+                                                                </button>
+                                                                <ul class="selectset-list">
+                                                                    <li class="selectset-item">
+                                                                        <button id="notice" class="selectset-link btn" type="button" data-value="1">
+                                                                            <span>공지사항</span>
+                                                                        </button>
+                                                                    </li>
+                                                                    <li class="selectset-item">
+                                                                        <button id="patchNote" class="selectset-link btn" type="button" data-value="2">
+                                                                            <span>패치노트</span>
+                                                                        </button>
+                                                                    </li>
+                                                                    <li class="selectset-item">
+                                                                        <button id="maintenanceNotice" class="selectset-link btn" type="button" data-value="3">
+                                                                            <span>점검 안내</span>
+                                                                        </button>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-box" style="margin-bottom: 4rem">
+                                                <div class="inputset inputset-line">
+                                                    <label for="noticeTitle" class="form-tit h6">제목 <span>*</span>
+                                                    </label>
+                                                    <input id="noticeTitle" type="text" class="inputset-input form-control" placeholder="주제를 입력해주세요." required="" />
+                                                </div>
+                                            </div>
+                                            <div class="form-box" style="margin-bottom: 4rem">
+                                                <div class="inputset inputset-line">
+                                                    <label for="noticeContent" class="form-tit h6" style="margin-bottom: 2rem;">공지사항 내용
+                                                    </label>
+                                                    <textarea id="noticeContent" name="noticeContent" class="inputset-textarea form-control" placeholder="요청 사항을 입력해주세요." style="height: 15rem;" value=""></textarea>
+                                                    <span class="inputset-count" style="display: none">0</span>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-btn" style="margin-bottom: 3rem; text-align: right;">
+                                                <button class="btnset btnset-primary btnset-block" type="button" id="noticeWriteBtn" style="width: 10rem;">게시</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div style="border: 1px solid #ccc; margin: 5rem 0 5rem 0;"></div>
+                                <!-- 공지사항 글 목록(삭제 가능) -->
+                                <div class="contents-inner">
+                                    <div class="textset">
+                                        <h2 class="h2 textset-tit" style="font-size: xx-large;">공지사항 목록</h2>
+                                    </div>
+                                    <div class="title-area">
+                                        <span class="p2">총 {{count}}개의 게시물이 있습니다</span>
+                                    </div>
+                                    <div class="tableset tableset-fract">
+                                        <table class="tableset-table table" style="text-align: center; margin-bottom: 5rem;">
+                                            <colgroup>
+                                                <col style="width: 10%;"/>
+                                                <col style="width: 10%;"/>
+                                                <col style="width: 45%;"/>
+                                                <col style="width: 15%;"/>
+                                                <col style="width: 10%;"/>
+                                            </colgroup>
+                                            <thead class="thead-light thead-border-top">
+                                            <tr>
+                                                <th scope="col" class="p2">NO</th>
+                                                <th scope="col" class="p2">주제</th>
+                                                <th scope="col" class="p2">제목</th>
+                                                <th scope="col" class="p2">작성일</th>
+                                                <th scope="col" class="p2">삭제</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            {{#notice}}
+                                                <tr>
+                                                    <td>{{no}}
+                                                        <p id="id_{{no}}" data-value="{{id}}" style="display:none"></p>
+                                                    </td>
+                                                    <td>
+                                                        <a href="/community/notice/{{id}}">
+                                                            <span>{{subject}}</span>
+                                                        </a>
+                                                    </td>
+                                                    <td>
+                                                        <a href="/community/notice/{{id}}">
+                                                            <span>{{title}}</span>
+                                                        </a>
+                                                    </td>
+                                                    <td>{{date}}</td>
+                                                    <td>
+                                                        <a href="javascript:void(0)" style="display:flex;justify-content:center;align-items:center;height:2.5rem;">
+                                                            <img class="delete-btn"  src="/resources/profile/delete.svg" data-id="{{id}}" style="width:2rem;object-fit:contain;">
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            {{/notice}}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <nav class="pagiset pagiset-circ">
+                                        <div class="pagiset-ctrl">
+                                            <a class="pagiset-link pagiset-first" href="/feature/write/list?page=1"></a>
+                                        </div>
+                                        <div class="pagiset-ctrl">
+                                            <a class="pagiset-link pagiset-prev" href="/feature/write/list?page={{prevPage}}"></a>
+                                        </div>
+                                        <div class="pagiset-list">
+                                            {{#pages}}
+                                                <a class="pagiset-link {{#isCurrent}}active-fill{{/isCurrent}}" href="/feature/write/list?page={{num}}">{{num}}</a>
+                                            {{/pages}}
+                                        </div>
+                                        <div class="pagiset-ctrl">
+                                            <a class="pagiset-link pagiset-next" href="/feature/write/list?page={{nextPage}}"></a>
+                                        </div>
+                                        <div class="pagiset-ctrl">
+                                            <a class="pagiset-link pagiset-last" href="/feature/write/list?page={{totalPages}}"></a>
+                                        </div>
+                                    </nav>
+                                </div>
+
+                            </div>
+                        </section>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+</div>
+</div>
+</div>
+<div class="contents-dim"></div>
+</div>
+
+</div>
+</main>
+
+<script src="/js/etc/notice.js"></script>
+{{>layout/footer}}

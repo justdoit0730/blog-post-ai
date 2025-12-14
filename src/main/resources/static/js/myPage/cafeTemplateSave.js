@@ -28,7 +28,6 @@ document.getElementById('cafeIdTemplateSave').addEventListener('click', function
         });
     }
     const templateJson = JSON.stringify(templates);
-    console.log(templateJson);
 
     const csrfToken = document.querySelector('meta[name="_csrf"]').content;
     const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
@@ -89,7 +88,6 @@ document.getElementById('cafePostingTemplateSave').addEventListener('click', fun
         });
     }
     const templateJson = JSON.stringify(templates);
-    console.log(templateJson);
 
     const csrfToken = document.querySelector('meta[name="_csrf"]').content;
     const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;

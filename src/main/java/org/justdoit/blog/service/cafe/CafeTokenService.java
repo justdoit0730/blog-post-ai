@@ -4,12 +4,9 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.justdoit.blog.config.auth.SessionUser;
-import org.justdoit.blog.entity.manager.ManagerInfo;
 import org.justdoit.blog.entity.user.CafeUser;
 import org.justdoit.blog.service.email.EmailSender;
-import org.justdoit.blog.template.EmailTemplate;
 import org.justdoit.blog.utils.CryptUtils;
-import org.justdoit.blog.variable.GlobalVariables;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -18,7 +15,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.time.Instant;
-import java.time.LocalDateTime;
 
 @Slf4j
 @Service
@@ -27,16 +23,11 @@ public class CafeTokenService {
     private final CryptUtils cryptUtils;
     private final EmailSender emailSender;
 
-//    public String getAccessToken(CafeUser cafeUser, SessionUser sessionUser) throws IOException {
-//        if (sessionUser.getCafeRefreshToken() == null || sessionUser.getCafeRefreshToken().isEmpty()) {
-//            int validationCount = sessionUser.getCafeValidationFailCount();
-//            validationCountPlus(cafeUser, ++validationCount);
-//            return "C-F001"; // 현재 로그인한 유저 email 에 대해 회원정보(cafe_user) 결과 중 refreshToken 이 없는 경우 -> session 에 횟수 추가
-//        }
-//        return refreshAccessToken(cafeUser, sessionUser);
-//    }
-
     public String refreshAccessToken(CafeUser cafeUser, SessionUser sessionUser) throws IOException {
+        if (sessionUser.getCafeTokenExpiresAt() > Instant.now().getEpochSecond()) {
+            return sessionUser.getCafeAccessToken();
+        }
+
         String clientId = cafeUser.getCafeClientId();
         String clientSecret = cafeUser.getCafeClientSecret();
         String refreshToken = cafeUser.getCafeRefreshToken();
@@ -66,21 +57,20 @@ public class CafeTokenService {
             String expiresIn = result.split("\"expires_in\":\"")[1].split("\"")[0];
             long expiresAt = Instant.now().getEpochSecond() + Long.parseLong(expiresIn);
 
-//            sessionUser.setAccessToken(accessToken);
-//            sessionUser.setAccessTokenExpiresAt(LocalDateTime.now());
-//            sessionUser.setAccessTokenValidation(true);
             cafeUser.setClientApiEnabled(true);
             log.info("Successfully obtained Access Token. Valid: {}, expires at: {}", accessToken != null, expiresAt);
+
+            sessionUser.setCafeAccessToken(accessToken);
+            sessionUser.setCafeTokenExpiresAt(expiresAt);
 
             return accessToken;
         } catch (Exception e) {
             int validationCount = cafeUser.getCafeValidationFailCount();
             validationCountPlus(cafeUser, ++validationCount);
-//            sessionUser.setAccessTokenValidation(false);
+
             cafeUser.setClientApiEnabled(false);
             log.warn("Failed to obtain Access Token using Refresh Token (retry count: {}).}", validationCount);
-            EmailTemplate template = EmailTemplate.REFRESH_TOKEN_FAIL;
-            emailSender.sendEmail(sessionUser, template.getSubject(), template.getContent());
+            emailSender.refreshTokenFailSendEmail(sessionUser);
             return null;
         }
     }

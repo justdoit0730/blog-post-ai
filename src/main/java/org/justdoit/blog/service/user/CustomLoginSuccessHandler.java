@@ -1,6 +1,8 @@
 package org.justdoit.blog.service.user;
 
 import com.theokanning.openai.service.OpenAiService;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -17,10 +19,12 @@ import org.justdoit.blog.entity.cafe.CafePostingTemplateRepository;
 import org.justdoit.blog.entity.user.CafeUser;
 import org.justdoit.blog.entity.user.CafeUserRepository;
 import org.justdoit.blog.service.s3.S3Service;
+import org.justdoit.blog.template.Role;
 import org.justdoit.blog.template.S3Prefix;
 import org.justdoit.blog.utils.CryptUtils;
 import org.justdoit.blog.variable.GlobalVariables;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
@@ -48,10 +52,28 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request,
                                         HttpServletResponse response,
-                                        Authentication authentication) throws IOException {
+                                        Authentication authentication) throws IOException, ServletException {
         String email = authentication.getName();
         CafeUser cafeUser = userRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalStateException("User not found"));
+
+        if (cafeUser.getRole().equals(Role.BLACK_LIST)) {
+            HttpSession session = request.getSession(false);
+            if (session != null) {
+                session.invalidate();
+            }
+
+            SecurityContextHolder.clearContext();
+
+            Cookie cookie = new Cookie("JSESSIONID", null);
+            cookie.setPath("/");
+            cookie.setHttpOnly(true);
+            cookie.setMaxAge(0);
+            response.addCookie(cookie);
+
+            response.sendRedirect("/black");
+            return;
+        }
 
         // AI 글쓰기 옵션 기본 세팅
         AiWriteSetting aiWriteSetting;
@@ -144,6 +166,20 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
         s3Service.cleanS3CacheImage(sessionUser, S3Prefix.POST_CACHE.getPrefix());
         s3Service.cleanS3CacheImage(sessionUser, S3Prefix.WRITE_CACHE.getPrefix());
 
+        String rememberMe = request.getParameter("rememberMe");
+        if ("on".equals(rememberMe)) {
+            Cookie emailCookie = new Cookie("REMEMBERED_EMAIL", email);
+            emailCookie.setPath("/");
+            emailCookie.setMaxAge(60 * 60 * 24 * 30);
+            response.addCookie(emailCookie);
+        } else {
+            Cookie emailCookie = new Cookie("REMEMBERED_EMAIL", null);
+            emailCookie.setPath("/");
+            emailCookie.setMaxAge(0);
+            response.addCookie(emailCookie);
+        }
+
+//        request.getRequestDispatcher("/");
         response.sendRedirect("/");
     }
 }

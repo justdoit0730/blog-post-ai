@@ -8,13 +8,12 @@ import org.justdoit.blog.dto.ai.write.AiWriteSaveDto;
 import org.justdoit.blog.dto.post.PostAiDto;
 import org.justdoit.blog.variable.GlobalVariables;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.*;
 
 import java.util.*;
-
-import static org.apache.tomcat.util.codec.binary.Base64.decodeBase64;
 
 @Service
 @RequiredArgsConstructor
@@ -100,22 +99,20 @@ public class S3Service {
         aiWriteSaveDto.setFullContent(updatedContent);
     }
 
-    public List<String> uploadImages(SessionUser sessionUser, List<String> base64Images, String format) {
-        System.out.println(format);
+    public List<String> uploadImages(SessionUser sessionUser, MultipartFile[] files, String format) {
         S3Client s3Client = globalVariables.s3Client;
         String bucketName = globalVariables.S3_BUCKET_NAME;
         String email = sessionUser.getEmail();
         List<String> presSignedUrls = new ArrayList<>();
 
-        for (String base64Image : base64Images) {
-            if (base64Image.contains(",")) {
-                base64Image = base64Image.split(",")[1];
-            }
+        if (files == null || files.length == 0) {
+            return presSignedUrls;
+        }
 
-            base64Image = base64Image.replaceAll("\\s", "");
+        for (MultipartFile file : files) {
             try {
-                byte[] imageBytes = decodeBase64(base64Image);
-                String key = String.format("images/%s/%s/%d.jpg", email, format, System.currentTimeMillis());
+                byte[] imageBytes = file.getBytes();
+                String key = String.format("images/%s/%s/%d_%s", email, format, System.currentTimeMillis(), file.getOriginalFilename());
 
                 PutObjectRequest putReq = PutObjectRequest.builder()
                         .bucket(bucketName)
@@ -129,6 +126,7 @@ public class S3Service {
                 e.printStackTrace();
             }
         }
+
         sessionUser.setWriteImgUrls(presSignedUrls);
         return presSignedUrls;
     }
@@ -162,9 +160,7 @@ public class S3Service {
                     .build();
 
             s3Client.deleteObjects(deleteReq);
-            System.out.println("삭제 완료 파일 수: " + objectsToDelete.size());
-        } else {
-            System.out.println("삭제할 파일 없음");
+
         }
     }
 
@@ -186,7 +182,6 @@ public class S3Service {
                 .build();
 
         s3Client.deleteObjects(deleteReq);
-        System.out.println("총 " + objectsToDelete.size() + "개 파일 삭제 완료");
     }
 
     // 계정 탈퇴 시 이메일 디렉터리 삭제
@@ -205,7 +200,6 @@ public class S3Service {
         ListObjectsV2Response listRes = s3Client.listObjectsV2(listReq);
 
         if (listRes.contents().isEmpty()) {
-            System.out.println("삭제할 파일 없음: " + prefix);
             return;
         }
 
@@ -218,7 +212,6 @@ public class S3Service {
                 .delete(Delete.builder().objects(toDelete).build())
                 .build();
         s3Client.deleteObjects(delReq);
-        System.out.println("디렉터리 '" + prefix + "' 내 파일 " + toDelete.size() + "개 삭제 완료");
     }
 
 }

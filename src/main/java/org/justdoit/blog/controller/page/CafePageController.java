@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.justdoit.blog.config.auth.SessionUser;
 import org.justdoit.blog.entity.cafe.CafePosting;
 import org.justdoit.blog.entity.cafe.CafePostingRepository;
-import org.justdoit.blog.service.s3.S3Service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;

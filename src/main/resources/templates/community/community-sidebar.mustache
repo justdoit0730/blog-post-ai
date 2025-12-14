@@ -3,7 +3,7 @@
         <section class="butti-N10" id="Rymf138FGh" style="height: 8.2rem;">
         </section>
         <div class="basic-N50" id="AKMF137D57">
-            <div class="contents-container container-md" style="max-width:calc(1280px + 40rem);">
+            <div class="contents-container container-md">
                 <div class="contents-inner">
                     <div class="textset">
                         <h2 class="h2 textset-tit">Community</h2>
@@ -23,20 +23,29 @@
                                 <div class="accordset accordset-plus">
                                     <div class="accordset-item">
                                         <div class="accordset-header-content">
-                                            <button class="accordset-button btn" type="button" onclick="location.href='/feature/write'">
+                                            <button class="accordset-button btn" type="button" onclick="location.href='/etc/community/notice'">
                                                 <span class="p1">공지사항</span>
                                             </button>
                                         </div>
                                     </div>
 
+                                    {{#isManager}}
+                                        <div class="accordset-item">
+                                            <div class="accordset-header-content">
+                                                <button class="accordset-button btn" type="button" onclick="location.href='/manager/notice'">
+                                                    <span class="p1">공지사항 관리</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    {{/isManager}}
+
                                     <div class="accordset-item">
                                         <div class="accordset-header-content">
-                                            <button class="accordset-button btn" type="button" onclick="location.href='/feature/write'">
+                                            <button class="accordset-button btn" type="button" onclick="location.href='/etc/community/inquiry'">
                                                 <span class="p1">이용문의</span>
                                             </button>
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
                         </div>

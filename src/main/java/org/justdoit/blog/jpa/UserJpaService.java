@@ -53,9 +53,8 @@ public class UserJpaService implements UserDetailsService {
         CafeUser cafeUser = CafeUser.builder()
                 .email(session.getAttribute("email").toString())
                 .password(passwordEncoder.encode(signUpDto.getPassword()))
-//                .platform("naver")
                 .isEmailPrivacyAgreed(true)
-                .isClientPrivacyAgreed(true)
+                .isClientPrivacyAgreed(false)
                 .role(session.getAttribute("email").toString().equals(globalVariables.MAIN_EMAIL) ? Role.MANAGER : Role.USER)
                 .build();
         cafeUserRepository.save(cafeUser);
@@ -108,8 +107,13 @@ public class UserJpaService implements UserDetailsService {
         cafeUser.setCafeClientId(cryptUtils.encrypt256(clientDto.getClientId()));
         cafeUser.setCafeClientSecret(cryptUtils.encrypt256(clientDto.getClientSecret()));
         cafeUser.setCafeRefreshToken(cryptUtils.encrypt256(sessionUser.getCafeRefreshToken()));
-        cafeUser.setCafeRefreshTokenExpiresAt(sessionUser.getCafeRefreshTokenExpiresAt());
+        cafeUser.setCafeRefreshTokenExpiresAt(sessionUser.getCafeTokenExpiresAt());
         cafeUser.setClientPrivacyAgreed(true);
+
+        sessionUser.setCafeClientId(clientDto.getClientId());
+        sessionUser.setClientApiEnabled(true);
+        sessionUser.setCafeClientSecret(cryptUtils.encrypt256(clientDto.getClientSecret()));
+        sessionUser.setClientPrivacyAgreed(true);
 
         return "T";
     }

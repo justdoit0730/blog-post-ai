@@ -19,8 +19,7 @@ public class MultipartUtil {
 
 
     public MultipartUtil(String apiURL) throws IOException  {
-        boundary = "---" + System.currentTimeMillis() + "---";// multipart request 구분자
-        System.out.println("MultipartUtil boundary = " + boundary);
+        boundary = "---" + System.currentTimeMillis() + "---";
         URL url = new URL(apiURL);
         con = (HttpURLConnection)url.openConnection();
         con.setUseCaches(false);

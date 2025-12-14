@@ -8,6 +8,13 @@ document.getElementById('postBtn').addEventListener('click', async function() {
     const cafeBoardTag = usedTagItem.tag;
     const cafeMenuId = selectedTagBtn.dataset.cafeMenuId;
 
+    if (!cafeId || !cafeMenuId) {
+        if (confirm("템플릿 설정 후에 게시가 가능합니다. 설정하시겠습니까?")) {
+            window.location.href = "/myPage/postingTemplate";
+        }
+        return;
+    }
+
     const title = document.getElementById("subject").value.trim();
     if (title === "") {
         alert("제목을 입력하세요.");
@@ -17,7 +24,6 @@ document.getElementById('postBtn').addEventListener('click', async function() {
 
     try {
         contentHtml = await replaceAndRender();
-        console.log("이미지 변환 및 HTML 교체 완료");
     } catch (error) {
         console.error("replaceAndRender 실행 중 오류:", error);
     }
@@ -64,6 +70,7 @@ document.getElementById('postBtn').addEventListener('click', async function() {
 
 async function replaceAndRender() {
     let html = editor.getHTML();
+    console.log(html);
 
     if (html === "" || html === "<p></p>") {
         alert("내용을 입력하세요.");
@@ -76,20 +83,32 @@ async function replaceAndRender() {
     let replacedHtml = html;
 
     if (base64Images.length > 0) {
+        const formData = new FormData();
+
+        for (let i = 0; i < base64Images.length; i++) {
+            const base64 = base64Images[i];
+
+            const res = await fetch(base64);
+            const blob = await res.blob();
+
+            formData.append("images", blob, `image${i}.png`);
+        }
+
         const csrfToken = document.querySelector('meta[name="_csrf"]').content;
         const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
 
         const response = await fetch('/cafe/uploadImages', {
-          method: 'POST',
-          headers: {
-            [csrfHeader]: csrfToken,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ base64Images })
+            method: 'POST',
+            headers: {
+                [csrfHeader]: csrfToken
+                // ❌ Content-Type 직접 설정 금지! FormData가 자동 처리함.
+            },
+            body: formData
         });
 
         const urls = await response.json();
 
+        // base64 → 업로드된 URL로 교체
         base64Images.forEach((base64, i) => {
             replacedHtml = replacedHtml.replace(base64, urls[i]);
         });

@@ -9,7 +9,6 @@ import org.justdoit.blog.configuration.manager.EmailMetadata;
 import org.justdoit.blog.configuration.manager.WriteMetadata;
 import org.justdoit.blog.entity.manager.ManagerInfo;
 import org.justdoit.blog.entity.manager.ManagerInfoRepository;
-import org.justdoit.blog.service.cafe.CafeTokenService;
 import org.justdoit.blog.variable.GlobalVariables;
 import org.justdoit.blog.utils.CryptUtils;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -35,8 +34,6 @@ public class CafeManager {
 
     private final CryptUtils cryptUtils;
 
-    private final CafeTokenService cafeTokenService;
-
     @PostConstruct
     public void init() {
         loadManagerInfo();
@@ -47,9 +44,9 @@ public class CafeManager {
             globalVariables.server = appMetadata.getServer();
             ManagerInfo managerInfo = managerInfoRepository.findById("default").orElse(null);
             if (managerInfo != null) {
-                globalVariables.EMAIL_KEY = managerInfo.getEmailKey();
                 globalVariables.AES_KEY = managerInfo.getAesKey();
 
+                globalVariables.EMAIL_KEY = managerInfo.getEmailKey();
                 globalVariables.MAIN_EMAIL = (managerInfo.getMainEmail() != null)
                         ? managerInfo.getMainEmail()
                         : (emailMetadata != null ? emailMetadata.getMainEmail() : "");
@@ -63,7 +60,7 @@ public class CafeManager {
                     globalVariables.M_SENDER = new JavaMailSenderImpl();
                     globalVariables.M_SENDER.setHost("smtp.gmail.com");
                     globalVariables.M_SENDER.setPort(465);
-                    globalVariables.M_SENDER.setUsername(globalVariables.MAIN_EMAIL);
+                    globalVariables.M_SENDER.setUsername(globalVariables.SEND_EMAIL);
                     globalVariables.M_SENDER.setPassword(cryptUtils.decrypt256(globalVariables.EMAIL_KEY));
 
                     Properties props = globalVariables.M_SENDER.getJavaMailProperties();

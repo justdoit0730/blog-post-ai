@@ -22,6 +22,13 @@ document.getElementById('aiPostBtn').addEventListener('click', async function() 
     const cafeBoardTag = usedTagItem.tag;
     const cafeMenuId = selectedTagBtn.dataset.cafeMenuId;
 
+    if (!cafeId || !cafeMenuId) {
+        if (confirm("템플릿 설정 후에 게시가 가능합니다. 설정하시겠습니까?")) {
+            window.location.href = "/myPage/postingTemplate";
+        }
+        return;
+    }
+
     const prompt = document.getElementById("prompt").value.trim();
     const subject = document.getElementById("subject").value.trim();
     const title = document.getElementById("title").textContent.trim();
@@ -69,35 +76,3 @@ document.getElementById('aiPostBtn').addEventListener('click', async function() 
         alert("포스팅 템플릿이 저장 요청 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
     });
 });
-
-//async function replaceAndRender() {
-//
-//    let html = editor.getHTML();
-//    console.log("html : "+ html);
-//    const base64Images = [...html.matchAll(/<img[^>]+src=["'](data:image\/[^"']+)["']/g)]
-//                        .map(m => m[1]);
-//    console.log("html : "+ html);
-//    let replacedHtml = html;
-//
-//    if (base64Images.length > 0) {
-//        const csrfToken = document.querySelector('meta[name="_csrf"]').content;
-//        const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
-//
-//        const response = await fetch('/cafe/ai/uploadImages', {
-//          method: 'POST',
-//          headers: {
-//            [csrfHeader]: csrfToken,
-//            'Content-Type': 'application/json'
-//          },
-//          body: JSON.stringify({ base64Images })
-//        });
-//
-//        const urls = await response.json();
-//
-//        base64Images.forEach((base64, i) => {
-//            replacedHtml = replacedHtml.replace(base64, urls[i]);
-//        });
-//    }
-//
-//    return replacedHtml;
-//}

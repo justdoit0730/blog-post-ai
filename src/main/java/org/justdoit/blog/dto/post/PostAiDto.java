@@ -3,8 +3,6 @@ package org.justdoit.blog.dto.post;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
-
 @Getter
 @Setter
 public class PostAiDto {

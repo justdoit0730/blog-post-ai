@@ -7,7 +7,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.justdoit.blog.config.auth.SessionUser;
 import org.justdoit.blog.dto.post.PostAiDto;
 import org.justdoit.blog.dto.post.PostBasicDto;
-import org.justdoit.blog.entity.manager.ManagerInfo;
 import org.justdoit.blog.entity.user.CafeUser;
 import org.justdoit.blog.utils.MultipartUtil;
 import org.slf4j.Logger;

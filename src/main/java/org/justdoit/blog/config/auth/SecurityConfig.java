@@ -29,6 +29,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/",
+                                "/error/**",
+                                "/black/**",
                                 "/h2-console/**",
                                 "/template/**",
                                 "/resources/**",
@@ -36,29 +38,29 @@ public class SecurityConfig {
                                 "/user/**",
                                 "/error/**",
                                 "/js/**",
-                                "/",
                                 "/oauth/callback/**",
                                 "/test",
                                 "/csrf",
                                 "/etc/**"
 
-                        ).permitAll() // 로그인 없이 접근 허용
+                        ).permitAll()
                         .requestMatchers("/api/v1/**").hasAnyRole("MANAGER", "USER")
                         .anyRequest().authenticated()
                 )
                 .formLogin(formLogin -> formLogin
                         .loginPage("/user/login")
                         .loginProcessingUrl("/user/doLogin")
-                        .usernameParameter("email")
+                        .usernameParameter("username")
+                        .passwordParameter("password")
                         .defaultSuccessUrl("/", true)
                         .failureUrl("/user/login?error=true")
                         .successHandler(customLoginSuccessHandler)
                 )
                 .logout(logout -> logout
-                        .logoutUrl("/user/logout")         // POST 요청 URL
-                        .logoutSuccessUrl("/")             // 로그아웃 후 리다이렉트
-                        .invalidateHttpSession(true)       // 세션 종료
-                        .deleteCookies("JSESSIONID")       // 쿠키 삭제
+                        .logoutUrl("/user/logout")
+                        .logoutSuccessUrl("/")
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID", "rememberedEmail")
                         .permitAll()
                 )
                 .sessionManagement(session -> session

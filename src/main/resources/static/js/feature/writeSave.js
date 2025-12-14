@@ -5,8 +5,6 @@ document.getElementById('writeSave').addEventListener('click', function() {
     const imgUrlsData = document.getElementById("imgUrls").dataset.value;
     const fullContent = document.getElementById("content").outerHTML;
 
-    console.log(fullContent);
-
     const imgUrlS = imgUrlsData ? JSON.parse(imgUrlsData) : [];
 
     var data = {

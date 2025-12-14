@@ -25,76 +25,58 @@ document.getElementById('writeBtn').addEventListener('click', function() {
     const images = [];
     const readers = [];
 
+    spinner.style.visibility = 'visible';
+
+    // FormData 객체 생성
+    const formData = new FormData();
+    formData.append("subject", subject);
+    formData.append("prompt", prompt);
     for (let i = 0; i < files.length; i++) {
-        const file = files[i];
-        const reader = new FileReader();
-
-        readers.push(new Promise((resolve, reject) => {
-            reader.onload = function(e) {
-                images.push(e.target.result);
-                resolve();
-            };
-            reader.onerror = reject;
-        }));
-
-        reader.readAsDataURL(file);
+        formData.append("images", files[i]);
     }
 
-    spinner.style.visibility = 'visible';
-    Promise.all(readers).then(() => {
-        const data = {
-            subject: subject,
-            prompt: prompt,
-            images: images
-        };
+    const csrfToken = document.querySelector('meta[name="_csrf"]').content;
+    const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
 
-        const csrfToken = document.querySelector('meta[name="_csrf"]').content;
-        const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
+    fetch('/feature/write', {
+        method: 'POST',
+        headers: {
+            [csrfHeader]: csrfToken
+            // 'Content-Type': 'application/json' 제거 — FormData는 브라우저가 자동 설정
+        },
+        body: formData,
+        credentials: 'same-origin'
+    })
+    .then(response => response.json())
+    .then(result => {
+        // 기존 처리 로직 그대로
+        const titleElement = document.getElementById("title");
+        titleElement.textContent = result.title;
 
-        fetch('/feature/write', {
-            method: 'POST',
-            headers: {
-                [csrfHeader]: csrfToken,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data),
-            credentials: 'same-origin'
-        })
-        .then(response => response.json())
-        .then(result => {
-            const titleElement = document.getElementById("title");
-            titleElement.textContent = result.title;
+        let contentHtml = result.content;
+        if (result.images && result.images.length > 0) {
+            result.images.forEach((imgUrl, index) => {
+                const photoTag = `[사진${index + 1}]`;
+                const imgHtml = `<br><img src="${imgUrl}" style="max-width:100%;"><br>`;
+                contentHtml = contentHtml.replace(photoTag, imgHtml);
+            });
+        }
 
-            let contentHtml = result.content;
+        contentHtml = contentHtml.replace(/\r\n/g, "\n").replace(/\n/g, "<br>");
+        document.getElementById("content").innerHTML = contentHtml;
 
-            if (result.images && result.images.length > 0) {
-                result.images.forEach((imgDataUrl, index) => {
-                    const photoTag = `[사진${index + 1}]`;
-                    const imgHtml = `<br><img src="${imgDataUrl}" style="max-width:100%;"><br>`;
-                    contentHtml = contentHtml.replace(photoTag, imgHtml);
-                });
-            }
+        const imgUrlsElement = document.getElementById("imgUrls");
+        if (result.images && result.images.length > 0) {
+            imgUrlsElement.setAttribute("data-value", JSON.stringify(result.images));
+        } else {
+            imgUrlsElement.removeAttribute("data-value");
+        }
 
-            contentHtml = contentHtml.replace(/\r\n/g, "\n").replace(/\n/g, "<br>");
-
-            const contentElement = document.getElementById("content");
-            contentElement.innerHTML = contentHtml;
-
-            const imgUrlsElement = document.getElementById("imgUrls");
-            if (result.images && result.images.length > 0) {
-                imgUrlsElement.setAttribute("data-value", JSON.stringify(result.images));
-            } else {
-                imgUrlsElement.removeAttribute("data-value");
-            }
-            const imgUrlS = document.getElementById("imgUrls").dataset.value;
-
-            spinner.style.visibility = 'hidden';
-            const writeSaveDiv = document.getElementById("writeSaveDiv");
-            writeSaveDiv.style.display = "block";
-        })
-
-    }).catch(err => {
-        alert("이미지 처리 중 오류가 발생했습니다.");
+        spinner.style.visibility = 'hidden';
+        document.getElementById("writeSaveDiv").style.display = "block";
+    })
+    .catch(err => {
+        alert("이미지 처리 중 오류가 발생했습니다. 사진 용량을 줄여 주세요.");
         spinner.style.visibility = 'hidden';
     });
 });

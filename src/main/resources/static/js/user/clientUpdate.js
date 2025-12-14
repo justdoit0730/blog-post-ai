@@ -70,7 +70,6 @@ document.getElementById('clientInfoClear').addEventListener('click', function() 
     })
     .then(response => response.text())
     .then(result => {
-    console.log(result);
         if (result === "D-C-F001") {
             alert("이메일 인증이 완료되지 않았습니다. 재 로그인 혹은 이메일 인증을 다시 진행해주세요.");
         } else if (result === "T") {
@@ -87,10 +86,12 @@ document.getElementById('clientInfoClear').addEventListener('click', function() 
             });
         } else {
             alert("저장 요청 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
+            window.location.href = "/";
         }
     })
     .catch(err => {
         console.error(err);
         alert("저장 요청 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
+        window.location.href = "/";
     });
 });

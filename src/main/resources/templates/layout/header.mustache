@@ -3,7 +3,7 @@
 
 <head>
     <title>AUTO CAFE</title>
-    <link rel="icon" type="image/x-icon" href="/resources/profile/favicon.ico" />
+    <link rel="icon" type="image/x-icon" href="/resources/profile/logoFavicon.ico" />
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta http-equiv="imagetoolbar" content="no" />
@@ -82,8 +82,8 @@
                             </a>
                             <ul class="header-sublist">
                                 <li class="header-subitem on">
-                                    <a class="header-sublink p3" href="/etc/qna">
-                                        <span>QnA</span>
+                                    <a class="header-sublink p3" href="/etc/faq">
+                                        <span>FAQ</span>
                                     </a>
                                 </li>
                                 <li class="header-subitem on">
@@ -99,12 +99,19 @@
                             </a>
                             <ul class="header-sublist">
                                 <li class="header-subitem on">
-                                    <a class="header-sublink p3" href="javascript:void(0)">
+                                    <a class="header-sublink p3" href="/etc/community/notice">
                                         <span>공지사항</span>
                                     </a>
                                 </li>
+                                {{#isManager}}
+                                    <li class="header-subitem on">
+                                        <a class="header-sublink p3" href="/manager/notice">
+                                            <span>공지사항 관리</span>
+                                        </a>
+                                    </li>
+                                {{/isManager}}
                                 <li class="header-subitem on">
-                                    <a class="header-sublink p3" href="javascript:void(0)">
+                                    <a class="header-sublink p3" href="/etc/community/inquiry">
                                         <span>이용문의</span>
                                     </a>
                                 </li>
@@ -242,8 +249,8 @@
                             </a>
                             <ul class="fullmenu-sublist">
                                 <li class="fullmenu-subitem">
-                                    <a class="p2 fullmenu-sublink" href="/etc/qna">
-                                        <span>QnA</span>
+                                    <a class="p2 fullmenu-sublink" href="/etc/faq">
+                                        <span>FAQ</span>
                                     </a>
                                 </li>
                                 <li class="fullmenu-subitem">
@@ -259,13 +266,20 @@
                             </a>
                             <ul class="fullmenu-sublist">
                                 <li class="fullmenu-subitem">
-                                    <a class="p2 fullmenu-sublink" href="javascript:void(0)">
+                                    <a class="p2 fullmenu-sublink" href="/etc/community/notice">
                                         <span>공지사항</span>
                                     </a>
                                 </li>
+                                {{#isManager}}
+                                    <li class="fullmenu-subitem">
+                                        <a class="p2 fullmenu-sublink" href="/manager/notice">
+                                            <span>공지사항 관리</span>
+                                        </a>
+                                    </li>
+                                {{/isManager}}
                                 <li class="fullmenu-subitem">
-                                    <a class="p2 fullmenu-sublink" href="/user/contact">
-                                        <span>문의하기</span>
+                                    <a class="p2 fullmenu-sublink" href="/etc/community/inquiry">
+                                        <span>이용문의</span>
                                     </a>
                                 </li>
                             </ul>

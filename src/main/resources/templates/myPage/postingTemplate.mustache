@@ -125,18 +125,12 @@ document.getElementById("checkCafeId").addEventListener("click", function () {
     const input = document.getElementById("cafeBoardLink").value.trim();
     const cafeIdInput = document.getElementById("cafeId");
     const cafeBoardIdInput = document.getElementById("cafeBoardId");
-
-    // cafes/뒤의 숫자 추출
     const cafeIdMatch = input.match(/cafes\/(\d+)/);
-
-    // menus/뒤 숫자 또는 menuid=뒤 숫자 추출
     const boardIdMatch = input.match(/menus\/(\d+)|menuid=(\d+)/);
 
     if (cafeIdMatch && boardIdMatch) {
         const cafeId = cafeIdMatch[1];
-        // menus/ 또는 menuid= 중 어느 쪽이 매칭됐는지에 따라 값 선택
         const boardId = boardIdMatch[1] || boardIdMatch[2];
-
         cafeIdInput.value = cafeId;
         cafeBoardIdInput.value = boardId;
     } else {

@@ -11,12 +11,12 @@
                 <div class="tabset tabset-fluid border-bottom">
                     <ul class="tabset-list tabset-lg">
                         <li class="tabset-item">
-                            <a class="tabset-link active" href="#SignInForm">
+                            <a class="tabset-link active" href="#SignInForm" style="font-size: x-large;">
                                 <span>로그인</span>
                             </a>
                         </li>
                         <li class="tabset-item">
-                            <a class="tabset-link" href="#SignUpForm">
+                            <a class="tabset-link" href="#SignUpForm" style="font-size: x-large;">
                                 <span>회원가입</span>
                             </a>
                         </li>
@@ -34,20 +34,27 @@
                         <div class="textset">
                             <h2 class="h2 textset-tit">로그인</h2>
                         </div>
-                        <div class="form-box">
+                        <div class="form-box" style="max-width: 70rem;">
                             <div class="inputset">
                                 <label for="username" class="form-tit h6">이메일</label>
-                                <input id="username" name="email" type="text" class="inputset-input form-control" placeholder="이메일을 입력해 주세요." value="a07308@naver.com" />
+                                <input id="username" name="username" type="text" class="inputset-input form-control" placeholder="이메일을 입력해 주세요." value="{{rememberedEmail}}"/>
                             </div>
                         </div>
-                        <div class="form-box">
+                        <div class="form-box" style="max-width: 70rem;">
                             <div class="inputset">
                                 <label for="password" class="form-tit h6">비밀번호</label>
-                                <input id="password" name="password" type="password" class="inputset-input form-control" placeholder="비밀번호를 입력해 주세요." value="Gkswnsgml1!"/>
+                                <input id="password" name="password" type="password" class="inputset-input form-control" placeholder="비밀번호를 입력해 주세요." />
                             </div>
                         </div>
+                        <div class="form-box" style="display: flex; gap: 8px; max-width: 70rem;">
 
-                        <div class="form-btn" style="margin-top: 6rem;">
+                            <label>
+                                <input type="checkbox" name="rememberMe" {{#rememberedEmailCheck}}checked{{/rememberedEmailCheck}}>
+                                이메일 기억하기
+                            </label>
+                        </div>
+                        <div class="form-btn" style="margin-top: 6rem; max-width: 30rem;">
+
                             <button class="btnset btnset-primary btnset-block" type="submit">로그인</button>
                         </div>
                     </form>
@@ -156,7 +163,7 @@
                                         <li class="p1">
                                             <em>02. 수집 항목</em>
                                             <p>- 이메일 </p>
-                                            <p>- API용 Client ID, Client Secret (암호화하여 안전하게 관리)</p>
+<!--                                            <p>- API용 Client ID, Client Secret (암호화하여 안전하게 관리)</p>-->
                                         </li>
                                         <li class="p1">
                                             <em>03. 개인정보 공유 및 제공</em>

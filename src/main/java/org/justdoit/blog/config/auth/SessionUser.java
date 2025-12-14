@@ -13,7 +13,6 @@ import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,11 +35,11 @@ public class SessionUser implements Serializable {
     private boolean isClientPrivacyAgreed;
     private String cafeClientId = "";
     private String cafeClientSecret = "";
-
     private int cafeValidationFailCount;
 
-    private String cafeRefreshToken;
-    private long cafeRefreshTokenExpiresAt;
+    private String cafeAccessToken = "";
+    private String cafeRefreshToken = "";
+    private long cafeTokenExpiresAt = 0L;
 
     // openAI
     private OpenAiService openAiService;
@@ -82,7 +81,7 @@ public class SessionUser implements Serializable {
         this.subEmail = cafeUser.getSubEmail();
         this.isSubEmailUsed = cafeUser.isSubEmailUsed();
         this.cafeValidationFailCount = cafeUser.getCafeValidationFailCount();
-        this.cafeRefreshTokenExpiresAt = cafeUser.getCafeRefreshTokenExpiresAt();
+        this.cafeTokenExpiresAt = cafeUser.getCafeRefreshTokenExpiresAt();
         this.isEmailPrivacyAgreed = cafeUser.isEmailPrivacyAgreed();
         this.isClientPrivacyAgreed = cafeUser.isClientPrivacyAgreed();
         this.clientApiEnabled = cafeUser.isClientApiEnabled();

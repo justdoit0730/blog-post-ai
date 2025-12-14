@@ -1,9 +1,9 @@
 package org.justdoit.blog.template;
 
 public enum TextVolumeTemplate {
-    V1("1", "약 350 ~ 500자"),
-    V2("2", "약 500 ~ 800자"),
-    V3("3", "800자 이상");
+    V1("1", "약 500자"),
+    V2("2", "약 500 ~ 1000자"),
+    V3("3", "1500자 이상");
 
     private final String subject;
     private final String volume;

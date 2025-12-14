@@ -1,0 +1,291 @@
+{{>layout/header}}
+{{>support/support-sidebar}}
+<meta name="_csrf" content="{{_csrf_token}}"/>
+<meta name="_csrf_header" content="{{_csrf_header}}"/>
+
+<style>
+.postRenderingContent,
+.postRenderingContent * {
+  font-size: large !important;
+  line-height: 2 !important;
+}
+.guide-img {
+  display: block;
+  width: 100%;
+  max-width: 1000px;
+  height: 500px;
+  background-color: #000;
+  border-radius: 10px;
+  margin: 1.5rem auto;
+  border: 1px solid #ccc;
+}
+.api-guide ol li strong {
+  font-size: 2rem !important;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #111;
+}
+
+.guide-small-img {
+  display: none;
+}
+
+
+@media screen and (max-width: 768px) {
+  .guide-img {
+    display: none; /* 큰 이미지는 숨김 */
+  }
+  .guide-small-img {
+    display: block;
+    width: 100%;
+    max-width: 400px;
+    height: 700px;
+    background-color: #000;
+    border-radius: 10px;
+    margin: 1.5rem auto;
+  }
+}
+</style>
+
+<div class="contents-right">
+    <div class="row row-cols-3 row-md-cols-2 gutter-5 contents-list" style="margin-top: 0rem; margin-bottom: 0em; --th-gutter: 0;">
+        <div class="contents-container container-md" style="padding: 0">
+            <div class="contents-inner">
+                <div class="form-group">
+                    <form>
+                        <section class="campland-N13" id="api-guide" style="padding-top: 0rem;">
+                            <div class="contents-container container-md" style="padding: 0">
+                                <!-- AI Template -->
+                                <div class="contents-inner">
+                                    <div class="textset" style="margin-bottom: 4rem;">
+                                        <h2 class="textset-tit h6" style="font-size: 3.5rem;" id="aiTemplate">AI Template 가이드</h2>
+                                    </div>
+
+                                    <div class="contents-body" style="padding: 2rem 0; padding-bottom: 7rem;">
+                                        <div class="postRenderingContent">
+                                            <section class="api-guide" style="font-family: 'Pretendard', sans-serif; color: #222; line-height: 1.8; padding: 20px;">
+
+                                                <p style="font-size: 1.1rem; margin-bottom: 2rem;">
+                                                    <code>Profile → AI 설정 → AI 글쓰기 Template </code> 페이지의 Template 설정 가이드입니다.<br>
+                                                    설정한 Template은 <a href="/feature/write" style="color: blue; font-weight: bold;">AI 글쓰기</a> 페이지에서 사용됩니다.
+                                                </p>
+
+                                                <hr style="margin: 2rem 0; border: none; border-top: 1px solid #ddd;">
+
+                                                <h2 style="font-size: 3rem !important; font-weight: 600; margin-bottom: 1rem;">1️⃣ AI 글쓰기 Template 설정</h2>
+
+                                                <ol style="margin-left: 1.5rem; margin-bottom: 2rem;">
+                                                    <li>
+                                                        <strong>1. AI 글쓰기 Template 접속(로그인 필수)</strong>
+                                                        <a href="/myPage/ai/template/setting" target="_blank" style="color:#0078ff;">AI 글쓰기 Template Page</a>
+                                                        <div>
+                                                            <img class="guide-img" src="/resources/guide/template/1.png" alt="1" />
+                                                            <img class="guide-small-img" src="/resources/guide/template/small/1.png" alt="1" />
+                                                        </div>
+                                                    </li>
+
+                                                    <li>
+                                                        <strong>2. AI 글쓰기 Template 요소 설명</strong>
+                                                        ▪️<code>사용</code> : 체크 시 해당 템플릿이 <code>AI 글쓰기</code> 페이지에 자동 적용됩니다.<br>
+                                                        ▪️<code>태그</code> : 해당 템플릿의 특징을 한눈에 나타내는 대표 키워드입니다. 다른 템플릿과 혼동되지 않도록 <code>중복 없이</code> 설정하세요. <br>
+                                                        ▪️<code>주제</code> : AI가 작성할 글의 핵심 주제를 작성합니다. 생성되는 글의 방향을 결정하는 가장 중요한 요소입니다. <br>
+                                                        ▪️<code>요청사항</code> : 주제에 대해 AI가 참고해야 할 구체적인 요구사항이나 세부 지침을 작성하는 곳입니다. <br>
+                                                        ▪️<code>추가 / 삭제</code> : 버튼을 통해 템플릿 행을 자유롭게 추가하거나 삭제할 수 있습니다.<br>
+                                                        ▪️<code>템플릿 저장</code> : 변경 사항은 반드시 이 버튼을 눌러 저장해야 적용됩니다.<br>
+                                                    </li>
+                                                    <li>
+                                                        <strong>3. AI 글쓰기 Template 예시</strong>
+                                                        <div>
+                                                            <img class="guide-img" src="/resources/guide/template/2.png" alt="2" />
+                                                            <img class="guide-small-img" src="/resources/guide/template/small/2.png" alt="2" />
+                                                        </div>
+                                                    </li>
+
+                                                </ol>
+
+                                                <hr style="margin: 2rem 0; border: none; border-top: 1px solid #ddd;">
+
+                                                <h2 style="font-size: 3rem !important; font-weight: 600; margin-bottom: 1rem;">2️⃣ AI 글쓰기 Template 확인</h2>
+
+                                                <ol style="margin-left: 1.5rem; margin-bottom: 2rem;">
+                                                    <li>
+                                                        <strong>1. AI 글쓰기 접속(로그인 필수)</strong>
+                                                        <a href="/feature/write" target="_blank" style="color:#0078ff;">AI 글쓰기 Page</a>
+                                                        <div>
+                                                            <img class="guide-img" src="/resources/guide/template/3.png" alt="1" />
+                                                            <img class="guide-small-img" src="/resources/guide/template/small/3.png" alt="1" />
+                                                        </div>
+                                                    </li>
+
+                                                    <li>
+                                                        <strong>2. AI 글쓰기 페이지에서 Template 설정</strong>
+                                                        ▪️<code>AI 글쓰기 Template</code> : 클릭하면 설정된 Template의 태그 목록이 표시되며, 태그를 선택하면 주제와 요청사항에 자동으로 반영됩니다.<br>
+                                                        ▪️<code>글쓰기 템플릿 수정</code> : 해당 페이지에서도 템플릿을 바로 수정할 수 있습니다.<br>
+
+                                                    </li>
+                                                </ol>
+
+                                                <hr style="margin: 2rem 0; border: none; border-top: 1px solid #ddd;">
+
+                                            </section>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div>
+                                    <p id="cafeTemplate"></p>
+                                </div>
+                                <!-- Cafe Template -->
+                                <div class="contents-inner" style="margin-top: 8rem;">
+                                    <div class="textset" style="margin-bottom: 4rem;">
+                                        <h2 class="textset-tit h6" style="font-size: 3.5rem;" id="aiTemplate">Naver Cafe Template 가이드</h2>
+                                    </div>
+
+                                    <div class="contents-body" style="padding: 2rem 0; padding-bottom: 7rem;">
+                                        <div class="postRenderingContent">
+                                            <section class="api-guide" style="font-family: 'Pretendard', sans-serif; color: #222; line-height: 1.8; padding: 20px;">
+
+                                                <p style="font-size: 1.1rem; margin-bottom: 2rem;">
+                                                    <code>Profile → Naver Cafe 설정 → 포스팅 Template </code> 페이지의 Template 설정 가이드입니다.<br>
+                                                    설정한 Template은 <a href="/cafe/post" style="color: blue; font-weight: bold;">Cafe 포스팅</a>, <a href="/cafe/ai/post" style="color: blue; font-weight: bold;">AI Cafe 포스팅</a> 페이지에서 사용됩니다.<br>
+                                                    Naver API Client 인증이 반드시 진행되어야만 글 게시가 가능합니다.
+                                                </p>
+
+                                                <hr style="margin: 2rem 0; border: none; border-top: 1px solid #ddd;">
+
+                                                <h2 style="font-size: 3rem !important; font-weight: 600; margin-bottom: 1rem;">1️⃣ 포스팅 Template 설정</h2>
+
+                                                <ol style="margin-left: 1.5rem; margin-bottom: 2rem;">
+                                                    <li>
+                                                        <strong>1. 포스팅 Template 접속(로그인 필수)</strong>
+                                                        <a href="/myPage/postingTemplate" target="_blank" style="color:#0078ff;">포스팅 Template Page</a>
+                                                        <div>
+                                                            <img class="guide-img" src="/resources/guide/template/4.png" alt="1" />
+                                                            <img class="guide-small-img" src="/resources/guide/template/small/1.png" alt="1" />
+                                                        </div>
+                                                    </li>
+
+                                                    <li>
+                                                        <strong>2. Cafe 정보 확인하기(예시)</strong>
+                                                        <div>
+                                                            <img class="guide-img" src="/resources/guide/template/5.png" alt="1" />
+                                                            <img class="guide-small-img" src="/resources/guide/template/small/5.png" alt="1" />
+                                                        </div>
+                                                        <ul style="margin-top:1rem; margin-left:1.5rem;">
+                                                            <p>반드시 <a href="/myPage/postingSetting" style="color: blue; font-weight: bold;">Naver API Client 인증</a>을 진행할 때 사용한 이메일로 가입된 카페여야 합니다.</p>
+                                                            <li><b>2.1.</b> Naver Cafe에서 글이 작성될 게시판 카테고리에 접속한 뒤, 해당 페이지의 URL 주소를 복사
+                                                                <div>
+                                                                    <img class="guide-img" src="/resources/guide/template/6.png" alt="1" />
+                                                                    <img class="guide-small-img" src="/resources/guide/template/small/6.png" alt="1" />
+                                                                    ▪️<code>Cafe URL</code> : https://cafe.naver.com/f-e/cafes/31550656/menus/2
+                                                                    ▪️위 주소는 예시 입니다. 주소 안에 <code>cafes</code> 와 <code>menus</code> 가 있으면 어떤 형태든 상관 없습니다.
+                                                                </div>
+                                                            </li>
+                                                            <li><b>2.2.</b> 복사한 URL 주소를 <code>카페 게시판 주소</code> 입력란에 붙여넣고, 확인 버튼을 클릭
+                                                                <div>
+                                                                    <img class="guide-img" src="/resources/guide/template/7.png" alt="1" />
+                                                                    <img class="guide-small-img" src="/resources/guide/template/small/7.png" alt="1" />
+                                                                </div>
+                                                                ▪️<code>Cafe ID</code> : Cafe ID Template 에서 사용될 카페 ID<br>
+                                                                ▪️<code>Cafe 게시판 ID</code> : Cafe Posting Template 에 작성될 카페 게시판 ID
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+
+                                                    <li>
+                                                        <strong>3. Cafe ID Template 및 Cafe Posting Template 설정하기</strong>
+                                                        <div>
+                                                            <img class="guide-img" src="/resources/guide/template/8.png" alt="1" />
+                                                            <img class="guide-small-img" src="/resources/guide/template/small/8.png" alt="1" />
+                                                        </div>
+                                                        <h3 style="font-size: 1.4rem; font-weight: 600; margin: 1.5rem 0 0.8rem;">Cafe ID Template 요소 설명</h3>
+                                                        <p>
+                                                            ▪️ <code>카페 이름</code> : 카페의 이름을 의미하며, 중복 등록은 불가능합니다.<br>
+                                                            ▪️ <code>Cafe 게시판 ID</code> : 위 <code>Cafe 정보 확인하기</code>에서 확인한 <code>Cafe ID</code> 값이며, 중복 등록은 불가능합니다.<br>
+                                                        </p>
+
+                                                        <hr style="border: 0; border-top: 1px solid #e5e5e5; margin: 1.5rem 0;">
+
+                                                        <h3 style="font-size: 1.4rem; font-weight: 600; margin: 1.5rem 0 0.8rem;">Cafe Posting Template 요소 설명</h3>
+                                                        <p>
+                                                            ▪️ <code>태그</code> : 템플릿 구분용 태그 이름이며, 중복 등록은 불가능합니다.<br>
+                                                            ▪️ <code>Cafe 게시판 ID</code> : 위 <code>Cafe 정보 확인하기</code>에서 확인한 <code>Cafe 게시판 ID</code> 값입니다.<br>
+                                                            ▪️ <code>주제</code> : AI가 작성할 글의 핵심 주제를 작성합니다. 생성되는 글의 방향을 결정하는 가장 중요한 요소입니다.<br>
+                                                            ▪️ <code>요청사항</code> : 주제에 대해 AI가 참고해야 할 구체적인 요구사항 또는 세부 지침을 작성하는 항목입니다.<br>
+                                                        </p>
+
+                                                        <hr style="border: 0; border-top: 1px solid #e5e5e5; margin: 1.5rem 0;">
+
+                                                        <h3 style="font-size: 1.4rem; font-weight: 600; margin: 1.5rem 0 0.8rem;">공통 요소 설명</h3>
+                                                        <p>
+                                                            ▪️ <code>추가 / 삭제</code> : 버튼을 통해 템플릿 행을 자유롭게 추가하거나 삭제할 수 있습니다.<br>
+                                                            ▪️ <code>저장</code> : 변경된 내용은 반드시 저장해야 적용됩니다.<br>
+                                                        </p>
+
+                                                    </li>
+
+                                                    <li>
+                                                        <strong>3. 포스팅 Template 예시</strong>
+                                                        <div>
+                                                            <img class="guide-img" src="/resources/guide/template/9.png" alt="2" />
+                                                            <img class="guide-small-img" src="/resources/guide/template/small/9.png" alt="2" />
+                                                        </div>
+                                                    </li>
+
+                                                </ol>
+
+                                                <hr style="margin: 2rem 0; border: none; border-top: 1px solid #ddd;">
+
+                                                <h2 style="font-size: 3rem !important; font-weight: 600; margin-bottom: 1rem;">2️⃣ 카페 게시글 작성</h2>
+
+                                                <ol style="margin-left: 1.5rem; margin-bottom: 2rem;">
+                                                    <li>
+                                                        <strong>1. Cafe 포스팅 접속</strong>
+                                                        <a href="/cafe/post" target="_blank" style="color:#0078ff;">Cafe 포스팅 Page</a>
+                                                        <div>
+                                                            <img class="guide-img" src="/resources/guide/template/10.png" alt="1" />
+                                                            <img class="guide-small-img" src="/resources/guide/template/small/10.png" alt="1" />
+                                                        </div>
+                                                        ▪️<code>Cafe 이름</code> : Cafe ID Template 에서 선택된 카페 이름<br>
+                                                        ▪️<code>Cafe 포스팅 Template</code> : Cafe Posting Template 에서 선택된 태그<br>
+                                                    </li>
+
+                                                    <li>
+                                                        <strong>2. AI Cafe 포스팅 접속</strong>
+                                                        <a href="/cafe/ai/post" target="_blank" style="color:#0078ff;">AI Cafe 포스팅 Page</a>
+                                                        <div>
+                                                            <img class="guide-img" src="/resources/guide/template/11.png" alt="1" />
+                                                            <img class="guide-small-img" src="/resources/guide/template/small/11.png" alt="1" />
+                                                        </div>
+                                                        ▪️<code>Cafe 이름</code> : Cafe ID Template 에서 선택된 카페 이름<br>
+                                                        ▪️<code>Cafe 포스팅 Template</code> : Cafe Posting Template 에서 선택된 태그<br>
+                                                        ▪️<code>주제</code> : Cafe Posting Template 에서 선택된 주제<br>
+                                                        ▪️<code>요청사항</code> : Cafe Posting Template 에서 선택된 요청사항<br>
+                                                    </li>
+                                                </ol>
+
+                                                <hr style="margin: 2rem 0; border: none; border-top: 1px solid #ddd;">
+
+                                            </section>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </section>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="contents-dim"></div>
+</div>
+
+</div>
+</main>
+
+{{>layout/footer}}

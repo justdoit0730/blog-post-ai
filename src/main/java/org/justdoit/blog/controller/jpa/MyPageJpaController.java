@@ -3,13 +3,18 @@ package org.justdoit.blog.controller.jpa;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.justdoit.blog.config.auth.SessionUser;
+import org.justdoit.blog.dto.user.DeleteUserDto;
 import org.justdoit.blog.dto.user.SignUpDto;
 import org.justdoit.blog.dto.user.UpdateUserDto;
+import org.justdoit.blog.entity.user.CafeUser;
+import org.justdoit.blog.entity.user.CafeUserRepository;
 import org.justdoit.blog.jpa.UserJpaService;
 import org.justdoit.blog.service.email.EmailSender;
+import org.justdoit.blog.service.s3.S3Service;
 import org.justdoit.blog.utils.RandomCodeUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +27,10 @@ public class MyPageJpaController {
     private final UserJpaService userJpaService;
     private final EmailSender emailSender;
     private final RandomCodeUtil randomCodeUtil;
+    private final CafeUserRepository cafeUserRepository;
+    private final PasswordEncoder passwordEncoder;
+
+    private final S3Service s3Service;
 
     // Email 중복 확인
     @PostMapping("/user/authCode/email")
@@ -66,7 +75,7 @@ public class MyPageJpaController {
         session.setAttribute("authCode", code);
         session.setAttribute("authExpireAt", expireAt);
 
-        boolean sendResult = emailSender.checkEmail(email, "이메일 인증번호", "인증번호: " + code + "\n5분 이내에 입력해주세요.");
+        boolean sendResult = emailSender.checkEmail(email, "인증번호: " + code);
         if (!sendResult) {
             return ResponseEntity.ok("이메일 주소를 정확하게 작성해주세요.");
         }
@@ -130,7 +139,6 @@ public class MyPageJpaController {
 
         final long now = System.currentTimeMillis();
         Integer count = sessionUser.getSubEmailSendCount();
-        Long resetTime = sessionUser.getSubEmailSendResetTime();
 
         String code = randomCodeUtil.generateCode(20);
         long expireAt = System.currentTimeMillis() + (5 * 60 * 1000);
@@ -138,7 +146,7 @@ public class MyPageJpaController {
         sessionUser.setSubEmailAuthCode(code);
         sessionUser.setSubEmailAuthExpireAt(expireAt);
 
-        boolean sendResult = emailSender.checkSubEmail(sessionUser, subEmail, "이메일 인증번호", "인증번호: " + code + "\n5분 이내에 입력해주세요.");
+        boolean sendResult = emailSender.checkSubEmail(sessionUser, code);
         if (!sendResult) {
             return ResponseEntity.ok("이메일 주소를 정확하게 작성해주세요.");
         }
@@ -177,7 +185,7 @@ public class MyPageJpaController {
         return "인증 성공 하였습니다.";
     }
 
-    // 수신용 이메일 초기화 시 저장 권한 삭제
+    // 수신용 이메일 초기화 시 저장된 권한 삭제
     @PostMapping("/subEmail/email/auth/clear")
     public void subEmailAuthClear(HttpSession session) {
         SessionUser sessionUser = getSessionUser(session);
@@ -218,6 +226,30 @@ public class MyPageJpaController {
         SessionUser sessionUser = getSessionUser(session);
         String result = userJpaService.passwordUpdate(sessionUser, updateUserDto);
         return ResponseEntity.ok(result);
+    }
+
+    // 회원 탈퇴
+    @PostMapping("/myPage/user/delete")
+    public ResponseEntity<String> userDelete(HttpSession session, @RequestBody DeleteUserDto deleteUserDto) {
+        SessionUser sessionUser = getSessionUser(session);
+
+        String email = sessionUser.getEmail();
+        CafeUser cafeUser = cafeUserRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
+
+        if (!passwordEncoder.matches(deleteUserDto.getPassword(), cafeUser.getPassword())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("비밀번호가 일치하지 않습니다.");
+        }
+
+        try {
+            cafeUserRepository.delete(cafeUser);
+            session.invalidate();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("회원 삭제 중 오류가 발생했습니다: " + e.getMessage());
+        }
+        s3Service.deleteEmailDirectory(sessionUser);
+        return ResponseEntity.ok("T");
     }
 
     private SessionUser getSessionUser(HttpSession session) {

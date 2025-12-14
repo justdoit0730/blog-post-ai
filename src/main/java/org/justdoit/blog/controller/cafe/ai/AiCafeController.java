@@ -6,7 +6,6 @@ import org.justdoit.blog.config.auth.SessionUser;
 import org.justdoit.blog.dto.post.PostAiDto;
 import org.justdoit.blog.entity.cafe.ai.CafeAiPosting;
 import org.justdoit.blog.entity.cafe.ai.CafeAiPostingRepository;
-import org.justdoit.blog.entity.manager.ManagerInfo;
 import org.justdoit.blog.entity.user.CafeUser;
 import org.justdoit.blog.entity.user.CafeUserRepository;
 import org.justdoit.blog.service.cafe.CafeTokenService;
@@ -15,6 +14,7 @@ import org.justdoit.blog.service.s3.S3Service;
 import org.justdoit.blog.template.S3Prefix;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -34,12 +34,10 @@ public class AiCafeController {
 
     @PostMapping("/cafe/ai/uploadImages")
     @ResponseBody
-    public List<String> uploadImages(HttpSession session, @RequestBody Map<String, List<String>> request) {
+    public List<String> uploadImages(HttpSession session, @RequestParam("images") MultipartFile[] images) {
         SessionUser sessionUser = (SessionUser) session.getAttribute("user");
-        List<String> base64Images = request.get("base64Images");
-        List<String> imgLinkList = s3Service.uploadImages(sessionUser, base64Images, S3Prefix.AI_POST.getPrefix());
+        List<String> imgLinkList = s3Service.uploadImages(sessionUser, images, S3Prefix.AI_POST.getPrefix());
 
-        System.out.println("uploadImages 실행 여부?");
         sessionUser.setPostAiImgList(imgLinkList.stream()
                 .map(url -> {
                     int lastSlash = url.lastIndexOf('/');

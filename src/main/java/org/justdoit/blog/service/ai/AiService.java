@@ -46,6 +46,7 @@ public class AiService {
                 Collections.emptyList());
     }
 
+    //
     public AiPostResponse generatePostArticle(SessionUser sessionUser, AiPostDto aiPostDto) {
         ChatMessage systemMessage = new ChatMessage("system", "당신은 블로그 글 작성 전문가입니다.");
 

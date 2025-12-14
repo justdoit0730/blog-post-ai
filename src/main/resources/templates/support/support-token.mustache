@@ -1,0 +1,160 @@
+{{>layout/header}}
+{{>support/support-sidebar}}
+<meta name="_csrf" content="{{_csrf_token}}"/>
+<meta name="_csrf_header" content="{{_csrf_header}}"/>
+
+<style>
+.postRenderingContent,
+.postRenderingContent * {
+  font-size: large !important;
+  line-height: 2 !important;
+}
+.guide-img {
+  display: block;
+  width: 100%;
+  max-width: 1000px;
+  height: 500px;
+  background-color: #000;
+  border-radius: 10px;
+  margin: 1.5rem auto;
+  border: 1px solid #ccc;
+}
+.api-guide ol li strong {
+  font-size: 2rem !important;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #111;
+}
+
+.guide-small-img {
+  display: none;
+}
+
+
+@media screen and (max-width: 768px) {
+  .guide-img {
+    display: none; /* 큰 이미지는 숨김 */
+  }
+  .guide-small-img {
+    display: block;
+    width: 100%;
+    max-width: 400px;
+    height: 700px;
+    background-color: #000;
+    border-radius: 10px;
+    margin: 1.5rem auto;
+  }
+}
+</style>
+
+<div class="contents-right">
+    <div class="row row-cols-3 row-md-cols-2 gutter-5 contents-list" style="margin-top: 0rem; margin-bottom: 0em; --th-gutter: 0;">
+        <div class="contents-container container-md" style="padding: 0">
+            <div class="contents-inner">
+                <div class="form-group">
+                    <form>
+                        <section class="campland-N13" id="api-guide" style="padding-top: 0rem;">
+                            <div class="contents-container container-md" style="padding: 0">
+                                <!-- AI Template -->
+                                <div class="contents-inner">
+                                    <div class="textset" style="margin-bottom: 4rem;">
+                                        <h2 class="textset-tit h6" style="font-size: 3.5rem;" id="aiTemplate">AI Token 가이드</h2>
+                                    </div>
+
+                                    <div class="contents-body" style="padding: 2rem 0; padding-bottom: 7rem;">
+                                        <div class="postRenderingContent">
+                                            <section class="api-guide" style="font-family: 'Pretendard', sans-serif; color: #222; line-height: 1.8; padding: 20px;">
+
+                                                <p style="font-size: 1.1rem; margin-bottom: 2rem;">
+                                                    <code>Profile → AI 설정 → AI Token 및 설정</code> 페이지의 정보 가이드입니다.<br>
+                                                    AI 설정은 <a href="/feature/write" style="color: blue; font-weight: bold;">AI 글쓰기</a> 와  <a href="/cafe/ai/post" style="color: blue; font-weight: bold;">AI Cafe 포스팅</a> 페이지에서 사용됩니다.
+                                                </p>
+
+                                                <hr style="margin: 2rem 0; border: none; border-top: 1px solid #ddd;">
+
+                                                <h2 style="font-size: 3rem !important; font-weight: 600; margin-bottom: 1rem;">AI Token 정보</h2>
+
+                                                <ol style="margin-left: 1.5rem; margin-bottom: 2rem;">
+                                                    <li>
+                                                        <strong>AI Token 및 설정 페이지 접속(로그인 필수)</strong>
+                                                        <a href="/myPage/ai/setting" target="_blank" style="color:#0078ff;">AI Token 정보 Page</a>
+                                                        <div>
+                                                            <img class="guide-img" src="/resources/guide/token/1.png" alt="1" />
+                                                            <img class="guide-small-img" src="/resources/guide/token/small/1.png" alt="1" />
+                                                        </div>
+                                                    </li>
+
+
+                                                    <ul style="margin-top:1rem; margin-left:1.5rem;">
+                                                        <li><b>사용 가능한 Token 양</b>
+                                                            <div>
+                                                                ▪️ 사용자는 <code>일일 50,000 토큰</code>이 제공됩니다.<br>
+                                                                ▪️ 토큰이 모두 소진되면 <code>AI 글 생성 기능</code>을 이용할 수 없습니다.<br>
+                                                                ▪️ 토큰은 매일 <code>00:00</code>에 자동으로 초기화되어 충전됩니다.<br>
+                                                            </div>
+                                                        </li>
+                                                        <li><b>Max Token 설정</b>
+                                                            <div>
+                                                                ▪️<code>maxToken</code> : AI가 생성 가능한 최대 출력 토큰 수를 의미합니다. 실제 소비되는 토큰 수는 입력 메시지 + 생성되는 출력 내용에 따라 달라집니다.<br>
+                                                                ▪️<code>짧은 글</code> : 약 500자 기준 → 입력 + 출력 토큰 합계 약 500~800 tokens 사용 예상<br>
+                                                                ▪️<code>일반 글</code> : 약 500~1000자 기준 → 입력 + 출력 토큰 합계 약 800~1500 tokens 사용 예상<br>
+                                                                ▪️<code>긴 글</code> : 약 1500자 이상 → 입력 + 출력 토큰 합계 약 2000~2500 tokens 사용 예상<br>
+                                                            </div>
+                                                        </li>
+                                                        <li><b>글 형식</b>
+                                                            <div>
+                                                                ▪️ <code>AI Temperature</code> : AI 글쓰기의 <code>창의성과 다양성</code>을 조절하는 값입니다.<br>
+                                                                ▪️ <code>설정 범위</code> : 0 ~ 100<br>
+                                                                ▪️ <code>0에 가까움</code> : 안정적이고 반복적인 글을 생성합니다.<br>
+                                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- <em>추천 용도</em> : 공지사항, 매뉴얼, 규칙 안내 등 정확성과 일관성이 중요한 글<br>
+                                                                ▪️ <code>100에 가까움</code> : 창의적이고 다양한 글을 생성합니다.<br>
+                                                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- <em>추천 용도</em> : 블로그, 마케팅 콘텐츠, 아이디어 브레인스토밍 등 독창성이 필요한 글
+                                                            </div>
+                                                        </li>
+                                                        <li><b>글의 양</b>
+                                                            <div>
+                                                                ▪️ 생성될 글의 양을 설정합니다.<br>
+                                                                ▪️ 해당 양에 딱 맞춰 생성되지는 않을 수도 있습니다.<br>
+                                                                ▪️ 글의 양이 적게 설정될수록 <code>사용 가능한 Token</code>이 더 적게 줄어듭니다.
+                                                            </div>
+                                                        </li>
+
+
+                                                    </ul>
+
+
+                                                    <li>
+                                                        <strong>AI 설정 저장</strong>
+                                                        <div>
+                                                            ▪️ 반드시 저장을 해야 설정이 적용됩니다.<br>
+                                                            ▪️ <code>AI 설정 저장</code> 버튼을 눌러 적용하세요.
+                                                        </div>
+                                                    </li>
+
+                                                </ol>
+
+                                                <hr style="margin: 2rem 0; border: none; border-top: 1px solid #ddd;">
+
+                                            </section>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </section>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="contents-dim"></div>
+</div>
+
+</div>
+</main>
+
+{{>layout/footer}}

@@ -22,84 +22,72 @@ document.getElementById('cafeAiPostBtn').addEventListener('click', function() {
         return;
     }
 
-    const images = [];
-    const readers = [];
+    const formData = new FormData();
+    formData.append("subject", subject);
+    formData.append("prompt", prompt);
 
     for (let i = 0; i < files.length; i++) {
-        const file = files[i];
-        const reader = new FileReader();
-
-        readers.push(new Promise((resolve, reject) => {
-            reader.onload = function(e) {
-                images.push(e.target.result);
-                resolve();
-            };
-            reader.onerror = reject;
-        }));
-
-        reader.readAsDataURL(file);
+        formData.append("images", files[i]);
     }
 
     spinner.style.visibility = 'visible';
-    Promise.all(readers).then(() => {
-        const data = {
-            subject: subject,
-            prompt: prompt,
-            images: images
-        };
 
-        const csrfToken = document.querySelector('meta[name="_csrf"]').content;
-        const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
+    const csrfToken = document.querySelector('meta[name="_csrf"]').content;
+    const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
 
-        fetch('/feature/post', {
-            method: 'POST',
-            headers: {
-                [csrfHeader]: csrfToken,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data),
-            credentials: 'same-origin'
-        })
-        .then(response => response.json())
-        .then(result => {
-            const titleElement = document.getElementById("title");
-            titleElement.textContent = result.title;
+    fetch('/feature/post', {
+        method: 'POST',
+        headers: {
+            [csrfHeader]: csrfToken
+        },
+        body: formData,
+        credentials: 'same-origin'
+    })
+    .then(async (response) => {
+        if (!response.ok) {
+            const text = await response.text();
+            console.error(text);
+            throw new Error("서버 오류 발생");
+        }
+        return response.json();
+    })
+    .then(result => {
+        const titleElement = document.getElementById("title");
+        titleElement.textContent = result.title;
 
-            let contentHtml = result.content;
+        let contentHtml = result.content;
 
-            if (result.images && result.images.length > 0) {
-                result.images.forEach((imgDataUrl, index) => {
-                    const photoTag = `[사진${index + 1}]`;
-                    const imgHtml = `<br><img src="${imgDataUrl}" style="max-width:100%;"><br>`;
-                    contentHtml = contentHtml.replace(photoTag, imgHtml);
-                });
-            }
-
-            contentHtml = contentHtml.replace(/\r\n/g, "\n").replace(/\n/g, "<br>");
-
-            window.editor = new toastui.Editor({
-                el: document.querySelector('#editor'),
-                height: '70rem',
-                initialEditType: 'wysiwyg',
-                previewStyle: 'vertical',
-                initialValue: contentHtml
+        if (result.images && result.images.length > 0) {
+            result.images.forEach((imgUrl, index) => {
+                const photoTag = `[사진${index + 1}]`;
+                const imgHtml = `<br><img src="${imgUrl}" style="max-width:100%;"><br>`;
+                contentHtml = contentHtml.replace(photoTag, imgHtml);
             });
+        }
 
-            const imgUrlsElement = document.getElementById("imgUrls");
-            if (result.images && result.images.length > 0) {
-                imgUrlsElement.setAttribute("data-value", JSON.stringify(result.images));
-            } else {
-                imgUrlsElement.removeAttribute("data-value");
-            }
-            const imgUrlS = document.getElementById("imgUrls").dataset.value;
+        contentHtml = contentHtml.replace(/\r\n/g, "\n").replace(/\n/g, "<br>");
 
-            spinner.style.visibility = 'hidden';
-            const writeSaveDiv = document.getElementById("writeSaveDiv");
-            writeSaveDiv.style.display = "block";
-        })
+        window.editor = new toastui.Editor({
+            el: document.querySelector('#editor'),
+            height: '70rem',
+            initialEditType: 'wysiwyg',
+            previewStyle: 'vertical',
+            initialValue: contentHtml
+        });
 
-    }).catch(err => {
-        alert("이미지 처리 중 오류가 발생했습니다.");
+        const imgUrlsElement = document.getElementById("imgUrls");
+        if (result.images && result.images.length > 0) {
+            imgUrlsElement.setAttribute("data-value", JSON.stringify(result.images));
+        } else {
+            imgUrlsElement.removeAttribute("data-value");
+        }
+
+        spinner.style.visibility = 'hidden';
+        document.getElementById("writeSaveDiv").style.display = "block";
+    })
+    .catch(err => {
+        console.error(err);
+        alert("요청 중 오류가 발생했습니다.");
         spinner.style.visibility = 'hidden';
     });
 });

@@ -9,8 +9,6 @@ document.getElementById('aiPostTemplateUpdate').addEventListener('click', functi
         prompt: prompt
     };
 
-    console.log(data);
-
     const csrfToken = document.querySelector('meta[name="_csrf"]').content;
     const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
 
